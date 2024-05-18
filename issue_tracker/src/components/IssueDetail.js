@@ -20,7 +20,7 @@ const IssueDetail = ({ issue, onClose }) => {
   const getStatusColor = (status) => {
     switch (status) {
       case 'new':
-        return 'bg-blue-500';
+        return 'bg-yellow-500';
       case 'fixed':
         return 'bg-green-500';
       case 'closed':
