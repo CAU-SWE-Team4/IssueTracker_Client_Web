@@ -34,7 +34,7 @@ const IssueDetail = ({ issue, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
-      <div className="bg-white p-6 rounded shadow-lg w-3/4 relative">
+      <div className="bg-white p-6 rounded shadow-lg w-3/4 relative max-h-[50vh] overflow-y-auto">
         <button className="absolute top-2 right-2 text-gray-500 hover:text-gray-700" onClick={onClose}>
           &times;
         </button>
@@ -49,7 +49,7 @@ const IssueDetail = ({ issue, onClose }) => {
                 {issue.status}
               </span>
               <p className="font-bold text-gray-500 ml-2 mr-1">{issue.assignee}</p>
-              <p> opend this issue at {issue.date}</p>
+              <p> opened this issue at {issue.date}</p>
             </div>
           </div>
         </div>
