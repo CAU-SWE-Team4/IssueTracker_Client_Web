@@ -64,25 +64,26 @@ const IssueDetail = ({ issue, onClose }) => {
             </div>
           </div>
         </div>
-        <div className="mb-4 relative">
-          <h3 className="text-xl font-semibold mb-2">Issue Content</h3>
-          <div className="border p-4 rounded bg-gray-100">
-            <p>{issue.content}</p>
-          </div>
-          <div className="absolute top-2 right-2">
-            <button onClick={handleDropdownToggle} className="text-gray-500 hover:text-gray-700">
-              &#x22EE;
-            </button>
-            {dropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg">
-                <button className="block w-full px-4 py-2 text-left hover:bg-gray-100">Edit</button>
-                <button className="block w-full px-4 py-2 text-left hover:bg-gray-100">Delete</button>
-              </div>
-            )}
+        <div className="border p-2 mb-4 rounded bg-blue-100/50">
+          <div className="relative">
+            <h3 className="text-xl font-semibold ml-1 mb-2">Issue Content</h3>
+            <div className="border p-4 rounded bg-white">
+              <p>{issue.content}</p>
+            </div>
+            <div className="absolute top-1 right-2">
+              <button onClick={handleDropdownToggle} className="text-gray-500 hover:text-gray-700">
+                &#x22EE;
+              </button>
+              {dropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg">
+                  <button className="block w-full px-4 py-2 text-left hover:bg-gray-100">Edit</button>
+                  <button className="block w-full px-4 py-2 text-left hover:bg-gray-100">Delete</button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
         <div className="mb-4">
-          <h3 className="text-xl font-semibold mb-2">Comments</h3>
           <div className="space-y-4">
             {comments.map((comment) => (
               <div key={comment.id} className="border p-2 rounded">
