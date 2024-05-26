@@ -39,15 +39,18 @@ const IssueDetail = ({ issue, onClose }) => {
           &times;
         </button>
         <div className="mb-4">
-          <div className="flex items-end justify-start">
-            <h2 className="text-2xl font-bold">{issue.title}</h2>
-            <span className={`px-2 py-0.8 ml-4 mb-0.5 rounded-full text-white ${getStatusColor(issue.status)}`}>
-              {issue.status}
-            </span>
-          </div>
-          <div className="mt-4 border-t pt-4">
-            <p><strong>Assignee:</strong> {issue.assignee}</p>
-            <p><strong>Date:</strong> {issue.date}</p>
+          <div className="flex flex-col">
+            <div className="flex items-end justify-start">
+              <h2 className="text-2xl font-bold">{issue.title}</h2>
+              <h2 className="text-xl font-bold ml-3 text-gray-400/80">#{issue.id}</h2>
+            </div>
+            <div className="flex items-center justify-start mt-2">
+              <span className={`px-2 py-0.8 mb-0.5 rounded-full text-white ${getStatusColor(issue.status)}`}>
+                {issue.status}
+              </span>
+              <p className="font-bold text-gray-500 ml-2 mr-1">{issue.assignee}</p>
+              <p> opend this issue at {issue.date}</p>
+            </div>
           </div>
         </div>
         <div className="mb-4">
