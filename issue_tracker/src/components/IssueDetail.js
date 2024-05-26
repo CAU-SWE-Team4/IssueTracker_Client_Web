@@ -6,6 +6,7 @@ const IssueDetail = ({ issue, onClose }) => {
     { id: 2, author: 'Jane', text: 'This is the second comment.', date: '2023-05-04' },
   ]);
   const [newComment, setNewComment] = useState('');
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const commentsEndRef = useRef(null);
 
   useEffect(() => {
@@ -38,6 +39,10 @@ const IssueDetail = ({ issue, onClose }) => {
     }
   };
 
+  const handleDropdownToggle = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
       <div className="bg-white p-6 rounded shadow-lg w-3/4 relative h-[50vh] max-h-[50vh] overflow-y-auto">
@@ -59,10 +64,21 @@ const IssueDetail = ({ issue, onClose }) => {
             </div>
           </div>
         </div>
-        <div className="mb-4">
+        <div className="mb-4 relative">
           <h3 className="text-xl font-semibold mb-2">Issue Content</h3>
           <div className="border p-4 rounded bg-gray-100">
             <p>{issue.content}</p>
+          </div>
+          <div className="absolute top-2 right-2">
+            <button onClick={handleDropdownToggle} className="text-gray-500 hover:text-gray-700">
+              &#x22EE;
+            </button>
+            {dropdownOpen && (
+              <div className="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg">
+                <button className="block w-full px-4 py-2 text-left hover:bg-gray-100">Edit</button>
+                <button className="block w-full px-4 py-2 text-left hover:bg-gray-100">Delete</button>
+              </div>
+            )}
           </div>
         </div>
         <div className="mb-4">
