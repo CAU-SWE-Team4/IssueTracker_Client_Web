@@ -4,7 +4,7 @@ import IssueList from './components/IssueList';
 import IssueDetail from './components/IssueDetail';
 import Header from './components/Header';
 import MenuList from './components/MenuList';
-import MenuContent from './components/MenuContent'; // 예시로 만든 MenuContent 컴포넌트
+import MenuContent from './components/MenuContent';
 
 function App() {
   const [selectedProject, setSelectedProject] = useState(null);
@@ -19,7 +19,7 @@ function App() {
     } else if (selectedProject) {
       return <IssueList project={selectedProject} onSelectIssue={setSelectedIssue} />;
     } else {
-      return <div>Select a project or menu to see the content</div>;
+      return <></>;
     }
   };
 
