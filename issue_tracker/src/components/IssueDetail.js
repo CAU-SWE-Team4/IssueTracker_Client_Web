@@ -98,18 +98,20 @@ const IssueDetail = ({ issue, onClose }) => {
         </div>
         <div className="mt-4">
           <h4 className="text-lg font-semibold mb-2">Add a comment</h4>
-          <textarea
-            className="w-full p-2 border rounded"
-            rows="3"
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-          />
-          <button
-            className="mt-2 px-4 py-2 bg-blue-500 text-white rounded"
-            onClick={handleAddComment}
-          >
-            Submit
-          </button>
+          <div className="flex items-end">
+            <textarea
+              className="w-full p-2 border rounded mr-2"
+              rows="3"
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+            />
+            <button
+              className="px-4 py-2 bg-blue-500 text-white rounded"
+              onClick={handleAddComment}
+            >
+              Submit
+            </button>
+          </div>
         </div>
       </div>
     </div>
