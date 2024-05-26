@@ -6,14 +6,17 @@ const projects = [
   { id: 3, name: 'Project C' },
 ];
 
-const ProjectList = ({ onSelectProject }) => (
+const ProjectList = ({ onSelectProject, onSelectMenu }) => (
   <div className="p-4">
     <ul>
       {projects.map((project) => (
         <li
           key={project.id}
           className="p-2 cursor-pointer hover:bg-gray-200"
-          onClick={() => onSelectProject(project)}
+          onClick={() => {
+            onSelectProject(project);
+            onSelectMenu(null);
+          }}
         >
           {project.name}
         </li>
