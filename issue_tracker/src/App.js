@@ -25,12 +25,12 @@ function App() {
 
   return (
     <div className="flex">
-      <div className="w-1/4 h-screen border-r">
+      <div className="w-1/5 h-screen border-r">
         <Header />
         <ProjectList onSelectProject={setSelectedProject} onSelectMenu={setSelectedMenu} />
         <MenuList onSelectProject={setSelectedProject} onSelectMenu={setSelectedMenu} />
       </div>
-      <div className="w-3/4 h-screen overflow-y-auto">
+      <div className="w-4/5 h-screen overflow-y-auto">
         {renderMainContent()}
       </div>
     </div>
