@@ -163,7 +163,7 @@ const IssueDetail = ({ issue, onClose }) => {
                   {recommends.map(recommend =>(
                     <div className="flex items-center justify-start w-full px-4 pb-2">
                       <PiFinnTheHuman size={24}/>
-                      <p className="ml-2 font-bold text-sm text-gray-700">{recommend}</p>
+                      <button className="ml-2 font-bold text-sm text-gray-500 hover:text-black cursor-pointer">{recommend}</button>
                     </div>
                   ))}
                 </div>
