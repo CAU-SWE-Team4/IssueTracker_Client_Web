@@ -13,6 +13,16 @@ const IssueDetail = ({ issue, onClose }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const commentsEndRef = useRef(null);
 
+  const members = [
+    {user_id: "minseok128", role: "PL"},
+    {user_id: "minsiki2", role: "dev"},
+    {user_id: "yeojin", role: "dev"},
+    {user_id: "junseob", role: "dev"},
+    {user_id: "hun", role: "tester"},
+  ]
+
+  const recommends = ["minsiki2", "yeojin", "junseob"]
+
   useEffect(() => {
     commentsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [comments]);
@@ -136,10 +146,9 @@ const IssueDetail = ({ issue, onClose }) => {
             </div>
           </div>
           <div className="flex flex-col w-[20%] h-[90%] mt-20">
-            <div className="flex flex-col justify-between items-center border">
+            <div className="flex flex-col items-start border">
               <div className="flex justify-between items-center w-[100%] h-10 bg-white  text-sm font-bold">
-                <p className="ml-4">Assignee</p>
-                {!issue.assignee_id ? <IoMdArrowDropdown className="mr-2" size={18}/> : <></>}
+                <p className="ml-4">Assignees</p>
               </div>
               {
                 issue.assignee_id ?
@@ -148,9 +157,16 @@ const IssueDetail = ({ issue, onClose }) => {
                   <p className="ml-2 font-bold text-sm text-gray-700">{issue.assignee_id}</p>
                 </div>
                 :
-                <>
-                {/* 추천 assignee 목록*/}
-                </>
+                <div>
+                  <p className="ml-6 mb-4 text-sm">No one :(</p>
+                  <p className="ml-4 mb-2 font-semibold text-xs text-gray-400">recommend</p>
+                  {recommends.map(recommend =>(
+                    <div className="flex items-center justify-start w-full px-4 pb-2">
+                      <PiFinnTheHuman size={24}/>
+                      <p className="ml-2 font-bold text-sm text-gray-700">{recommend}</p>
+                    </div>
+                  ))}
+                </div>
               }
             </div>
           </div>
