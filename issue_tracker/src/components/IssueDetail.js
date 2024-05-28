@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { RiMoreLine } from "react-icons/ri";
 
 const IssueDetail = ({ issue, onClose }) => {
   const [comments, setComments] = useState([
@@ -102,10 +103,10 @@ const IssueDetail = ({ issue, onClose }) => {
                 </div>
                 <div className="absolute top-1 right-2">
                   <button onClick={handleDropdownToggle} className="text-gray-500 hover:text-gray-700">
-                    &#x22EE;
+                    <RiMoreLine/>
                   </button>
                   {dropdownOpen && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg">
+                    <div className="absolute right-0 w-48 bg-white border rounded shadow-lg">
                       <button className="block w-full px-4 py-2 text-left hover:bg-gray-100">Edit</button>
                       <button className="block w-full px-4 py-2 text-left hover:bg-gray-100">Delete</button>
                     </div>
@@ -127,7 +128,7 @@ const IssueDetail = ({ issue, onClose }) => {
                           className="text-gray-500 hover:text-gray-700"
                           onClick={() => handleCommentDropdownToggle(comment.id)}
                         >
-                          ...
+                          <RiMoreLine/>
                         </button>
                         {dropdownOpen === comment.id && (
                           <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-300 rounded shadow-lg">
