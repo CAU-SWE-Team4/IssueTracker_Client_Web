@@ -39,6 +39,19 @@ const IssueDetail = ({ issue, onClose }) => {
     }
   };
 
+  const getStatus = (status) => {
+    switch (status) {
+      case 'new':
+      case 'fixed':
+        return 'Close issue';
+      case 'closed':
+      case 'disposed':
+        return 'Reopen issue';
+      default:
+        return 'Close issue';
+    }
+  };
+
   const handleDropdownToggle = () => {
     setDropdownOpen(!dropdownOpen);
   };
@@ -112,13 +125,13 @@ const IssueDetail = ({ issue, onClose }) => {
                             className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-gray-700 text-white border-gray-600 hover:bg-gray-600 hover:border-gray-600 focus:ring-gray-700"
                             onClick={handleAddComment}
                           >
-                            {issue.status}
+                            { getStatus(issue.status) }
                           </button>
                           <button
                             className="text-white bg-blue-600 hover:bg-blue-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                             onClick={handleAddComment}
                           >
-                            Submit
+                            Comment
                           </button>
                         </div>
                       </div>
