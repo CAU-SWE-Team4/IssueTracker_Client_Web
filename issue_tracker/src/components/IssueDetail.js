@@ -111,8 +111,15 @@ const IssueDetail = ({ issue, onClose }) => {
                 onChange={(e) => setNewComment(e.target.value)}
               />
               <div className="flex flex-row justify-end w-100%">
+                { getStatus(issue.status) === "Close issue" ?
                 <button
-                  className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-gray-700 text-white border-gray-600 hover:bg-gray-600 hover:border-gray-600 focus:ring-gray-700"
+                  className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-red-500 text-white border-gray-600 hover:bg-red-400 hover:border-gray-600 focus:ring-gray-700"
+                  onClick={handleAddComment}
+                >
+                  Dispose issue
+                </button> : <></>}
+                <button
+                  className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-gray-600 text-white border-gray-600 hover:bg-gray-500 hover:border-gray-600 focus:ring-gray-700"
                   onClick={handleAddComment}
                 >
                   { getStatus(issue.status) }
