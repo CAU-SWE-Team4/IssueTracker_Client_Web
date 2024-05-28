@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { RiMoreLine } from "react-icons/ri";
+import CommentList from "./CommentList"
 
 const IssueDetail = ({ issue, onClose }) => {
   const [comments, setComments] = useState([
@@ -8,7 +9,6 @@ const IssueDetail = ({ issue, onClose }) => {
   ]);
   const [newComment, setNewComment] = useState('');
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [commentDropdownOpen, setCommentDropdownOpen] = useState(false);
   const commentsEndRef = useRef(null);
 
   useEffect(() => {
@@ -58,20 +58,6 @@ const IssueDetail = ({ issue, onClose }) => {
     setDropdownOpen(!dropdownOpen);
   };
 
-  const handleCommentDropdownToggle = (commentId) => {
-    setCommentDropdownOpen(commentDropdownOpen === commentId ? null : commentId);
-  };
-
-  const handleEdit = (commentId) => {
-    // 구현 필요
-    setCommentDropdownOpen(null);
-  };
-
-  const handleDelete = (commentId) => {
-    // 구현 필요
-    setCommentDropdownOpen(null);
-  };
-
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
       <div className="bg-white p-6 rounded shadow-lg w-3/4 relative h-[90vh] max-h-[90vh] overflow-y-auto">
@@ -108,52 +94,14 @@ const IssueDetail = ({ issue, onClose }) => {
                   {dropdownOpen && (
                     <div className="absolute right-0 w-48 bg-white border rounded shadow-lg">
                       <button className="block w-full px-4 py-2 text-left hover:bg-gray-100">Edit</button>
-                      <button className="block w-full px-4 py-2 text-left hover:bg-gray-100">Delete</button>
+                      <button className="block w-full px-4 py-2 text-left text-red-700 hover:bg-gray-100">Delete</button>
                     </div>
                   )}
                 </div>
               </div>
             </div>
-            <div className="mb-4">
-              <div className="space-y-4">
-                {comments.map((comment) => (
-                  <div key={comment.id} className="border p-2 rounded relative">
-                    <div className="mb-1 ml-1 flex justify-between items-center">
-                      <div>
-                        <span className="font-bold">{comment.author}</span>
-                        <span className="ml-1 text-gray-500">commented at {comment.date}</span>
-                      </div>
-                      <div className="relative">
-                        <button
-                          className="text-gray-500 hover:text-gray-700"
-                          onClick={() => handleCommentDropdownToggle(comment.id)}
-                        >
-                          <RiMoreLine/>
-                        </button>
-                        {dropdownOpen === comment.id && (
-                          <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-300 rounded shadow-lg">
-                            <button
-                              className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                              onClick={() => handleEdit(comment.id)}
-                            >
-                              Edit
-                            </button>
-                            <button
-                              className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                              onClick={() => handleDelete(comment.id)}
-                            >
-                              Delete
-                            </button>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                    <p className="ml-2">{comment.text}</p>
-                  </div>
-                ))}
-                <div ref={commentsEndRef} />
-              </div>
-            </div>
+            <CommentList comments={comments}/>
+				    <div ref={commentsEndRef} />
             <div className="mt-4">
               <h4 className="text-lg font-semibold mb-2">Add a comment</h4>
               <textarea
