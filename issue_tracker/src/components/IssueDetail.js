@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { RiMoreLine } from "react-icons/ri";
 import { IoMdArrowDropdown } from "react-icons/io";
+import { PiFinnTheHuman } from "react-icons/pi";
 import CommentList from "./CommentList"
 
 const IssueDetail = ({ issue, onClose }) => {
@@ -27,8 +28,8 @@ const IssueDetail = ({ issue, onClose }) => {
     }
   };
 
-  const getStatusColor = (status) => {
-    switch (status) {
+  const getStatusColor = (state) => {
+    switch (state) {
       case 'new':
         return 'bg-yellow-500';
       case 'fixed':
@@ -42,8 +43,8 @@ const IssueDetail = ({ issue, onClose }) => {
     }
   };
 
-  const getStatus = (status) => {
-    switch (status) {
+  const getStatus = (state) => {
+    switch (state) {
       case 'new':
       case 'fixed':
         return 'Close issue';
@@ -71,14 +72,14 @@ const IssueDetail = ({ issue, onClose }) => {
               <div className="flex flex-col">
                 <div className="flex items-end justify-start">
                   <h2 className="text-2xl font-bold">{issue.title}</h2>
-                  <h2 className="text-xl font-bold ml-3 text-gray-400/80">#{issue.id}</h2>
+                  <h2 className="text-xl font-bold ml-3 text-gray-400/80">#{issue.issue_id}</h2>
                 </div>
                 <div className="flex items-center justify-start mt-2">
-                  <span className={`px-2 py-0.8 mb-0.5 rounded-full text-white ${getStatusColor(issue.status)}`}>
-                    {issue.status}
+                  <span className={`px-2 py-0.8 mb-0.5 rounded-full text-white ${getStatusColor(issue.state)}`}>
+                    {issue.state}
                   </span>
-                  <p className="font-bold text-gray-500 ml-2 mr-1">{issue.assignee}</p>
-                  <p> opened this issue at {issue.date}</p>
+                  <p className="font-bold text-gray-700 ml-2 mr-1">{issue.reporter_id}</p>
+                  <p> opened this issue at {issue.reported_date}</p>
                 </div>
               </div>
             </div>
@@ -86,7 +87,7 @@ const IssueDetail = ({ issue, onClose }) => {
               <div className="relative">
                 <h3 className="text-xl font-semibold ml-1 mb-2">Issue Content</h3>
                 <div className="border p-4 rounded bg-white">
-                  <p>{issue.content}</p>
+                  <p>{issue.description}</p>
                 </div>
                 <div className="absolute top-1 right-2">
                   <button onClick={handleDropdownToggle} className="text-gray-500 hover:text-gray-700">
@@ -112,18 +113,18 @@ const IssueDetail = ({ issue, onClose }) => {
                 onChange={(e) => setNewComment(e.target.value)}
               />
               <div className="flex flex-row justify-end w-100%">
-                { getStatus(issue.status) === "Close issue" ?
+                { getStatus(issue.state) === "Close issue" ?
                 <button
                   className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-red-500 text-white border-gray-600 hover:bg-red-400 hover:border-gray-600 focus:ring-gray-700"
-                  onClick={handleAddComment}
+                  onClick={handleAddComment} //수정 필요
                 >
                   Dispose issue
                 </button> : <></>}
                 <button
                   className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-gray-600 text-white border-gray-600 hover:bg-gray-500 hover:border-gray-600 focus:ring-gray-700"
-                  onClick={handleAddComment}
+                  onClick={handleAddComment} //수정 필요
                 >
-                  { getStatus(issue.status) }
+                  { getStatus(issue.state) }
                 </button>
                 <button
                   className="text-white bg-blue-600 hover:bg-blue-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
@@ -134,10 +135,23 @@ const IssueDetail = ({ issue, onClose }) => {
               </div>
             </div>
           </div>
-          <div className="w-[20%] h-[90%] mt-20">
-            <div className="flex justify-between items-center w-[100%] h-12 bg-white border text-sm font-bold text-gray-500">
-              <p className="ml-4">Assignee</p>
-              <IoMdArrowDropdown className="mr-2" size={18}/>
+          <div className="flex flex-col w-[20%] h-[90%] mt-20">
+            <div className="flex flex-col justify-between items-center border">
+              <div className="flex justify-between items-center w-[100%] h-10 bg-white  text-sm font-bold">
+                <p className="ml-4">Assignee</p>
+                {!issue.assignee_id ? <IoMdArrowDropdown className="mr-2" size={18}/> : <></>}
+              </div>
+              {
+                issue.assignee_id ?
+                <div className="flex items-center justify-start w-full px-4 pb-2">
+                  <PiFinnTheHuman size={24}/>
+                  <p className="ml-2 font-bold text-sm text-gray-700">{issue.assignee_id}</p>
+                </div>
+                :
+                <>
+                {/* 추천 assignee 목록*/}
+                </>
+              }
             </div>
           </div>
         </div>
