@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { RiMoreLine } from "react-icons/ri";
+import { IoMdArrowDropdown } from "react-icons/io";
 import CommentList from "./CommentList"
 
 const IssueDetail = ({ issue, onClose }) => {
@@ -133,8 +134,11 @@ const IssueDetail = ({ issue, onClose }) => {
               </div>
             </div>
           </div>
-          <div className="w-[20%] h-full bg-blue-500">
-            sdf
+          <div className="w-[20%] h-[90%] mt-20">
+            <div className="flex justify-between items-center w-[100%] h-12 bg-white border text-sm font-bold text-gray-500">
+              <p className="ml-4">Assignee</p>
+              <IoMdArrowDropdown className="mr-2" size={18}/>
+            </div>
           </div>
         </div>
       </div>
