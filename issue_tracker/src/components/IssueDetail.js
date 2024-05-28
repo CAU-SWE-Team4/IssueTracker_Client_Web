@@ -7,6 +7,7 @@ const IssueDetail = ({ issue, onClose }) => {
   ]);
   const [newComment, setNewComment] = useState('');
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [commentDropdownOpen, setCommentDropdownOpen] = useState(false);
   const commentsEndRef = useRef(null);
 
   useEffect(() => {
@@ -56,6 +57,20 @@ const IssueDetail = ({ issue, onClose }) => {
     setDropdownOpen(!dropdownOpen);
   };
 
+  const handleCommentDropdownToggle = (commentId) => {
+    setCommentDropdownOpen(commentDropdownOpen === commentId ? null : commentId);
+  };
+
+  const handleEdit = (commentId) => {
+    // 구현 필요
+    setCommentDropdownOpen(null);
+  };
+
+  const handleDelete = (commentId) => {
+    // 구현 필요
+    setCommentDropdownOpen(null);
+  };
+
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
       <div className="bg-white p-6 rounded shadow-lg w-3/4 relative h-[90vh] max-h-[90vh] overflow-y-auto">
@@ -63,78 +78,104 @@ const IssueDetail = ({ issue, onClose }) => {
           &times;
         </button>
         <div className="flex flex-row w-[100%] h-[100%]">
-          <div className="w-[80%]">
-                      <div className="mb-4">
-                        <div className="flex flex-col">
-                          <div className="flex items-end justify-start">
-                            <h2 className="text-2xl font-bold">{issue.title}</h2>
-                            <h2 className="text-xl font-bold ml-3 text-gray-400/80">#{issue.id}</h2>
-                          </div>
-                          <div className="flex items-center justify-start mt-2">
-                            <span className={`px-2 py-0.8 mb-0.5 rounded-full text-white ${getStatusColor(issue.status)}`}>
-                              {issue.status}
-                            </span>
-                            <p className="font-bold text-gray-500 ml-2 mr-1">{issue.assignee}</p>
-                            <p> opened this issue at {issue.date}</p>
-                          </div>
-                        </div>
+          <div className="w-[80%] mr-4">
+            <div className="mb-4">
+              <div className="flex flex-col">
+                <div className="flex items-end justify-start">
+                  <h2 className="text-2xl font-bold">{issue.title}</h2>
+                  <h2 className="text-xl font-bold ml-3 text-gray-400/80">#{issue.id}</h2>
+                </div>
+                <div className="flex items-center justify-start mt-2">
+                  <span className={`px-2 py-0.8 mb-0.5 rounded-full text-white ${getStatusColor(issue.status)}`}>
+                    {issue.status}
+                  </span>
+                  <p className="font-bold text-gray-500 ml-2 mr-1">{issue.assignee}</p>
+                  <p> opened this issue at {issue.date}</p>
+                </div>
+              </div>
+            </div>
+            <div className="border p-2 mb-4 rounded bg-blue-100/50">
+              <div className="relative">
+                <h3 className="text-xl font-semibold ml-1 mb-2">Issue Content</h3>
+                <div className="border p-4 rounded bg-white">
+                  <p>{issue.content}</p>
+                </div>
+                <div className="absolute top-1 right-2">
+                  <button onClick={handleDropdownToggle} className="text-gray-500 hover:text-gray-700">
+                    &#x22EE;
+                  </button>
+                  {dropdownOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg">
+                      <button className="block w-full px-4 py-2 text-left hover:bg-gray-100">Edit</button>
+                      <button className="block w-full px-4 py-2 text-left hover:bg-gray-100">Delete</button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className="mb-4">
+              <div className="space-y-4">
+                {comments.map((comment) => (
+                  <div key={comment.id} className="border p-2 rounded relative">
+                    <div className="mb-1 ml-1 flex justify-between items-center">
+                      <div>
+                        <span className="font-bold">{comment.author}</span>
+                        <span className="ml-1 text-gray-500">commented at {comment.date}</span>
                       </div>
-                      <div className="border p-2 mb-4 rounded bg-blue-100/50">
-                        <div className="relative">
-                          <h3 className="text-xl font-semibold ml-1 mb-2">Issue Content</h3>
-                          <div className="border p-4 rounded bg-white">
-                            <p>{issue.content}</p>
-                          </div>
-                          <div className="absolute top-1 right-2">
-                            <button onClick={handleDropdownToggle} className="text-gray-500 hover:text-gray-700">
-                              &#x22EE;
+                      <div className="relative">
+                        <button
+                          className="text-gray-500 hover:text-gray-700"
+                          onClick={() => handleCommentDropdownToggle(comment.id)}
+                        >
+                          ...
+                        </button>
+                        {dropdownOpen === comment.id && (
+                          <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-300 rounded shadow-lg">
+                            <button
+                              className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                              onClick={() => handleEdit(comment.id)}
+                            >
+                              Edit
                             </button>
-                            {dropdownOpen && (
-                              <div className="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg">
-                                <button className="block w-full px-4 py-2 text-left hover:bg-gray-100">Edit</button>
-                                <button className="block w-full px-4 py-2 text-left hover:bg-gray-100">Delete</button>
-                              </div>
-                            )}
+                            <button
+                              className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                              onClick={() => handleDelete(comment.id)}
+                            >
+                              Delete
+                            </button>
                           </div>
-                        </div>
+                        )}
                       </div>
-                      <div className="mb-4">
-                        <div className="space-y-4">
-                          {comments.map((comment) => (
-                            <div key={comment.id} className="border p-2 rounded">
-                              <div className="flex justify-between">
-                                <span className="font-bold">{comment.author}</span>
-                                <span className="text-gray-500">{comment.date}</span>
-                              </div>
-                              <p>{comment.text}</p>
-                            </div>
-                          ))}
-                          <div ref={commentsEndRef} />
-                        </div>
-                      </div>
-                      <div className="mt-4">
-                        <h4 className="text-lg font-semibold mb-2">Add a comment</h4>
-                        <textarea
-                          className="w-full p-2 border rounded mr-2"
-                          rows="3"
-                          value={newComment}
-                          onChange={(e) => setNewComment(e.target.value)}
-                        />
-                        <div className="flex flex-row justify-end w-100%">
-                          <button
-                            className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-gray-700 text-white border-gray-600 hover:bg-gray-600 hover:border-gray-600 focus:ring-gray-700"
-                            onClick={handleAddComment}
-                          >
-                            { getStatus(issue.status) }
-                          </button>
-                          <button
-                            className="text-white bg-blue-600 hover:bg-blue-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                            onClick={handleAddComment}
-                          >
-                            Comment
-                          </button>
-                        </div>
-                      </div>
+                    </div>
+                    <p className="ml-2">{comment.text}</p>
+                  </div>
+                ))}
+                <div ref={commentsEndRef} />
+              </div>
+            </div>
+            <div className="mt-4">
+              <h4 className="text-lg font-semibold mb-2">Add a comment</h4>
+              <textarea
+                className="w-full p-2 border rounded mr-2"
+                rows="3"
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+              />
+              <div className="flex flex-row justify-end w-100%">
+                <button
+                  className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-gray-700 text-white border-gray-600 hover:bg-gray-600 hover:border-gray-600 focus:ring-gray-700"
+                  onClick={handleAddComment}
+                >
+                  { getStatus(issue.status) }
+                </button>
+                <button
+                  className="text-white bg-blue-600 hover:bg-blue-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                  onClick={handleAddComment}
+                >
+                  Comment
+                </button>
+              </div>
+            </div>
           </div>
           <div className="w-[20%] h-full bg-blue-500">
             sdf
