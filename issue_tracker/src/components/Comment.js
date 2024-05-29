@@ -129,6 +129,13 @@ const Comment = ({ issue, comments, setComments }) => {
 					>
 						Dispose issue
 					</button> : <></>}
+					{ getStatus(issue.state) === "Close issue" ?
+					<button
+						className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-green-500 text-white border-gray-600 hover:bg-green-400 hover:border-gray-600 focus:ring-gray-700"
+						onClick={handleAddComment} //수정 필요
+					>
+						Issue Fixed
+					</button> : <></>}
 					<button
 						className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-gray-600 text-white border-gray-600 hover:bg-gray-500 hover:border-gray-600 focus:ring-gray-700"
 						onClick={handleAddComment} //수정 필요
