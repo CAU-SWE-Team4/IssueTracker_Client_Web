@@ -159,7 +159,7 @@ const IssueDetail = ({ issue, onClose }) => {
                 :
                 <div>
                   <p className="ml-6 mb-4 text-sm">No one :(</p>
-                  <p className="ml-4 mb-2 font-semibold text-xs text-gray-400">recommend</p>
+                  <p className="ml-4 mb-2 font-semibold text-xs text-gray-400">Suggestions</p>
                   {recommends.map(recommend =>(
                     <div className="flex items-center justify-start w-full px-4 pb-2">
                       <PiFinnTheHuman size={24}/>
