@@ -2,14 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import { RiMoreLine } from "react-icons/ri";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { PiFinnTheHuman } from "react-icons/pi";
-import CommentList from "./CommentList"
+import Comment from "./Comment"
 
 const IssueDetail = ({ issue, onClose }) => {
   const [comments, setComments] = useState([
     { id: 1, author: 'John', text: 'This is the first comment.', date: '2023-05-03' },
     { id: 2, author: 'Jane', text: 'This is the second comment.', date: '2023-05-04' },
   ]);
-  const [newComment, setNewComment] = useState('');
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const commentsEndRef = useRef(null);
 
@@ -27,17 +26,6 @@ const IssueDetail = ({ issue, onClose }) => {
     commentsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [comments]);
 
-
-  const handleAddComment = () => {
-    if (newComment.trim()) {
-      setComments([
-        ...comments,
-        { id: comments.length + 1, author: 'You', text: newComment, date: new Date().toISOString().split('T')[0] },
-      ]);
-      setNewComment('');
-    }
-  };
-
   const getStatusColor = (state) => {
     switch (state) {
       case 'new':
@@ -50,19 +38,6 @@ const IssueDetail = ({ issue, onClose }) => {
         return 'bg-gray-500';
       default:
         return 'bg-gray-500';
-    }
-  };
-
-  const getStatus = (state) => {
-    switch (state) {
-      case 'new':
-      case 'fixed':
-        return 'Close issue';
-      case 'closed':
-      case 'disposed':
-        return 'Reopen issue';
-      default:
-        return 'Close issue';
     }
   };
 
@@ -112,38 +87,8 @@ const IssueDetail = ({ issue, onClose }) => {
                 </div>
               </div>
             </div>
-            <CommentList comments={comments}/>
+            <Comment issue={issue} comments={comments} setComments={setComments}/>
 				    <div ref={commentsEndRef} />
-            <div className="mt-4">
-              <h4 className="text-lg font-semibold mb-2">Add a comment</h4>
-              <textarea
-                className="w-full p-2 border rounded mr-2"
-                rows="3"
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-              />
-              <div className="flex flex-row justify-end w-100%">
-                { getStatus(issue.state) === "Close issue" ?
-                <button
-                  className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-red-500 text-white border-gray-600 hover:bg-red-400 hover:border-gray-600 focus:ring-gray-700"
-                  onClick={handleAddComment} //수정 필요
-                >
-                  Dispose issue
-                </button> : <></>}
-                <button
-                  className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-gray-600 text-white border-gray-600 hover:bg-gray-500 hover:border-gray-600 focus:ring-gray-700"
-                  onClick={handleAddComment} //수정 필요
-                >
-                  { getStatus(issue.state) }
-                </button>
-                <button
-                  className="text-white bg-blue-600 hover:bg-blue-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                  onClick={handleAddComment}
-                >
-                  Comment
-                </button>
-              </div>
-            </div>
           </div>
           <div className="flex flex-col w-[20%] h-[90%] mt-20">
             <div className="flex flex-col items-start border">
