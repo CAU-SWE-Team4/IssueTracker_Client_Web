@@ -57,7 +57,7 @@ const IssueDetail = ({ issue, onClose }) => {
               <div className="flex flex-col">
                 <div className="flex items-end justify-start">
                   <h2 className="text-2xl font-bold">{issue.title}</h2>
-                  <h2 className="text-xl font-bold ml-3 text-gray-400/80">#{issue.issue_id}</h2>
+                  <h2 className="text-xl ml-3 text-gray-400/80">#{issue.issue_id}</h2>
                 </div>
                 <div className="flex items-center justify-start mt-2">
                   <span className={`px-2 py-0.8 mb-0.5 rounded-full text-white ${getStatusColor(issue.state)}`}>
