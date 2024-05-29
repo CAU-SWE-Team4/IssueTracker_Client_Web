@@ -10,7 +10,8 @@ const IssueDetail = ({ issue, onClose }) => {
     { id: 2, author: 'Jane', text: 'This is the second comment.', date: '2023-05-04' },
   ]);
   const [editMode, setEditMode] = useState(null);
-  const [editedContent, setEditedContent] = useState("");
+  const [editedTitle, setEditedTitle] = useState("");
+  const [editedDescription, setEditedDescription] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const commentsEndRef = useRef(null);
 
@@ -48,18 +49,23 @@ const IssueDetail = ({ issue, onClose }) => {
   };
 
   const handleEdit = (issue) => {
-		setEditMode(issue.id);
-    setEditedContent(issue.description);
+		setEditMode(issue.issue_id);
+    setEditedTitle(issue.title);
+    setEditedDescription(issue.description);
     setDropdownOpen(null);
   };
 
-  const handleEditChange = (e) => {
-    setEditedContent(e.target.value);
+  const handleDescriptionEditChange = (e) => {
+    setEditedDescription(e.target.value);
+  };
+
+  const handleTitleEditChange = (e) => {
+    setEditedTitle(e.target.value);
   };
 
   const handleEditSubmit = (issueId) => {
     // 업데이트 로직
-    console.log(`Updated comment ${issueId}: ${editedContent}`);
+    console.log(`Updated comment ${issueId}: ${editedTitle} - ${editedDescription}`);
     setEditMode(null);
   };
 
@@ -79,7 +85,17 @@ const IssueDetail = ({ issue, onClose }) => {
             <div className="mb-4">
               <div className="flex flex-col">
                 <div className="flex items-end justify-start">
-                  <h2 className="text-2xl font-bold">{issue.title}</h2>
+                  {editMode === issue.issue_id ? (
+                    <div>
+                      <textarea
+                        className="w-full h-14 border rounded p-2 text-2xl font-bold"
+                        value={editedTitle}
+                        onChange={handleTitleEditChange}
+                      />
+                    </div>
+                  ) : (
+                    <h2 className="text-2xl font-bold">{issue.title}</h2>
+                  )}
                   <h2 className="text-xl ml-3 text-gray-400/80">#{issue.issue_id}</h2>
                 </div>
                 <div className="flex items-center justify-start mt-2">
@@ -92,21 +108,21 @@ const IssueDetail = ({ issue, onClose }) => {
               </div>
             </div>
             <div className="border p-2 mb-4 rounded bg-blue-100/50">
-              {editMode === issue.id ? (
+              {editMode === issue.issue_id ? (
                 <div>
                   <h3 className="text-xl font-semibold ml-1 mb-2">Issue Content</h3>
                   <textarea
-                  className="w-full border rounded p-2"
-                  value={editedContent}
-                  onChange={handleEditChange}
+                    className="w-full border rounded p-2"
+                    value={editedDescription}
+                    onChange={handleDescriptionEditChange}
                   />
                   <div className="flex justify-end mt-2">
-                  <button
-                    className="text-white bg-blue-700 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                    onClick={() => handleEditSubmit(issue.id)}
-                  >
-                    Save
-                  </button>
+                    <button
+                      className="text-white bg-blue-700 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                      onClick={() => handleEditSubmit(issue.issue_id)}
+                    >
+                      Save
+                    </button>
                   </div>
               </div>
               ) : (
@@ -129,7 +145,7 @@ const IssueDetail = ({ issue, onClose }) => {
                       </button>
                       <button
                         className="block w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-gray-100"
-                        onClick={() => handleDelete(issue.id)}
+                        onClick={() => handleDelete(issue.issue_id)}
                       >
                         Delete
                       </button>
