@@ -9,6 +9,8 @@ const IssueDetail = ({ issue, onClose }) => {
     { id: 1, author: 'John', text: 'This is the first comment.', date: '2023-05-03' },
     { id: 2, author: 'Jane', text: 'This is the second comment.', date: '2023-05-04' },
   ]);
+  const [editMode, setEditMode] = useState(null);
+  const [editedContent, setEditedContent] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const commentsEndRef = useRef(null);
 
@@ -45,6 +47,27 @@ const IssueDetail = ({ issue, onClose }) => {
     setDropdownOpen(!dropdownOpen);
   };
 
+  const handleEdit = (issue) => {
+		setEditMode(issue.id);
+    setEditedContent(issue.description);
+    setDropdownOpen(null);
+  };
+
+  const handleEditChange = (e) => {
+    setEditedContent(e.target.value);
+  };
+
+  const handleEditSubmit = (issueId) => {
+    // 업데이트 로직
+    console.log(`Updated comment ${issueId}: ${editedContent}`);
+    setEditMode(null);
+  };
+
+  const handleDelete = (issueId) => {
+    // 삭제 로직
+    setDropdownOpen(null);
+  };
+
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center">
       <div className="bg-white p-6 rounded shadow-lg w-3/4 relative h-[90vh] max-h-[90vh] overflow-y-auto">
@@ -69,6 +92,24 @@ const IssueDetail = ({ issue, onClose }) => {
               </div>
             </div>
             <div className="border p-2 mb-4 rounded bg-blue-100/50">
+              {editMode === issue.id ? (
+                <div>
+                  <h3 className="text-xl font-semibold ml-1 mb-2">Issue Content</h3>
+                  <textarea
+                  className="w-full border rounded p-2"
+                  value={editedContent}
+                  onChange={handleEditChange}
+                  />
+                  <div className="flex justify-end mt-2">
+                  <button
+                    className="text-white bg-blue-700 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                    onClick={() => handleEditSubmit(issue.id)}
+                  >
+                    Save
+                  </button>
+                  </div>
+              </div>
+              ) : (
               <div className="relative">
                 <h3 className="text-xl font-semibold ml-1 mb-2">Issue Content</h3>
                 <div className="border p-4 rounded bg-white">
@@ -80,12 +121,22 @@ const IssueDetail = ({ issue, onClose }) => {
                   </button>
                   {dropdownOpen && (
                     <div className="absolute right-0 w-48 bg-white border rounded shadow-lg">
-                      <button className="block w-full px-4 py-2 text-left hover:bg-gray-100">Edit</button>
-                      <button className="block w-full px-4 py-2 text-left text-red-700 hover:bg-gray-100">Delete</button>
+                      <button
+                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        onClick={() => handleEdit(issue)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="block w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-gray-100"
+                        onClick={() => handleDelete(issue.id)}
+                      >
+                        Delete
+                      </button>
                     </div>
                   )}
                 </div>
-              </div>
+              </div>)}
             </div>
             <Comment issue={issue} comments={comments} setComments={setComments}/>
 				    <div ref={commentsEndRef} />
