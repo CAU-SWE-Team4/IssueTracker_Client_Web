@@ -22,7 +22,7 @@ const IssueStatistics = ({ stats }) => {
         </div>
         <div className="flex flex-col p-3 border-2 rounded-lg items-center">
           <div className="flex flex-row items-end">
-            <div className="text-lg font-bold">Closure Rate</div>
+            <div className="text-lg font-bold">Issue Closure Rate</div>
             <div className="ml-1 text-sm">(closed/total)</div>
           </div>
           <div className="flex flex-row items-end">
