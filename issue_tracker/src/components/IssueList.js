@@ -1,11 +1,11 @@
 import React from 'react';
 
 const issues = [
-  { id: 1, title: 'Login Bug', content: 'The login button does not respond after multiple clicks.', assignee: 'Alice', status: 'new', date: '2023-05-01' },
-  { id: 2, title: 'Profile Page Error', content: 'Profile page throws a 404 error for some users.', assignee: 'Bob', status: 'fixed', date: '2023-05-02' },
-  { id: 3, title: 'Signup Form Issue', content: 'Signup form validation is not working as expected.', assignee: 'Charlie', status: 'closed', date: '2023-05-03' },
-  { id: 4, title: 'UI Misalignment', content: 'UI elements are not aligned properly on the dashboard.', assignee: 'David', status: 'disposed', date: '2023-05-04' },
-  { id: 5, title: 'Performance Lag', content: 'The application experiences lag during peak hours.', assignee: 'Eve', status: 'new', date: '2023-05-05' },
+  { issue_id: 1, title: 'Login Bug', description: 'The login button does not respond after multiple clicks.', reporter_id: 'Alice', state: 'new', reported_date: '2023-05-01', edited_date: null, assignee_id: "minsiki2", fixer_id: null, priority: "HIGH" },
+  { issue_id: 2, title: 'Profile Page Error', description: 'Profile page throws a 404 error for some users.', reporter_id: 'Bob', state: 'fixed', reported_date: '2023-05-02', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
+  { issue_id: 3, title: 'Signup Form Issue', description: 'Signup form validation is not working as expected.', reporter_id: 'Charlie', state: 'closed', reported_date: '2023-05-03', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
+  { issue_id: 4, title: 'UI Misalignment', description: 'UI elements are not aligned properly on the dashboard.', reporter_id: 'David', state: 'disposed', reported_date: '2023-05-04', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
+  { issue_id: 5, title: 'Performance Lag', description: 'The application experiences lag during peak hours.', reporter_id: 'Eve', state: 'new', reported_date: '2023-05-05', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
 ];
 
 const getStatusColor = (status) => {
@@ -34,18 +34,18 @@ const IssueList = ({ project, onSelectIssue }) => (
     <ul>
       {issues.map((issue) => (
         <li
-          key={issue.id}
+          key={issue.issue_id}
           className="p-2 cursor-pointer border-b hover:bg-gray-200 grid grid-cols-3 gap-4"
           onClick={() => onSelectIssue(issue)}
         >
           <div className="flex items-center">
             <span>{issue.title}</span>
-            <span className={`ml-2 px-2 py-0.5 text-xs rounded-full text-white leading-tight ${getStatusColor(issue.status)}`}>
-              {issue.status}
+            <span className={`ml-2 px-2 py-0.5 text-xs rounded-full text-white leading-tight ${getStatusColor(issue.state)}`}>
+              {issue.state}
             </span>
           </div>
-          <span>{issue.assignee}</span>
-          <span>{issue.date}</span>
+          <span>{issue.reporter_id}</span>
+          <span>{issue.reported_date}</span>
         </li>
       ))}
     </ul>
