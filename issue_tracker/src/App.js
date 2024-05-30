@@ -35,7 +35,6 @@ function App() {
           {renderMainContent()}
         </div>        
       </div>
-
     </div>
   );
 }
