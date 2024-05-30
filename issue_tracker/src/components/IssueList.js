@@ -79,7 +79,9 @@ const IssueList = ({ project, onSelectIssue }) => {
           </select>
         </div>
         { searchCategory === "state" ? (
-          <></>
+          <div className="flex w-full ml-4 items-center">
+            <button className="h-6 w-12 ml-2 px-2 pb-0.5 rounded-full text-white leading-tight bg-yellow-500">new</button>
+          </div>
         ) : (
           <div className="flex w-full">
             <input
@@ -118,7 +120,7 @@ const IssueList = ({ project, onSelectIssue }) => {
           >
             <div className="flex items-center">
               <span>{issue.title}</span>
-              <span className={`ml-2 px-2 py-0.5 text-xs rounded-full text-white leading-tight ${getStatusColor(issue.state)}`}>
+              <span className={`ml-2 px-2 pt-0.5 pb-1 text-xs rounded-full text-white leading-tight ${getStatusColor(issue.state)}`}>
                 {issue.state}
               </span>
             </div>
