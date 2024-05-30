@@ -24,15 +24,18 @@ function App() {
   };
 
   return (
-    <div className="flex">
-      <div className="w-1/5 h-screen border-r">
-        <Header />
-        <ProjectList onSelectProject={setSelectedProject} onSelectMenu={setSelectedMenu} />
-        <MenuList onSelectProject={setSelectedProject} onSelectMenu={setSelectedMenu} />
+    <div className="flex flex-col">
+      <Header />
+      <div className="flex flex-row">
+        <div className="w-1/5 h-screen border-r">
+          <ProjectList onSelectProject={setSelectedProject} onSelectMenu={setSelectedMenu} />
+          <MenuList onSelectProject={setSelectedProject} onSelectMenu={setSelectedMenu} />
+        </div>
+        <div className="w-4/5 h-screen">
+          {renderMainContent()}
+        </div>        
       </div>
-      <div className="w-4/5 h-screen overflow-y-auto">
-        {renderMainContent()}
-      </div>
+
     </div>
   );
 }
