@@ -24,7 +24,7 @@ function App() {
 
   return (
     <div className="flex flex-col">
-      <Header />
+      <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
       {!isLoggedIn ? (
         <div className="flex justify-center items-center h-screen">
           {isRegistering ? (
