@@ -22,7 +22,7 @@ function App() {
     <div className="flex flex-col">
       <Header />
       <div className="flex flex-row">
-        <div className="w-1/5 h-screen border-r">
+        <div className="w-1/5 max-w-sm h-screen border-r">
           <ProjectList onSelectProject={setSelectedProject} />
         </div>
         <div className="w-4/5 h-screen">
