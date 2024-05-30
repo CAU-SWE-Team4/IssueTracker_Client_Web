@@ -43,6 +43,9 @@ const IssueList = ({ project, onSelectIssue }) => {
   const [filteredIssues, setFilteredIssues] = useState(issues);
   const [searchCategory, setSearchCategory] = useState('title');
   const [selectedState, setSelectedState] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newIssueTitle, setNewIssueTitle] = useState('');
+  const [newIssueDescription, setNewIssueDescription] = useState('');
 
   const handleSearch = () => {
     const filtered = issues.filter((issue) => {
@@ -78,6 +81,34 @@ const IssueList = ({ project, onSelectIssue }) => {
   const handleCategoryChange = (e) => {
     setSearchCategory(e.target.value);
     setSelectedState(null);
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setNewIssueTitle('');
+    setNewIssueDescription('');
+  };
+
+  const handleNewIssueSubmit = () => {
+    const newIssue = {
+      issue_id: issues.length + 1,
+      title: newIssueTitle,
+      description: newIssueDescription,
+      reporter_id: 'CurrentUser',
+      state: 'new',
+      reported_date: new Date().toISOString().split('T')[0],
+      edited_date: null,
+      assignee_id: null,
+      fixer_id: null,
+      priority: "HIGH"
+    };
+    issues.push(newIssue);
+    setFilteredIssues([...issues]);
+    closeModal();
   };
 
   return (
@@ -125,7 +156,7 @@ const IssueList = ({ project, onSelectIssue }) => {
             </button>
             <button
               className="text-white bg-green-600 hover:bg-green-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 ml-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-              onClick={handleSearch}
+              onClick={openModal}
             >
               New issue
             </button>
@@ -161,6 +192,40 @@ const IssueList = ({ project, onSelectIssue }) => {
           </li>
         ))}
       </ul>
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-2/3">
+            <h2 className="text-xl font-bold mb-4">New Issue</h2>
+            <input
+              type="text"
+              placeholder="Title"
+              className="w-full p-2 mb-4 border border-gray-300 rounded-lg"
+              value={newIssueTitle}
+              onChange={(e) => setNewIssueTitle(e.target.value)}
+            />
+            <textarea
+              placeholder="Description"
+              className="w-full h-96 p-2 mb-4 border border-gray-300 rounded-lg"
+              value={newIssueDescription}
+              onChange={(e) => setNewIssueDescription(e.target.value)}
+            ></textarea>
+            <div className="flex justify-end">
+              <button
+                className="text-red-500 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2"
+                onClick={closeModal}
+              >
+                Cancel
+              </button>
+              <button
+                className="text-white bg-green-600 hover:bg-green-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5"
+                onClick={handleNewIssueSubmit}
+              >
+                Open issue
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
