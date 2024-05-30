@@ -48,7 +48,7 @@ const Login = ({ onLogin, onShowRegister }) => {
             Login
           </button>
           <button
-            className="text-blue-500 bg-white hover:text-blue-400 font-medium rounded-lg text-sm px-5 py-2.5"
+            className="text-blue-500 hover:text-blue-400 font-medium rounded-lg text-sm px-5 py-0.5"
             onClick={onShowRegister}
           >
             Register
