@@ -42,7 +42,7 @@ const IssueList = ({ project, onSelectIssue }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredIssues, setFilteredIssues] = useState(issues);
   const [searchCategory, setSearchCategory] = useState('title');
-  const [selectedState, setSelectedState] = useState('');
+  const [selectedState, setSelectedState] = useState(null);
 
   const handleSearch = () => {
     const filtered = issues.filter((issue) => {
@@ -68,7 +68,7 @@ const IssueList = ({ project, onSelectIssue }) => {
 
   const handleStateClick = (state) => {
     setSelectedState(prevState => (prevState === state ? null : state));
-    setSearchQuery(selectedState); 
+    setSearchQuery(''); 
   };
 
   useEffect(() => {
