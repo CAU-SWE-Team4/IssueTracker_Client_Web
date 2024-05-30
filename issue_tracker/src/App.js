@@ -9,7 +9,7 @@ import Register from './components/Register';
 function App() {
   const [selectedProject, setSelectedProject] = useState(null);
   const [selectedIssue, setSelectedIssue] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [isRegistering, setIsRegistering] = useState(false);
 
   const renderMainContent = () => {
