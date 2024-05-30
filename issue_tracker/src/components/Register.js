@@ -56,13 +56,13 @@ const Register = ({ onRegister, onCancel }) => {
         />
         <div className="flex flex-row justify-center">
           <button
-            className="text-white bg-blue-600 hover:bg-blue-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2"
+            className="text-white bg-gray-800 hover:bg-gray-600 font-medium rounded-lg text-sm px-5 py-2.5 mr-2"
             onClick={handleRegister}
           >
             Register
           </button>
           <button
-            className="text-red-500 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5"
+            className="text-red-500 bg-white border border-gray-300 hover:bg-gray-100 font-medium rounded-lg text-sm px-5 py-2.5"
             onClick={onCancel}
           >
             Cancel
