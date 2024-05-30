@@ -36,7 +36,7 @@ function App() {
       ) : (
         <div className="flex flex-row">
           <div className="w-1/5 max-w-sm h-screen border-r">
-            <ProjectList onSelectProject={setSelectedProject} />
+            <ProjectList onSelectProject={setSelectedProject} selectedProject={selectedProject} />
           </div>
           <div className="w-4/5 h-screen">
             {renderMainContent()}
