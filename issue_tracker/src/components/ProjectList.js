@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FaRegSquarePlus } from "react-icons/fa6";
+import { PiFinnTheHuman } from "react-icons/pi";
 
 const projects = [
   { id: 1, name: 'Project A' },
@@ -85,7 +86,8 @@ const ProjectList = ({ onSelectProject, selectedProject }) => {
             <h3 className="text-lg font-semibold mb-2">Assign Roles</h3>
             {allUsers.map((user) => (
               <div key={user.id} className="flex items-center mb-2">
-                <span className="w-1/3">{user.name}</span>
+                <PiFinnTheHuman size={24}/>
+                <span className="ml-2 w-1/3">{user.name}</span>
                 <select
                   className="w-2/3 p-2 border border-gray-300 rounded-lg"
                   value={memberRoles[user.id] || 'NONE'}
