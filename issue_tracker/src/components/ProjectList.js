@@ -68,7 +68,7 @@ const ProjectList = ({ onSelectProject, selectedProject }) => {
           onClick={openModal}
         >
           <FaRegSquarePlus className="mr-2" size={20} />
-          New Project
+          New project
         </button>
       </div>
 
