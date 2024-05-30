@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import { React, useState, useEffect } from 'react';
 
 const issues = [
   { issue_id: 1, title: 'Login Bug', description: 'The login button does not respond after multiple clicks.', reporter_id: 'Alice', state: 'new', reported_date: '2023-05-01', edited_date: null, assignee_id: "minsiki2", fixer_id: null, priority: "HIGH" },
@@ -23,18 +23,18 @@ const issues = [
   { issue_id: 20, title: 'Performance Lag', description: 'The application experiences lag during peak hours.', reporter_id: 'Eve', state: 'new', reported_date: '2023-05-05', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
 ];
 
-const getStatusColor = (status) => {
+const getStatusColor = (status, prefix) => {
   switch (status) {
     case 'new':
-      return 'bg-yellow-500';
+      return `${prefix}-yellow-500`;
     case 'fixed':
-      return 'bg-green-500';
+      return `${prefix}-green-500`;
     case 'closed':
-      return 'bg-red-500';
+      return `${prefix}-red-500`;
     case 'disposed':
-      return 'bg-gray-500';
+      return `${prefix}-gray-500`;
     default:
-      return 'bg-gray-500';
+      return `${prefix}-gray-500`;
   }
 };
 
@@ -42,6 +42,7 @@ const IssueList = ({ project, onSelectIssue }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredIssues, setFilteredIssues] = useState(issues);
   const [searchCategory, setSearchCategory] = useState('title');
+  const [selectedState, setSelectedState] = useState('');
 
   const handleSearch = () => {
     const filtered = issues.filter((issue) => {
@@ -51,6 +52,8 @@ const IssueList = ({ project, onSelectIssue }) => {
         return issue.assignee_id?.toLowerCase().includes(searchQuery.toLowerCase());
       } else if (searchCategory === 'reporter') {
         return issue.reporter_id.toLowerCase().includes(searchQuery.toLowerCase());
+      }  else if (searchCategory === 'state') {
+        return selectedState ? issue.state === selectedState : true;
       }
       return false;
     });
@@ -62,6 +65,15 @@ const IssueList = ({ project, onSelectIssue }) => {
       handleSearch();
     }
   };
+
+  const handleStateClick = (state) => {
+    setSelectedState(prevState => (prevState === state ? null : state));
+    setSearchQuery(selectedState); 
+  };
+
+  useEffect(() => {
+    handleSearch(selectedState);
+  }, [selectedState]);
   
   return (
     <div className="p-4">
@@ -79,8 +91,16 @@ const IssueList = ({ project, onSelectIssue }) => {
           </select>
         </div>
         { searchCategory === "state" ? (
-          <div className="flex w-full ml-4 items-center">
-            <button className="h-6 w-12 ml-2 px-2 pb-0.5 rounded-full text-white leading-tight bg-yellow-500">new</button>
+          <div className="flex space-x-2 ml-4 items-center">
+            {['new', 'fixed', 'disposed', 'closed'].map(state => (
+              <button
+                key={state}
+                className={`h-8 font-large px-2 pb-0.5 border-2 transform transition-transform duration-100 hover:scale-110 rounded-full leading-tight ${selectedState === state ? "text-white" : getStatusColor(state, "text") } ${getStatusColor(state, "border")} ${selectedState === state ? `${getStatusColor(state, "bg")}` : ""}`}
+                onClick={() => handleStateClick(state)}
+              >
+                {state}
+              </button>
+            ))}
           </div>
         ) : (
           <div className="flex w-full">
@@ -120,7 +140,7 @@ const IssueList = ({ project, onSelectIssue }) => {
           >
             <div className="flex items-center">
               <span>{issue.title}</span>
-              <span className={`ml-2 px-2 pt-0.5 pb-1 text-xs rounded-full text-white leading-tight ${getStatusColor(issue.state)}`}>
+              <span className={`ml-2 px-2 pt-0.5 pb-1 text-xs rounded-full text-white leading-tight ${getStatusColor(issue.state, "bg")}`}>
                 {issue.state}
               </span>
             </div>
