@@ -56,6 +56,12 @@ const IssueList = ({ project, onSelectIssue }) => {
     });
     setFilteredIssues(filtered);
   };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
   
   return (
     <div className="p-4">
@@ -77,6 +83,7 @@ const IssueList = ({ project, onSelectIssue }) => {
           className="flex-grow p-2 border border-gray-300 rounded"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
+          onKeyDown={handleKeyDown}
         />
         <button
           onClick={handleSearch}
