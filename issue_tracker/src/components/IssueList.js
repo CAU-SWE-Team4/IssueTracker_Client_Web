@@ -67,7 +67,7 @@ const IssueList = ({ project, onSelectIssue }) => {
     <div className="p-4">
       <h2 className="text-xl font-bold mb-4">{project.name} Issues</h2>
       <div className="flex mb-4">
-        <div className="mr-2 p-2  border border-gray-300 rounded">
+        <div className="p-2  border-l border-t border-b border-gray-300 rounded-tl-lg rounded-bl-lg">
           <select
             value={searchCategory}
             onChange={(e) => setSearchCategory(e.target.value)}
@@ -80,14 +80,14 @@ const IssueList = ({ project, onSelectIssue }) => {
         <input
           type="text"
           placeholder={`Search by ${searchCategory}...`}
-          className="flex-grow p-2 border border-gray-300 rounded"
+          className="flex-grow p-2 border border-gray-300 rounded-tr-lg rounded-br-lg"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           onKeyDown={handleKeyDown}
         />
         <button
+          className="text-white bg-gray-800 hover:bg-gray-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 ml-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
           onClick={handleSearch}
-          className="ml-2 p-2 bg-blue-500 text-white rounded"
         >
           Search
         </button>
