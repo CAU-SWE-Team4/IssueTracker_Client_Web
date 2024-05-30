@@ -75,6 +75,11 @@ const IssueList = ({ project, onSelectIssue }) => {
     handleSearch(selectedState);
   }, [selectedState]);
   
+  const handleCategoryChange = (e) => {
+    setSearchCategory(e.target.value);
+    setSelectedState(null);
+  };
+
   return (
     <div className="p-4">
       <h2 className="text-xl font-bold mb-4">{project.name} Issues</h2>
@@ -82,7 +87,7 @@ const IssueList = ({ project, onSelectIssue }) => {
         <div className={`p-2  border-l border-t border-b ${searchCategory === "state" ? "border-r rounded-tr-lg rounded-br-lg" : ""} border-gray-300 rounded-tl-lg rounded-bl-lg`}>
           <select
             value={searchCategory}
-            onChange={(e) => setSearchCategory(e.target.value)}
+            onChange={handleCategoryChange}
           >
             <option value="title">Title</option>
             <option value="assignee">Assignee</option>
