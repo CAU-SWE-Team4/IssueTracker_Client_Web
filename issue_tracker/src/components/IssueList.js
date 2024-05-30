@@ -1,4 +1,4 @@
-import React from 'react';
+import { React, useState } from 'react';
 
 const issues = [
   { issue_id: 1, title: 'Login Bug', description: 'The login button does not respond after multiple clicks.', reporter_id: 'Alice', state: 'new', reported_date: '2023-05-01', edited_date: null, assignee_id: "minsiki2", fixer_id: null, priority: "HIGH" },
@@ -23,33 +23,84 @@ const getStatusColor = (status) => {
   }
 };
 
-const IssueList = ({ project, onSelectIssue }) => (
-  <div className="p-4">
-    <h2 className="text-xl font-bold mb-4">{project.name} Issues</h2>
-    <div className="grid grid-cols-3 gap-4 font-semibold border-b pb-2 mb-2">
-      <div>Title</div>
-      <div>Assignee</div>
-      <div>Date</div>
-    </div>
-    <ul>
-      {issues.map((issue) => (
-        <li
-          key={issue.issue_id}
-          className="p-2 cursor-pointer border-b hover:bg-gray-200 grid grid-cols-3 gap-4"
-          onClick={() => onSelectIssue(issue)}
+const IssueList = ({ project, onSelectIssue }) => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredIssues, setFilteredIssues] = useState(issues);
+  const [searchCategory, setSearchCategory] = useState('title');
+
+  const handleSearch = () => {
+    const filtered = issues.filter((issue) => {
+      if (searchCategory === 'title') {
+        return issue.title.toLowerCase().includes(searchQuery.toLowerCase());
+      } else if (searchCategory === 'assignee') {
+        return issue.assignee_id?.toLowerCase().includes(searchQuery.toLowerCase());
+      } else if (searchCategory === 'reporter') {
+        return issue.reporter_id.toLowerCase().includes(searchQuery.toLowerCase());
+      }
+      return false;
+    });
+    setFilteredIssues(filtered);
+  };
+  
+  return (
+    <div className="p-4">
+      <h2 className="text-xl font-bold mb-4">{project.name} Issues</h2>
+      <div className="flex mb-4">
+        <div className="mr-2 p-2  border border-gray-300 rounded">
+          <select
+            value={searchCategory}
+            onChange={(e) => setSearchCategory(e.target.value)}
+          >
+            <option value="title">Title</option>
+            <option value="assignee">Assignee</option>
+            <option value="reporter">Reporter</option>
+          </select>
+        </div>
+        <input
+          type="text"
+          placeholder={`Search by ${searchCategory}...`}
+          className="flex-grow p-2 border border-gray-300 rounded"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <button
+          onClick={handleSearch}
+          className="ml-2 p-2 bg-blue-500 text-white rounded"
         >
-          <div className="flex items-center">
-            <span>{issue.title}</span>
-            <span className={`ml-2 px-2 py-0.5 text-xs rounded-full text-white leading-tight ${getStatusColor(issue.state)}`}>
-              {issue.state}
-            </span>
-          </div>
-          <span>{issue.reporter_id}</span>
-          <span>{issue.reported_date}</span>
-        </li>
-      ))}
-    </ul>
-  </div>
-);
+          Search
+        </button>
+      </div>
+      <div 
+        className="grid grid-cols-4 gap-4 font-semibold border-b pb-2 mb-2"
+        style={{ gridTemplateColumns: '2fr 1fr 1fr 1fr'}}
+      >
+        <div>Title</div>
+        <div>Assignee</div>
+        <div>Reporter</div>
+        <div>Date</div>
+      </div>
+      <ul>
+        {filteredIssues.map((issue) => (
+          <li
+            key={issue.issue_id}
+            className="p-2 cursor-pointer border-b hover:bg-gray-200 grid grid-cols-4 gap-2"
+            style={{ gridTemplateColumns: '2fr 1fr 1fr 1fr'}}
+            onClick={() => onSelectIssue(issue)}
+          >
+            <div className="flex items-center">
+              <span>{issue.title}</span>
+              <span className={`ml-2 px-2 py-0.5 text-xs rounded-full text-white leading-tight ${getStatusColor(issue.state)}`}>
+                {issue.state}
+              </span>
+            </div>
+            <span>{issue.assignee_id}</span>
+            <span>{issue.reporter_id}</span>
+            <span>{issue.reported_date}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
 
 export default IssueList;
