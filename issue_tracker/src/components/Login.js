@@ -42,13 +42,13 @@ const Login = ({ onLogin, onShowRegister }) => {
         />
         <div className="flex flex-col justify-center">
           <button
-            className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2"
+            className="text-white bg-gray-800 hover:bg-gray-600 font-medium rounded-lg text-sm px-5 py-2.5 mb-2"
             onClick={handleLogin}
           >
             Login
           </button>
           <button
-            className="text-blue-600 bg-white hover:text-blue-800 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5"
+            className="text-blue-500 bg-white hover:text-blue-400 font-medium rounded-lg text-sm px-5 py-2.5"
             onClick={onShowRegister}
           >
             Register
