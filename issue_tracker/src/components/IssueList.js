@@ -1,4 +1,5 @@
 import { React, useState, useEffect } from 'react';
+import IssueStatistics from './IssueStatistics';
 
 const issues = [
   { issue_id: 1, title: 'Login Bug', description: 'The login button does not respond after multiple clicks.', reporter_id: 'Alice', state: 'new', reported_date: '2023-05-01', edited_date: null, assignee_id: "minsiki2", fixer_id: null, priority: "HIGH" },
@@ -22,6 +23,13 @@ const issues = [
   { issue_id: 19, title: 'UI Misalignment', description: 'UI elements are not aligned properly on the dashboard.', reporter_id: 'David', state: 'disposed', reported_date: '2023-05-04', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
   { issue_id: 20, title: 'Performance Lag', description: 'The application experiences lag during peak hours.', reporter_id: 'Eve', state: 'new', reported_date: '2023-05-05', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
 ];
+
+const stats = {
+  day_issues: 5,
+  month_issues: 32,
+  total_issues: 73,
+  closed_issues: 42
+};
 
 const getStatusColor = (status, prefix) => {
   switch (status) {
@@ -114,6 +122,7 @@ const IssueList = ({ project, onSelectIssue }) => {
   return (
     <div className="p-4">
       <h2 className="text-xl font-bold mb-4">{project.name} Issues</h2>
+      <IssueStatistics stats={stats} />
       <div className="flex mb-4">
         <div className={`p-2  border-l border-t border-b ${searchCategory === "state" ? "border-r rounded-tr-lg rounded-br-lg" : ""} border-gray-300 rounded-tl-lg rounded-bl-lg`}>
           <select
