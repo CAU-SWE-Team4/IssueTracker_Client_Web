@@ -1,5 +1,6 @@
 import { React, useState, useEffect } from 'react';
 import IssueStatistics from './IssueStatistics';
+import { PiFinnTheHuman } from "react-icons/pi";
 
 const issues = [
   { issue_id: 1, title: 'Login Bug', description: 'The login button does not respond after multiple clicks.', reporter_id: 'Alice', state: 'NEW', reported_date: '2023-05-01', edited_date: null, assignee_id: "minsiki2", fixer_id: null, priority: "HIGH" },
@@ -88,7 +89,7 @@ const getStateBorderColor = (state) => {
   }
 };
 
-const IssueList = ({ project, onSelectIssue }) => {
+const IssueList = ({ project, onSelectIssue, id, pw }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredIssues, setFilteredIssues] = useState(issues);
   const [searchCategory, setSearchCategory] = useState('title');
@@ -96,6 +97,21 @@ const IssueList = ({ project, onSelectIssue }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newIssueTitle, setNewIssueTitle] = useState('');
   const [newIssueDescription, setNewIssueDescription] = useState('');
+  const [members, setMembers] = useState([{id: "minsik", role: "NEWJEANS"}]);
+  const [isUserModalOpen, setIsUserModalOpen] = useState(false);
+
+  // const getUser = async (pId) => {
+  //   const urlParams = `?id=${id}&pw=${pw}`;
+  //   const response = await fetch(`/project/${pId}` + urlParams);
+  //   if (response.ok) {
+  //     const data = await response.json();
+  //     if (data.members && Array.isArray(data.members)) {
+  //       setMembers(data.members);
+  //     }
+  //   } else {
+  //     console.error('Error fetching members: ', response.statusText);
+  //   }
+  // };
 
   const handleSearch = () => {
     const filtered = issues.filter((issue) => {
@@ -143,6 +159,15 @@ const IssueList = ({ project, onSelectIssue }) => {
     setNewIssueDescription('');
   };
 
+  const openUserModal = async () => {
+    // await getUser(project.project_id);
+    setIsUserModalOpen(true);
+  };
+
+  const closeUserModal = () => {
+    setIsUserModalOpen(false);
+  };
+
   const handleNewIssueSubmit = () => {
     const newIssue = {
       issue_id: issues.length + 1,
@@ -163,7 +188,15 @@ const IssueList = ({ project, onSelectIssue }) => {
 
   return (
     <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">{project.title} Issues</h2>
+      <h2 className="text-xl font-bold mb-4 flex justify-between items-center">
+        {project.title} Issues
+        <button
+          className="text-white bg-blue-600 hover:bg-blue-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5"
+          onClick={openUserModal}
+        >
+          Show Users
+        </button>
+      </h2>
       <IssueStatistics stats={stats} />
       <div className="flex mb-4">
         <div className={`p-2  border-l border-t border-b ${searchCategory === "state" ? "border-r rounded-tr-lg rounded-br-lg" : ""} border-gray-300 rounded-tl-lg rounded-bl-lg`}>
@@ -272,6 +305,29 @@ const IssueList = ({ project, onSelectIssue }) => {
                 onClick={handleNewIssueSubmit}
               >
                 Open issue
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {isUserModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-2/3">
+            <h2 className="text-xl font-bold mb-4">Project Members</h2>
+            <ul>
+              {members.map((member) => (
+                <li key={member.id} className="flex flex-row ml-2 mb-2">
+                  <PiFinnTheHuman size={24}/>
+                  <span className="ml-2 font-semibold">{member.id}</span> - <span>{member.role}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="flex justify-end">
+              <button
+                className="text-red-500 bg-white border border-gray-300 hover:bg-gray-100 font-medium rounded-lg text-sm px-5 py-2.5"
+                onClick={closeUserModal}
+              >
+                Close
               </button>
             </div>
           </div>
