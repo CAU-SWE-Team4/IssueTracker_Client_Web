@@ -17,10 +17,10 @@ const IssueDetail = ({ issue, onClose }) => {
 
   const members = [
     {user_id: "minseok128", role: "PL"},
-    {user_id: "minsiki2", role: "dev"},
-    {user_id: "yeojin", role: "dev"},
-    {user_id: "junseob", role: "dev"},
-    {user_id: "hun", role: "tester"},
+    {user_id: "minsiki2", role: "DEV"},
+    {user_id: "yeojin", role: "DEV"},
+    {user_id: "junseob", role: "DEV"},
+    {user_id: "hun", role: "TESTER"},
   ]
 
   const recommends = ["minsiki2", "yeojin", "junseob"]
@@ -29,18 +29,22 @@ const IssueDetail = ({ issue, onClose }) => {
     commentsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [comments]);
 
-  const getStatusColor = (state) => {
+  const getStateBgColor = (state) => {
     switch (state) {
-      case 'new':
-        return 'bg-yellow-500';
-      case 'fixed':
-        return 'bg-green-500';
-      case 'closed':
-        return 'bg-red-500';
-      case 'disposed':
-        return 'bg-gray-500';
+      case 'NEW':
+        return `bg-yellow-500`;
+      case 'FIXED':
+        return `bg-blue-500`;
+      case 'RESOLVED':
+        return `bg-green-500`
+      case 'CLOSED':
+        return `bg-violet-500`;
+      case 'DISPOSED':
+        return `bg-red-500`;
+      case 'ASSIGNED':
+        return `bg-gray-500`
       default:
-        return 'bg-gray-500';
+        return `bg-gray-500`;
     }
   };
 
@@ -99,7 +103,7 @@ const IssueDetail = ({ issue, onClose }) => {
                   <h2 className="text-xl ml-3 text-gray-400/80">#{issue.issue_id}</h2>
                 </div>
                 <div className="flex items-center justify-start mt-2">
-                  <span className={`px-2 py-0.8 mb-0.5 rounded-full text-white ${getStatusColor(issue.state)}`}>
+                  <span className={`px-2.5 py-1 mb-0.5 rounded-full text-white text-sm ${getStateBgColor(issue.state)}`}>
                     {issue.state}
                   </span>
                   <p className="font-bold text-gray-700 ml-2 mr-1">{issue.reporter_id}</p>
