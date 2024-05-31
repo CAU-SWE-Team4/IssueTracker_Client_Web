@@ -16,7 +16,7 @@ const Register = ({ onRegister, onCancel }) => {
         user_id: userId,
         password: password,
         name: name,
-        mail: email,
+        email: email,
       }),
     });
 
