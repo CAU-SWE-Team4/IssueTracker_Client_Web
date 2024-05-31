@@ -22,7 +22,7 @@ const ProjectList = ({ onSelectProject, selectedProject, id, pw }) => {
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
-    const fetchProjects = async () => {
+    const getProjects = async () => {
       try {
         const urlParams = `?id=${id}&pw=${pw}`;
         const response = await fetch('/project' + urlParams);
@@ -38,7 +38,7 @@ const ProjectList = ({ onSelectProject, selectedProject, id, pw }) => {
         console.error('Error fetching projects: ', error);
       }
     };
-    fetchProjects();
+    getProjects();
   }, [id, pw]);
 
   const openModal = () => setIsModalOpen(true);
