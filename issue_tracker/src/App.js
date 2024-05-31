@@ -24,7 +24,7 @@ function App() {
       );
     } else if (selectedProject) {
       return (
-        <IssueList project={selectedProject} onSelectIssue={setSelectedIssue} />
+        <IssueList project={selectedProject} onSelectIssue={setSelectedIssue} id={id} pw={pw}/>
       );
     } else {
       return <></>;
