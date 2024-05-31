@@ -9,7 +9,7 @@ import Register from './components/Register';
 function App() {
   const [selectedProject, setSelectedProject] = useState(null);
   const [selectedIssue, setSelectedIssue] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(true); //임시 로그인 처리
+  const [isLoggedIn, setIsLoggedIn] = useState(false); //임시 로그인 처리
   const [isRegistering, setIsRegistering] = useState(false);
   const [id, setId] = useState(null);
   const [pw, setPw] = useState(null);

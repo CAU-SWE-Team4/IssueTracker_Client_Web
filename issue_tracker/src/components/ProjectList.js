@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 import { FaRegSquarePlus } from 'react-icons/fa6';
 import { PiFinnTheHuman } from 'react-icons/pi';
 
-const projects = [
-  { id: 1, name: 'Project A' },
-  { id: 2, name: 'Project B' },
-  { id: 3, name: 'Project C' },
-];
+// const projects = [
+//   { id: 1, name: 'Project A' },
+//   { id: 2, name: 'Project B' },
+//   { id: 3, name: 'Project C' },
+// ];
 
 const ProjectList = ({ onSelectProject, selectedProject, id, pw }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,6 +19,27 @@ const ProjectList = ({ onSelectProject, selectedProject, id, pw }) => {
     { id: 'john_doe', name: 'John Doe' },
     { id: 'jane_doe', name: 'Jane Doe' },
   ]);
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const urlParams = `?id=${id}&pw=${pw}`;
+        const response = await fetch('/project' + urlParams);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.projects && Array.isArray(data.projects)) {
+            setProjects(data.projects);
+          }
+        } else {
+          console.error('Error fetching projects: ', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error fetching projects: ', error);
+      }
+    };
+    fetchProjects();
+  }, [projects]);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
@@ -30,6 +52,7 @@ const ProjectList = ({ onSelectProject, selectedProject, id, pw }) => {
     setMemberRoles((prevRoles) => ({
       ...prevRoles,
       [userId]: role,
+      admin: 'ADMIN',
     }));
   };
 
@@ -55,6 +78,8 @@ const ProjectList = ({ onSelectProject, selectedProject, id, pw }) => {
 
     if (response.ok) {
       closeModal();
+      const data = await response.json();
+      setProjects((prevProjects) => [...prevProjects, data.projects]);
     }
   };
 
@@ -63,15 +88,15 @@ const ProjectList = ({ onSelectProject, selectedProject, id, pw }) => {
       <ul>
         {projects.map((project) => (
           <li
-            key={project.id}
+            key={project.project_id}
             className={`p-3 cursor-pointer hover:text-lg hover:font-bold flex justify-center ${
-              selectedProject?.id === project.id
+              selectedProject?.project_id === project.project_id
                 ? 'font-bold text-xl'
                 : 'text-gray-400'
             }`}
             onClick={() => onSelectProject(project)}
           >
-            {project.name}
+            {project.title}
           </li>
         ))}
       </ul>
