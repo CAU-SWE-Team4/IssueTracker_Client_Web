@@ -36,7 +36,7 @@ const IssueDetail = ({ issue, onClose }) => {
       case 'fixed':
         return 'bg-green-500';
       case 'closed':
-        return 'bg-red-500';
+        return 'bg-violet-500';
       case 'disposed':
         return 'bg-gray-500';
       default:

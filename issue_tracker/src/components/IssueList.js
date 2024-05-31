@@ -38,7 +38,7 @@ const getStateBgColor = (state) => {
     case 'fixed':
       return `bg-green-500`;
     case 'closed':
-      return `bg-red-500`;
+      return `bg-violet-500`;
     case 'disposed':
       return `bg-gray-500`;
     default:
@@ -53,7 +53,7 @@ const getStateTextColor = (state) => {
     case 'fixed':
       return `text-green-500`;
     case 'closed':
-      return `text-red-500`;
+      return `text-violet-500`;
     case 'disposed':
       return `text-gray-500`;
     default:
@@ -68,7 +68,7 @@ const getStateBorderColor = (state) => {
     case 'fixed':
       return `border-green-500`;
     case 'closed':
-      return `border-red-500`;
+      return `border-violet-500`;
     case 'disposed':
       return `border-gray-500`;
     default:
