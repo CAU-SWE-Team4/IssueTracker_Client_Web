@@ -165,12 +165,12 @@ const ProjectList = ({ onSelectProject, selectedProject, id, pw }) => {
               <div
                 className={`flex flex-row ${
                   selectedProject?.project_id === project.project_id
-                    ? 'text-gray-800 hover:text-gray-600 font-medium'
+                    ? 'text-gray-800 font-medium'
                     : 'text-gray-400'
                 }`}
               >
                 <button
-                  className="rounded-lg flex items-center"
+                  className="hover:text-gray-600 rounded-lg flex items-center"
                   onClick={(e) => {
                     e.stopPropagation();
                     openEditModal(project);
@@ -179,7 +179,7 @@ const ProjectList = ({ onSelectProject, selectedProject, id, pw }) => {
                   <RiEditLine className="mr-2" size={20} />
                 </button>
                 <button
-                  className="rounded-lg flex items-center"
+                  className="hover:text-gray-600 rounded-lg flex items-center"
                   onClick={(e) => {
                     e.stopPropagation();
                     deleteProject(project.project_id);
