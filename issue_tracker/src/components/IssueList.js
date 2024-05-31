@@ -31,18 +31,48 @@ const stats = {
   closed_issues: 42
 };
 
-const getStatusColor = (status, prefix) => {
-  switch (status) {
+const getStateBgColor = (state) => {
+  switch (state) {
     case 'new':
-      return `${prefix}-yellow-500`;
+      return `bg-yellow-500`;
     case 'fixed':
-      return `${prefix}-green-500`;
+      return `bg-green-500`;
     case 'closed':
-      return `${prefix}-red-500`;
+      return `bg-red-500`;
     case 'disposed':
-      return `${prefix}-gray-500`;
+      return `bg-gray-500`;
     default:
-      return `${prefix}-gray-500`;
+      return `bg-gray-500`;
+  }
+};
+
+const getStateTextColor = (state) => {
+  switch (state) {
+    case 'new':
+      return `text-yellow-500`;
+    case 'fixed':
+      return `text-green-500`;
+    case 'closed':
+      return `text-red-500`;
+    case 'disposed':
+      return `text-gray-500`;
+    default:
+      return `text-gray-500`;
+  }
+};
+
+const getStateBorderColor = (state) => {
+  switch (state) {
+    case 'new':
+      return `border-yellow-500`;
+    case 'fixed':
+      return `border-green-500`;
+    case 'closed':
+      return `border-red-500`;
+    case 'disposed':
+      return `border-gray-500`;
+    default:
+      return `border-gray-500`;
   }
 };
 
@@ -140,7 +170,7 @@ const IssueList = ({ project, onSelectIssue }) => {
             {['new', 'fixed', 'disposed', 'closed'].map(state => (
               <button
                 key={state}
-                className={`h-8 font-large px-2 pb-0.5 border-2 transform transition-transform duration-100 hover:scale-110 rounded-full leading-tight ${selectedState === state ? "text-white" : getStatusColor(state, "text") } ${getStatusColor(state, "border")} ${selectedState === state ? `${getStatusColor(state, "bg")}` : ""}`}
+                className={`h-8 font-large px-2 pb-0.5 border-2 transform transition-transform duration-100 hover:scale-110 rounded-full leading-tight ${selectedState === state ? "text-white" : getStateTextColor(state) } ${getStateBorderColor(state)} ${selectedState === state ? `${getStateBgColor(state)}` : ""}`}
                 onClick={() => handleStateClick(state)}
               >
                 {state}
@@ -191,7 +221,7 @@ const IssueList = ({ project, onSelectIssue }) => {
           >
             <div className="flex items-center">
               <span>{issue.title}</span>
-              <span className={`ml-2 px-2 pt-0.5 pb-1 text-xs rounded-full text-white leading-tight ${getStatusColor(issue.state, "bg")}`}>
+              <span className={`ml-2 px-2 pt-0.5 pb-1 text-xs rounded-full text-white leading-tight ${getStateBgColor(issue.state)}`}>
                 {issue.state}
               </span>
             </div>
