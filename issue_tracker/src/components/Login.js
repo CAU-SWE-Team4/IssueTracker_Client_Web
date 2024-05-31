@@ -5,21 +5,21 @@ const Login = ({ onLogin, onShowRegister }) => {
   const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
-    // const response = await fetch('/api/login', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({ user_id: userId, password }),
-    // });
+    const response = await fetch('/user/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ user_id: userId, password }),
+    });
 
-    // if (response.ok) {
-    //   onLogin();
-    // } else if (response.status === 400) {
-    //   alert('Bad Request');
-    // } else if (response.status === 401) {
-    //   alert('Unauthorized');
-    // }
+    if (response.ok) {
+      onLogin();
+    } else if (response.status === 400) {
+      alert('Bad Request');
+    } else if (response.status === 401) {
+      alert('Unauthorized');
+    }
   };
 
   return (
