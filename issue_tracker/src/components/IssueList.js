@@ -163,7 +163,7 @@ const IssueList = ({ project, onSelectIssue }) => {
 
   return (
     <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">{project.name} Issues</h2>
+      <h2 className="text-xl font-bold mb-4">{project.title} Issues</h2>
       <IssueStatistics stats={stats} />
       <div className="flex mb-4">
         <div className={`p-2  border-l border-t border-b ${searchCategory === "state" ? "border-r rounded-tr-lg rounded-br-lg" : ""} border-gray-300 rounded-tl-lg rounded-bl-lg`}>
