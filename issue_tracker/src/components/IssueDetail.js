@@ -29,7 +29,7 @@ const IssueDetail = ({ issue, onClose }) => {
     commentsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [comments]);
 
-  const getStatusColor = (state) => {
+  const getStateBgColor = (state) => {
     switch (state) {
       case 'new':
         return 'bg-yellow-500';
@@ -99,7 +99,7 @@ const IssueDetail = ({ issue, onClose }) => {
                   <h2 className="text-xl ml-3 text-gray-400/80">#{issue.issue_id}</h2>
                 </div>
                 <div className="flex items-center justify-start mt-2">
-                  <span className={`px-2 py-0.8 mb-0.5 rounded-full text-white ${getStatusColor(issue.state)}`}>
+                  <span className={`px-2 py-0.8 mb-0.5 rounded-full text-white ${getStateBgColor(issue.state)}`}>
                     {issue.state}
                   </span>
                   <p className="font-bold text-gray-700 ml-2 mr-1">{issue.reporter_id}</p>
