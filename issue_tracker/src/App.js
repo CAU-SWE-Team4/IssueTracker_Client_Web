@@ -11,12 +11,21 @@ function App() {
   const [selectedIssue, setSelectedIssue] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(true); //임시 로그인 처리
   const [isRegistering, setIsRegistering] = useState(false);
+  const [id, setId] = useState(null);
+  const [pw, setPw] = useState(null);
 
   const renderMainContent = () => {
     if (selectedIssue) {
-      return <IssueDetail issue={selectedIssue} onClose={() => setSelectedIssue(null)} />;
+      return (
+        <IssueDetail
+          issue={selectedIssue}
+          onClose={() => setSelectedIssue(null)}
+        />
+      );
     } else if (selectedProject) {
-      return <IssueList project={selectedProject} onSelectIssue={setSelectedIssue} />;
+      return (
+        <IssueList project={selectedProject} onSelectIssue={setSelectedIssue} />
+      );
     } else {
       return <></>;
     }
@@ -24,23 +33,34 @@ function App() {
 
   return (
     <div className="flex flex-col">
-      <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
+      <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
       {!isLoggedIn ? (
         <div className="flex justify-center items-center h-screen">
           {isRegistering ? (
-            <Register onRegister={() => setIsRegistering(false)} onCancel={() => setIsRegistering(false)} />
+            <Register
+              onRegister={() => setIsRegistering(false)}
+              onCancel={() => setIsRegistering(false)}
+            />
           ) : (
-            <Login onLogin={() => setIsLoggedIn(true)} onShowRegister={() => setIsRegistering(true)} />
+            <Login
+              onLogin={() => setIsLoggedIn(true)}
+              onShowRegister={() => setIsRegistering(true)}
+              setId={setId}
+              setPw={setPw}
+            />
           )}
         </div>
       ) : (
         <div className="flex flex-row">
           <div className="w-1/5 max-w-sm h-screen border-r">
-            <ProjectList onSelectProject={setSelectedProject} selectedProject={selectedProject} />
+            <ProjectList
+              onSelectProject={setSelectedProject}
+              selectedProject={selectedProject}
+              id={id}
+              pw={pw}
+            />
           </div>
-          <div className="w-4/5 h-screen">
-            {renderMainContent()}
-          </div>
+          <div className="w-4/5 h-screen">{renderMainContent()}</div>
         </div>
       )}
     </div>

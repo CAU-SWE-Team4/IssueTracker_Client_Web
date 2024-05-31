@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Login = ({ onLogin, onShowRegister }) => {
+const Login = ({ onLogin, onShowRegister, setId, setPw }) => {
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
 
@@ -31,14 +31,20 @@ const Login = ({ onLogin, onShowRegister }) => {
           placeholder="User ID"
           className="w-full p-2 mb-4 border border-gray-300 rounded-lg"
           value={userId}
-          onChange={(e) => setUserId(e.target.value)}
+          onChange={(e) => {
+            setUserId(e.target.value);
+            setId(e.target.value);
+          }}
         />
         <input
           type="password"
           placeholder="Password"
           className="w-full p-2 mb-4 border border-gray-300 rounded-lg"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setPw(e.target.value);
+          }}
         />
         <div className="flex flex-col justify-center">
           <button

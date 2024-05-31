@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { FaRegSquarePlus } from "react-icons/fa6";
-import { PiFinnTheHuman } from "react-icons/pi";
+import { FaRegSquarePlus } from 'react-icons/fa6';
+import { PiFinnTheHuman } from 'react-icons/pi';
 
 const projects = [
   { id: 1, name: 'Project A' },
@@ -8,7 +8,7 @@ const projects = [
   { id: 3, name: 'Project C' },
 ];
 
-const ProjectList = ({ onSelectProject, selectedProject }) => {
+const ProjectList = ({ onSelectProject, selectedProject, id, pw }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newProjectTitle, setNewProjectTitle] = useState('');
   const [memberRoles, setMemberRoles] = useState({});
@@ -16,7 +16,7 @@ const ProjectList = ({ onSelectProject, selectedProject }) => {
     { id: 'minseok128', name: 'Minseok' },
     { id: 'lucete012', name: 'Lucete' },
     { id: 'john_doe', name: 'John Doe' },
-    { id: 'jane_doe', name: 'Jane Doe' }
+    { id: 'jane_doe', name: 'Jane Doe' },
   ]);
 
   const openModal = () => setIsModalOpen(true);
@@ -33,18 +33,32 @@ const ProjectList = ({ onSelectProject, selectedProject }) => {
     }));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const members = Object.entries(memberRoles)
       .filter(([userId, role]) => role !== 'NONE')
-      .map(([userId, role]) => ({ user_id: userId, role }));
+      .map(([userId, role]) => ({ user_id: userId, role: role }));
 
     const newProject = {
       title: newProjectTitle,
-      members,
+      members: members,
     };
 
     console.log('POST data:', newProject);
     //POST 로직
+    const urlParams = `?id=${id}&pw=${pw}`;
+    const response = await fetch('/project' + urlParams, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ newProject }),
+    });
+
+    if (response.ok) {
+      setIsModalOpen(false);
+    } else if (response.status === 400) {
+      alert('Bad Request');
+    }
 
     closeModal();
   };
@@ -55,7 +69,11 @@ const ProjectList = ({ onSelectProject, selectedProject }) => {
         {projects.map((project) => (
           <li
             key={project.id}
-            className={`p-3 cursor-pointer hover:text-lg hover:font-bold flex justify-center ${selectedProject?.id === project.id ? 'font-bold text-xl' : 'text-gray-400'}`}
+            className={`p-3 cursor-pointer hover:text-lg hover:font-bold flex justify-center ${
+              selectedProject?.id === project.id
+                ? 'font-bold text-xl'
+                : 'text-gray-400'
+            }`}
             onClick={() => onSelectProject(project)}
           >
             {project.name}
@@ -86,7 +104,7 @@ const ProjectList = ({ onSelectProject, selectedProject }) => {
             <h3 className="text-lg font-semibold mb-2">Assign Roles</h3>
             {allUsers.map((user) => (
               <div key={user.id} className="flex items-center mb-2">
-                <PiFinnTheHuman size={24}/>
+                <PiFinnTheHuman size={24} />
                 <span className="ml-2 w-1/3">{user.name}</span>
                 <select
                   className="w-2/3 p-2 border border-gray-300 rounded-lg"
