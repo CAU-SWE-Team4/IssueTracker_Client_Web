@@ -16,7 +16,7 @@ const ProjectList = ({ onSelectProject, selectedProject }) => {
     { id: 'minseok128', name: 'Minseok' },
     { id: 'lucete012', name: 'Lucete' },
     { id: 'john_doe', name: 'John Doe' },
-    { id: 'jane_doe', name: 'Jane Doe' },
+    { id: 'jane_doe', name: 'Jane Doe' }
   ]);
 
   const openModal = () => setIsModalOpen(true);
@@ -73,8 +73,8 @@ const ProjectList = ({ onSelectProject, selectedProject }) => {
       </div>
 
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-2/3">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center absolute z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-2/3 max-h-[80vh] overflow-y-auto">
             <h2 className="text-xl font-bold mb-4">New Project</h2>
             <input
               type="text"
