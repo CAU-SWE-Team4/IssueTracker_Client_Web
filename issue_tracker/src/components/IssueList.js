@@ -310,13 +310,33 @@ const getStateBorderColor = (state) => {
 
 const IssueList = ({ project, onSelectIssue, id, pw }) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [filteredIssues, setFilteredIssues] = useState(issues);
   const [searchCategory, setSearchCategory] = useState('title');
   const [selectedState, setSelectedState] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newIssueTitle, setNewIssueTitle] = useState('');
   const [newIssueDescription, setNewIssueDescription] = useState('');
-  // const [issues, setIssues] = useState('');
+  const [issues, setIssues] = useState([]);
+  const [filteredIssues, setFilteredIssues] = useState(issues);
+
+  useEffect(() => {
+    getIssues();
+  }, []);
+
+  useEffect(() => {
+    handleSearch(selectedState);
+  }, [selectedState]);
+
+  const getIssues = async () => {
+    const urlParams = `?id=${id}&pw=${pw}&filterBy=${searchCategory}&filterValue=${searchQuery}`;
+    const response = await fetch(`/project/${project.id}/issue` + urlParams);
+
+    if (response.ok) {
+      const data = await response.json();
+      if (data.issues && Array.isArray(data.issues)) {
+        setIssues(data.issues);
+      }
+    }
+  };
 
   const handleSearch = () => {
     const filtered = issues.filter((issue) => {
@@ -348,10 +368,6 @@ const IssueList = ({ project, onSelectIssue, id, pw }) => {
     setSelectedState((prevState) => (prevState === state ? null : state));
     setSearchQuery('');
   };
-
-  useEffect(() => {
-    handleSearch(selectedState);
-  }, [selectedState]);
 
   const handleCategoryChange = (e) => {
     setSearchCategory(e.target.value);
