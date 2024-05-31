@@ -1,248 +1,248 @@
 import { React, useState, useEffect } from 'react';
 import IssueStatistics from './IssueStatistics';
 
-const issues = [
-  {
-    issue_id: 1,
-    title: 'Login Bug',
-    description: 'The login button does not respond after multiple clicks.',
-    reporter_id: 'Alice',
-    state: 'NEW',
-    reported_date: '2023-05-01',
-    edited_date: null,
-    assignee_id: 'minsiki2',
-    fixer_id: null,
-    priority: 'HIGH',
-  },
-  {
-    issue_id: 2,
-    title: 'Profile Page Error',
-    description: 'Profile page throws a 404 error for some users.',
-    reporter_id: 'Bob',
-    state: 'FIXED',
-    reported_date: '2023-05-02',
-    edited_date: null,
-    assignee_id: null,
-    fixer_id: null,
-    priority: 'HIGH',
-  },
-  {
-    issue_id: 3,
-    title: 'Signup Form Issue',
-    description: 'Signup form validation is not working as expected.',
-    reporter_id: 'Charlie',
-    state: 'CLOSED',
-    reported_date: '2023-05-03',
-    edited_date: null,
-    assignee_id: null,
-    fixer_id: null,
-    priority: 'HIGH',
-  },
-  {
-    issue_id: 4,
-    title: 'UI Misalignment',
-    description: 'UI elements are not aligned properly on the dashboard.',
-    reporter_id: 'David',
-    state: 'ASSIGNED',
-    reported_date: '2023-05-04',
-    edited_date: null,
-    assignee_id: null,
-    fixer_id: null,
-    priority: 'HIGH',
-  },
-  {
-    issue_id: 5,
-    title: 'Performance Lag',
-    description: 'The application experiences lag during peak hours.',
-    reporter_id: 'Eve',
-    state: 'RESOLVED',
-    reported_date: '2023-05-05',
-    edited_date: null,
-    assignee_id: null,
-    fixer_id: null,
-    priority: 'HIGH',
-  },
-  {
-    issue_id: 6,
-    title: 'Login Bug',
-    description: 'The login button does not respond after multiple clicks.',
-    reporter_id: 'Alice',
-    state: 'NEW',
-    reported_date: '2023-05-01',
-    edited_date: null,
-    assignee_id: 'minsiki2',
-    fixer_id: null,
-    priority: 'HIGH',
-  },
-  {
-    issue_id: 7,
-    title: 'Profile Page Error',
-    description: 'Profile page throws a 404 error for some users.',
-    reporter_id: 'Bob',
-    state: 'FIXED',
-    reported_date: '2023-05-02',
-    edited_date: null,
-    assignee_id: null,
-    fixer_id: null,
-    priority: 'HIGH',
-  },
-  {
-    issue_id: 8,
-    title: 'Signup Form Issue',
-    description: 'Signup form validation is not working as expected.',
-    reporter_id: 'Charlie',
-    state: 'CLOSED',
-    reported_date: '2023-05-03',
-    edited_date: null,
-    assignee_id: null,
-    fixer_id: null,
-    priority: 'HIGH',
-  },
-  {
-    issue_id: 9,
-    title: 'UI Misalignment',
-    description: 'UI elements are not aligned properly on the dashboard.',
-    reporter_id: 'David',
-    state: 'RESOLVED',
-    reported_date: '2023-05-04',
-    edited_date: null,
-    assignee_id: null,
-    fixer_id: null,
-    priority: 'HIGH',
-  },
-  {
-    issue_id: 10,
-    title: 'Performance Lag',
-    description: 'The application experiences lag during peak hours.',
-    reporter_id: 'Eve',
-    state: 'NEW',
-    reported_date: '2023-05-05',
-    edited_date: null,
-    assignee_id: null,
-    fixer_id: null,
-    priority: 'HIGH',
-  },
-  {
-    issue_id: 11,
-    title: 'Login Bug',
-    description: 'The login button does not respond after multiple clicks.',
-    reporter_id: 'Alice',
-    state: 'NEW',
-    reported_date: '2023-05-01',
-    edited_date: null,
-    assignee_id: 'minsiki2',
-    fixer_id: null,
-    priority: 'HIGH',
-  },
-  {
-    issue_id: 12,
-    title: 'Profile Page Error',
-    description: 'Profile page throws a 404 error for some users.',
-    reporter_id: 'Bob',
-    state: 'FIXED',
-    reported_date: '2023-05-02',
-    edited_date: null,
-    assignee_id: null,
-    fixer_id: null,
-    priority: 'HIGH',
-  },
-  {
-    issue_id: 13,
-    title: 'Signup Form Issue',
-    description: 'Signup form validation is not working as expected.',
-    reporter_id: 'Charlie',
-    state: 'CLOSED',
-    reported_date: '2023-05-03',
-    edited_date: null,
-    assignee_id: null,
-    fixer_id: null,
-    priority: 'HIGH',
-  },
-  {
-    issue_id: 14,
-    title: 'UI Misalignment',
-    description: 'UI elements are not aligned properly on the dashboard.',
-    reporter_id: 'David',
-    state: 'RESOLVED',
-    reported_date: '2023-05-04',
-    edited_date: null,
-    assignee_id: null,
-    fixer_id: null,
-    priority: 'HIGH',
-  },
-  {
-    issue_id: 15,
-    title: 'Performance Lag',
-    description: 'The application experiences lag during peak hours.',
-    reporter_id: 'Eve',
-    state: 'NEW',
-    reported_date: '2023-05-05',
-    edited_date: null,
-    assignee_id: null,
-    fixer_id: null,
-    priority: 'HIGH',
-  },
-  {
-    issue_id: 16,
-    title: 'Login Bug',
-    description: 'The login button does not respond after multiple clicks.',
-    reporter_id: 'Alice',
-    state: 'NEW',
-    reported_date: '2023-05-01',
-    edited_date: null,
-    assignee_id: 'minsiki2',
-    fixer_id: null,
-    priority: 'HIGH',
-  },
-  {
-    issue_id: 17,
-    title: 'Profile Page Error',
-    description: 'Profile page throws a 404 error for some users.',
-    reporter_id: 'Bob',
-    state: 'FIXED',
-    reported_date: '2023-05-02',
-    edited_date: null,
-    assignee_id: null,
-    fixer_id: null,
-    priority: 'HIGH',
-  },
-  {
-    issue_id: 18,
-    title: 'Signup Form Issue',
-    description: 'Signup form validation is not working as expected.',
-    reporter_id: 'Charlie',
-    state: 'CLOSED',
-    reported_date: '2023-05-03',
-    edited_date: null,
-    assignee_id: null,
-    fixer_id: null,
-    priority: 'HIGH',
-  },
-  {
-    issue_id: 19,
-    title: 'UI Misalignment',
-    description: 'UI elements are not aligned properly on the dashboard.',
-    reporter_id: 'David',
-    state: 'DISPOSED',
-    reported_date: '2023-05-04',
-    edited_date: null,
-    assignee_id: null,
-    fixer_id: null,
-    priority: 'HIGH',
-  },
-  {
-    issue_id: 20,
-    title: 'Performance Lag',
-    description: 'The application experiences lag during peak hours.',
-    reporter_id: 'Eve',
-    state: 'NEW',
-    reported_date: '2023-05-05',
-    edited_date: null,
-    assignee_id: null,
-    fixer_id: null,
-    priority: 'HIGH',
-  },
-];
+// const issues = [
+//   {
+//     issue_id: 1,
+//     title: 'Login Bug',
+//     description: 'The login button does not respond after multiple clicks.',
+//     reporter_id: 'Alice',
+//     state: 'NEW',
+//     reported_date: '2023-05-01',
+//     edited_date: null,
+//     assignee_id: 'minsiki2',
+//     fixer_id: null,
+//     priority: 'HIGH',
+//   },
+//   {
+//     issue_id: 2,
+//     title: 'Profile Page Error',
+//     description: 'Profile page throws a 404 error for some users.',
+//     reporter_id: 'Bob',
+//     state: 'FIXED',
+//     reported_date: '2023-05-02',
+//     edited_date: null,
+//     assignee_id: null,
+//     fixer_id: null,
+//     priority: 'HIGH',
+//   },
+//   {
+//     issue_id: 3,
+//     title: 'Signup Form Issue',
+//     description: 'Signup form validation is not working as expected.',
+//     reporter_id: 'Charlie',
+//     state: 'CLOSED',
+//     reported_date: '2023-05-03',
+//     edited_date: null,
+//     assignee_id: null,
+//     fixer_id: null,
+//     priority: 'HIGH',
+//   },
+//   {
+//     issue_id: 4,
+//     title: 'UI Misalignment',
+//     description: 'UI elements are not aligned properly on the dashboard.',
+//     reporter_id: 'David',
+//     state: 'ASSIGNED',
+//     reported_date: '2023-05-04',
+//     edited_date: null,
+//     assignee_id: null,
+//     fixer_id: null,
+//     priority: 'HIGH',
+//   },
+//   {
+//     issue_id: 5,
+//     title: 'Performance Lag',
+//     description: 'The application experiences lag during peak hours.',
+//     reporter_id: 'Eve',
+//     state: 'RESOLVED',
+//     reported_date: '2023-05-05',
+//     edited_date: null,
+//     assignee_id: null,
+//     fixer_id: null,
+//     priority: 'HIGH',
+//   },
+//   {
+//     issue_id: 6,
+//     title: 'Login Bug',
+//     description: 'The login button does not respond after multiple clicks.',
+//     reporter_id: 'Alice',
+//     state: 'NEW',
+//     reported_date: '2023-05-01',
+//     edited_date: null,
+//     assignee_id: 'minsiki2',
+//     fixer_id: null,
+//     priority: 'HIGH',
+//   },
+//   {
+//     issue_id: 7,
+//     title: 'Profile Page Error',
+//     description: 'Profile page throws a 404 error for some users.',
+//     reporter_id: 'Bob',
+//     state: 'FIXED',
+//     reported_date: '2023-05-02',
+//     edited_date: null,
+//     assignee_id: null,
+//     fixer_id: null,
+//     priority: 'HIGH',
+//   },
+//   {
+//     issue_id: 8,
+//     title: 'Signup Form Issue',
+//     description: 'Signup form validation is not working as expected.',
+//     reporter_id: 'Charlie',
+//     state: 'CLOSED',
+//     reported_date: '2023-05-03',
+//     edited_date: null,
+//     assignee_id: null,
+//     fixer_id: null,
+//     priority: 'HIGH',
+//   },
+//   {
+//     issue_id: 9,
+//     title: 'UI Misalignment',
+//     description: 'UI elements are not aligned properly on the dashboard.',
+//     reporter_id: 'David',
+//     state: 'RESOLVED',
+//     reported_date: '2023-05-04',
+//     edited_date: null,
+//     assignee_id: null,
+//     fixer_id: null,
+//     priority: 'HIGH',
+//   },
+//   {
+//     issue_id: 10,
+//     title: 'Performance Lag',
+//     description: 'The application experiences lag during peak hours.',
+//     reporter_id: 'Eve',
+//     state: 'NEW',
+//     reported_date: '2023-05-05',
+//     edited_date: null,
+//     assignee_id: null,
+//     fixer_id: null,
+//     priority: 'HIGH',
+//   },
+//   {
+//     issue_id: 11,
+//     title: 'Login Bug',
+//     description: 'The login button does not respond after multiple clicks.',
+//     reporter_id: 'Alice',
+//     state: 'NEW',
+//     reported_date: '2023-05-01',
+//     edited_date: null,
+//     assignee_id: 'minsiki2',
+//     fixer_id: null,
+//     priority: 'HIGH',
+//   },
+//   {
+//     issue_id: 12,
+//     title: 'Profile Page Error',
+//     description: 'Profile page throws a 404 error for some users.',
+//     reporter_id: 'Bob',
+//     state: 'FIXED',
+//     reported_date: '2023-05-02',
+//     edited_date: null,
+//     assignee_id: null,
+//     fixer_id: null,
+//     priority: 'HIGH',
+//   },
+//   {
+//     issue_id: 13,
+//     title: 'Signup Form Issue',
+//     description: 'Signup form validation is not working as expected.',
+//     reporter_id: 'Charlie',
+//     state: 'CLOSED',
+//     reported_date: '2023-05-03',
+//     edited_date: null,
+//     assignee_id: null,
+//     fixer_id: null,
+//     priority: 'HIGH',
+//   },
+//   {
+//     issue_id: 14,
+//     title: 'UI Misalignment',
+//     description: 'UI elements are not aligned properly on the dashboard.',
+//     reporter_id: 'David',
+//     state: 'RESOLVED',
+//     reported_date: '2023-05-04',
+//     edited_date: null,
+//     assignee_id: null,
+//     fixer_id: null,
+//     priority: 'HIGH',
+//   },
+//   {
+//     issue_id: 15,
+//     title: 'Performance Lag',
+//     description: 'The application experiences lag during peak hours.',
+//     reporter_id: 'Eve',
+//     state: 'NEW',
+//     reported_date: '2023-05-05',
+//     edited_date: null,
+//     assignee_id: null,
+//     fixer_id: null,
+//     priority: 'HIGH',
+//   },
+//   {
+//     issue_id: 16,
+//     title: 'Login Bug',
+//     description: 'The login button does not respond after multiple clicks.',
+//     reporter_id: 'Alice',
+//     state: 'NEW',
+//     reported_date: '2023-05-01',
+//     edited_date: null,
+//     assignee_id: 'minsiki2',
+//     fixer_id: null,
+//     priority: 'HIGH',
+//   },
+//   {
+//     issue_id: 17,
+//     title: 'Profile Page Error',
+//     description: 'Profile page throws a 404 error for some users.',
+//     reporter_id: 'Bob',
+//     state: 'FIXED',
+//     reported_date: '2023-05-02',
+//     edited_date: null,
+//     assignee_id: null,
+//     fixer_id: null,
+//     priority: 'HIGH',
+//   },
+//   {
+//     issue_id: 18,
+//     title: 'Signup Form Issue',
+//     description: 'Signup form validation is not working as expected.',
+//     reporter_id: 'Charlie',
+//     state: 'CLOSED',
+//     reported_date: '2023-05-03',
+//     edited_date: null,
+//     assignee_id: null,
+//     fixer_id: null,
+//     priority: 'HIGH',
+//   },
+//   {
+//     issue_id: 19,
+//     title: 'UI Misalignment',
+//     description: 'UI elements are not aligned properly on the dashboard.',
+//     reporter_id: 'David',
+//     state: 'DISPOSED',
+//     reported_date: '2023-05-04',
+//     edited_date: null,
+//     assignee_id: null,
+//     fixer_id: null,
+//     priority: 'HIGH',
+//   },
+//   {
+//     issue_id: 20,
+//     title: 'Performance Lag',
+//     description: 'The application experiences lag during peak hours.',
+//     reporter_id: 'Eve',
+//     state: 'NEW',
+//     reported_date: '2023-05-05',
+//     edited_date: null,
+//     assignee_id: null,
+//     fixer_id: null,
+//     priority: 'HIGH',
+//   },
+// ];
 
 const stats = {
   day_issues: 5,
@@ -310,52 +310,61 @@ const getStateBorderColor = (state) => {
 
 const IssueList = ({ project, onSelectIssue, id, pw }) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchCategory, setSearchCategory] = useState('title');
+  const [searchCategory, setSearchCategory] = useState('');
   const [selectedState, setSelectedState] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newIssueTitle, setNewIssueTitle] = useState('');
   const [newIssueDescription, setNewIssueDescription] = useState('');
   const [issues, setIssues] = useState([]);
   const [filteredIssues, setFilteredIssues] = useState(issues);
+  const [searchContent, setSearchContent] = useState('');
 
   useEffect(() => {
     getIssues();
-  }, []);
+  }, [project]);
 
   useEffect(() => {
     handleSearch(selectedState);
   }, [selectedState]);
 
   const getIssues = async () => {
-    const urlParams = `?id=${id}&pw=${pw}&filterBy=${searchCategory}&filterValue=${searchQuery}`;
-    const response = await fetch(`/project/${project.id}/issue` + urlParams);
+    const urlParams = `?id=${id}&pw=${pw}&filterBy=${searchCategory}&filterValue=${searchContent}`;
+    const response = await fetch(
+      `/project/${project.project_id}/issue` + urlParams
+    );
 
     if (response.ok) {
       const data = await response.json();
-      if (data.issues && Array.isArray(data.issues)) {
-        setIssues(data.issues);
+      console.log(data);
+      if (data && Array.isArray(data)) {
+        setIssues(data);
+
+        // setFilteredIssues([...issues]);
       }
     }
   };
 
   const handleSearch = () => {
-    const filtered = issues.filter((issue) => {
-      if (searchCategory === 'title') {
-        return issue.title.toLowerCase().includes(searchQuery.toLowerCase());
-      } else if (searchCategory === 'assignee') {
-        return issue.assignee_id
-          ?.toLowerCase()
-          .includes(searchQuery.toLowerCase());
-      } else if (searchCategory === 'reporter') {
-        return issue.reporter_id
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase());
-      } else if (searchCategory === 'state') {
-        return selectedState ? issue.state === selectedState : true;
-      }
-      return false;
-    });
-    setFilteredIssues(filtered);
+    setSearchCategory(searchCategory);
+    getIssues();
+    // const filtered = issues.filter((issue) => {
+    //   if (searchCategory === 'title') {
+    //     return issue.title.toLowerCase().includes(searchQuery.toLowerCase());
+    //   } else if (searchCategory === 'assignee') {
+    //     return issue.assignee_id
+    //       ?.toLowerCase()
+    //       .includes(searchQuery.toLowerCase());
+    //   } else if (searchCategory === 'reporter') {
+    //     return issue.reporter_id
+    //       .toLowerCase()
+    //       .includes(searchQuery.toLowerCase());
+    //   } else if (searchCategory === 'state') {
+    //     return selectedState ? issue.state === selectedState : true;
+    //   }
+    //   return false;
+    // });
+    // setFilteredIssues(filtered);
+    // setIssues(filtered);
   };
 
   const handleKeyDown = (e) => {
@@ -365,8 +374,10 @@ const IssueList = ({ project, onSelectIssue, id, pw }) => {
   };
 
   const handleStateClick = (state) => {
-    setSelectedState((prevState) => (prevState === state ? null : state));
-    setSearchQuery('');
+    setSearchContent(state);
+    getIssues();
+    // setSelectedState((prevState) => (prevState === state ? null : state));
+    // setSearchQuery('');
   };
 
   const handleCategoryChange = (e) => {
@@ -389,8 +400,6 @@ const IssueList = ({ project, onSelectIssue, id, pw }) => {
       title: newIssueTitle,
       description: newIssueDescription,
     };
-    issues.push(newIssue);
-    setFilteredIssues([...issues]);
 
     const urlParams = `?id=${id}&pw=${pw}`;
     const response = await fetch(
@@ -403,6 +412,8 @@ const IssueList = ({ project, onSelectIssue, id, pw }) => {
         body: JSON.stringify(newIssue),
       }
     );
+
+    // setIssues([...issues, newIssue]);
 
     if (response.ok) {
       closeModal();
@@ -454,8 +465,8 @@ const IssueList = ({ project, onSelectIssue, id, pw }) => {
               type="text"
               placeholder={`Search by ${searchCategory}...`}
               className="flex-grow p-2 border border-gray-300 rounded-tr-lg rounded-br-lg"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              value={searchContent}
+              onChange={(e) => setSearchContent(e.target.value)}
               onKeyDown={handleKeyDown}
             />
             <button
@@ -483,9 +494,9 @@ const IssueList = ({ project, onSelectIssue, id, pw }) => {
         <div>Date</div>
       </div>
       <ul>
-        {filteredIssues.map((issue) => (
+        {issues.map((issue) => (
           <li
-            key={issue.issue_id}
+            key={issue.id}
             className="p-2 cursor-pointer border-b hover:bg-gray-200 grid grid-cols-4 gap-2"
             style={{ gridTemplateColumns: '2fr 1fr 1fr 1fr' }}
             onClick={() => onSelectIssue(issue)}
