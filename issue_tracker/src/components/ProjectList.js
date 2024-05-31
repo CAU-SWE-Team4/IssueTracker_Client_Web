@@ -39,7 +39,7 @@ const ProjectList = ({ onSelectProject, selectedProject, id, pw }) => {
       }
     };
     fetchProjects();
-  }, [projects]);
+  }, [id, pw]);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => {
