@@ -309,14 +309,12 @@ const getStateBorderColor = (state) => {
 };
 
 const IssueList = ({ project, onSelectIssue, id, pw }) => {
-  const [searchQuery, setSearchQuery] = useState('');
   const [searchCategory, setSearchCategory] = useState('');
   const [selectedState, setSelectedState] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newIssueTitle, setNewIssueTitle] = useState('');
   const [newIssueDescription, setNewIssueDescription] = useState('');
   const [issues, setIssues] = useState([]);
-  const [filteredIssues, setFilteredIssues] = useState(issues);
   const [searchContent, setSearchContent] = useState('');
 
   useEffect(() => {
@@ -338,8 +336,6 @@ const IssueList = ({ project, onSelectIssue, id, pw }) => {
       console.log(data);
       if (data && Array.isArray(data)) {
         setIssues(data);
-
-        // setFilteredIssues([...issues]);
       }
     }
   };
@@ -347,24 +343,6 @@ const IssueList = ({ project, onSelectIssue, id, pw }) => {
   const handleSearch = () => {
     setSearchCategory(searchCategory);
     getIssues();
-    // const filtered = issues.filter((issue) => {
-    //   if (searchCategory === 'title') {
-    //     return issue.title.toLowerCase().includes(searchQuery.toLowerCase());
-    //   } else if (searchCategory === 'assignee') {
-    //     return issue.assignee_id
-    //       ?.toLowerCase()
-    //       .includes(searchQuery.toLowerCase());
-    //   } else if (searchCategory === 'reporter') {
-    //     return issue.reporter_id
-    //       .toLowerCase()
-    //       .includes(searchQuery.toLowerCase());
-    //   } else if (searchCategory === 'state') {
-    //     return selectedState ? issue.state === selectedState : true;
-    //   }
-    //   return false;
-    // });
-    // setFilteredIssues(filtered);
-    // setIssues(filtered);
   };
 
   const handleKeyDown = (e) => {
@@ -376,8 +354,6 @@ const IssueList = ({ project, onSelectIssue, id, pw }) => {
   const handleStateClick = (state) => {
     setSearchContent(state);
     getIssues();
-    // setSelectedState((prevState) => (prevState === state ? null : state));
-    // setSearchQuery('');
   };
 
   const handleCategoryChange = (e) => {
@@ -412,8 +388,6 @@ const IssueList = ({ project, onSelectIssue, id, pw }) => {
         body: JSON.stringify(newIssue),
       }
     );
-
-    // setIssues([...issues, newIssue]);
 
     if (response.ok) {
       closeModal();
