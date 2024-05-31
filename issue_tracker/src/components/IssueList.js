@@ -233,7 +233,7 @@ const IssueList = ({ project, onSelectIssue }) => {
           >
             <div className="flex items-center">
               <span>{issue.title}</span>
-              <span className={`ml-2 px-2 pt-0.5 pb-1 text-xs rounded-full text-white leading-tight ${getStateBgColor(issue.state)}`}>
+              <span className={`ml-2 px-2 py-0.5 text-xs rounded-full text-white leading-tight ${getStateBgColor(issue.state)}`}>
                 {issue.state}
               </span>
             </div>
