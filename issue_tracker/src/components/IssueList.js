@@ -2,26 +2,26 @@ import { React, useState, useEffect } from 'react';
 import IssueStatistics from './IssueStatistics';
 
 const issues = [
-  { issue_id: 1, title: 'Login Bug', description: 'The login button does not respond after multiple clicks.', reporter_id: 'Alice', state: 'new', reported_date: '2023-05-01', edited_date: null, assignee_id: "minsiki2", fixer_id: null, priority: "HIGH" },
-  { issue_id: 2, title: 'Profile Page Error', description: 'Profile page throws a 404 error for some users.', reporter_id: 'Bob', state: 'fixed', reported_date: '2023-05-02', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
-  { issue_id: 3, title: 'Signup Form Issue', description: 'Signup form validation is not working as expected.', reporter_id: 'Charlie', state: 'closed', reported_date: '2023-05-03', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
-  { issue_id: 4, title: 'UI Misalignment', description: 'UI elements are not aligned properly on the dashboard.', reporter_id: 'David', state: 'disposed', reported_date: '2023-05-04', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
-  { issue_id: 5, title: 'Performance Lag', description: 'The application experiences lag during peak hours.', reporter_id: 'Eve', state: 'new', reported_date: '2023-05-05', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
-  { issue_id: 6, title: 'Login Bug', description: 'The login button does not respond after multiple clicks.', reporter_id: 'Alice', state: 'new', reported_date: '2023-05-01', edited_date: null, assignee_id: "minsiki2", fixer_id: null, priority: "HIGH" },
-  { issue_id: 7, title: 'Profile Page Error', description: 'Profile page throws a 404 error for some users.', reporter_id: 'Bob', state: 'fixed', reported_date: '2023-05-02', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
-  { issue_id: 8, title: 'Signup Form Issue', description: 'Signup form validation is not working as expected.', reporter_id: 'Charlie', state: 'closed', reported_date: '2023-05-03', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
-  { issue_id: 9, title: 'UI Misalignment', description: 'UI elements are not aligned properly on the dashboard.', reporter_id: 'David', state: 'disposed', reported_date: '2023-05-04', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
-  { issue_id: 10, title: 'Performance Lag', description: 'The application experiences lag during peak hours.', reporter_id: 'Eve', state: 'new', reported_date: '2023-05-05', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
-  { issue_id: 11, title: 'Login Bug', description: 'The login button does not respond after multiple clicks.', reporter_id: 'Alice', state: 'new', reported_date: '2023-05-01', edited_date: null, assignee_id: "minsiki2", fixer_id: null, priority: "HIGH" },
-  { issue_id: 12, title: 'Profile Page Error', description: 'Profile page throws a 404 error for some users.', reporter_id: 'Bob', state: 'fixed', reported_date: '2023-05-02', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
-  { issue_id: 13, title: 'Signup Form Issue', description: 'Signup form validation is not working as expected.', reporter_id: 'Charlie', state: 'closed', reported_date: '2023-05-03', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
-  { issue_id: 14, title: 'UI Misalignment', description: 'UI elements are not aligned properly on the dashboard.', reporter_id: 'David', state: 'disposed', reported_date: '2023-05-04', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
-  { issue_id: 15, title: 'Performance Lag', description: 'The application experiences lag during peak hours.', reporter_id: 'Eve', state: 'new', reported_date: '2023-05-05', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
-  { issue_id: 16, title: 'Login Bug', description: 'The login button does not respond after multiple clicks.', reporter_id: 'Alice', state: 'new', reported_date: '2023-05-01', edited_date: null, assignee_id: "minsiki2", fixer_id: null, priority: "HIGH" },
-  { issue_id: 17, title: 'Profile Page Error', description: 'Profile page throws a 404 error for some users.', reporter_id: 'Bob', state: 'fixed', reported_date: '2023-05-02', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
-  { issue_id: 18, title: 'Signup Form Issue', description: 'Signup form validation is not working as expected.', reporter_id: 'Charlie', state: 'closed', reported_date: '2023-05-03', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
-  { issue_id: 19, title: 'UI Misalignment', description: 'UI elements are not aligned properly on the dashboard.', reporter_id: 'David', state: 'disposed', reported_date: '2023-05-04', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
-  { issue_id: 20, title: 'Performance Lag', description: 'The application experiences lag during peak hours.', reporter_id: 'Eve', state: 'new', reported_date: '2023-05-05', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
+  { issue_id: 1, title: 'Login Bug', description: 'The login button does not respond after multiple clicks.', reporter_id: 'Alice', state: 'NEW', reported_date: '2023-05-01', edited_date: null, assignee_id: "minsiki2", fixer_id: null, priority: "HIGH" },
+  { issue_id: 2, title: 'Profile Page Error', description: 'Profile page throws a 404 error for some users.', reporter_id: 'Bob', state: 'FIXED', reported_date: '2023-05-02', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
+  { issue_id: 3, title: 'Signup Form Issue', description: 'Signup form validation is not working as expected.', reporter_id: 'Charlie', state: 'CLOSED', reported_date: '2023-05-03', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
+  { issue_id: 4, title: 'UI Misalignment', description: 'UI elements are not aligned properly on the dashboard.', reporter_id: 'David', state: 'ASSIGNED', reported_date: '2023-05-04', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
+  { issue_id: 5, title: 'Performance Lag', description: 'The application experiences lag during peak hours.', reporter_id: 'Eve', state: 'RESOLVED', reported_date: '2023-05-05', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
+  { issue_id: 6, title: 'Login Bug', description: 'The login button does not respond after multiple clicks.', reporter_id: 'Alice', state: 'NEW', reported_date: '2023-05-01', edited_date: null, assignee_id: "minsiki2", fixer_id: null, priority: "HIGH" },
+  { issue_id: 7, title: 'Profile Page Error', description: 'Profile page throws a 404 error for some users.', reporter_id: 'Bob', state: 'FIXED', reported_date: '2023-05-02', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
+  { issue_id: 8, title: 'Signup Form Issue', description: 'Signup form validation is not working as expected.', reporter_id: 'Charlie', state: 'CLOSED', reported_date: '2023-05-03', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
+  { issue_id: 9, title: 'UI Misalignment', description: 'UI elements are not aligned properly on the dashboard.', reporter_id: 'David', state: 'RESOLVED', reported_date: '2023-05-04', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
+  { issue_id: 10, title: 'Performance Lag', description: 'The application experiences lag during peak hours.', reporter_id: 'Eve', state: 'NEW', reported_date: '2023-05-05', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
+  { issue_id: 11, title: 'Login Bug', description: 'The login button does not respond after multiple clicks.', reporter_id: 'Alice', state: 'NEW', reported_date: '2023-05-01', edited_date: null, assignee_id: "minsiki2", fixer_id: null, priority: "HIGH" },
+  { issue_id: 12, title: 'Profile Page Error', description: 'Profile page throws a 404 error for some users.', reporter_id: 'Bob', state: 'FIXED', reported_date: '2023-05-02', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
+  { issue_id: 13, title: 'Signup Form Issue', description: 'Signup form validation is not working as expected.', reporter_id: 'Charlie', state: 'CLOSED', reported_date: '2023-05-03', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
+  { issue_id: 14, title: 'UI Misalignment', description: 'UI elements are not aligned properly on the dashboard.', reporter_id: 'David', state: 'RESOLVED', reported_date: '2023-05-04', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
+  { issue_id: 15, title: 'Performance Lag', description: 'The application experiences lag during peak hours.', reporter_id: 'Eve', state: 'NEW', reported_date: '2023-05-05', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
+  { issue_id: 16, title: 'Login Bug', description: 'The login button does not respond after multiple clicks.', reporter_id: 'Alice', state: 'NEW', reported_date: '2023-05-01', edited_date: null, assignee_id: "minsiki2", fixer_id: null, priority: "HIGH" },
+  { issue_id: 17, title: 'Profile Page Error', description: 'Profile page throws a 404 error for some users.', reporter_id: 'Bob', state: 'FIXED', reported_date: '2023-05-02', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
+  { issue_id: 18, title: 'Signup Form Issue', description: 'Signup form validation is not working as expected.', reporter_id: 'Charlie', state: 'CLOSED', reported_date: '2023-05-03', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
+  { issue_id: 19, title: 'UI Misalignment', description: 'UI elements are not aligned properly on the dashboard.', reporter_id: 'David', state: 'DISPOSED', reported_date: '2023-05-04', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
+  { issue_id: 20, title: 'Performance Lag', description: 'The application experiences lag during peak hours.', reporter_id: 'Eve', state: 'NEW', reported_date: '2023-05-05', edited_date: null, assignee_id: null, fixer_id: null, priority: "HIGH" },
 ];
 
 const stats = {
@@ -33,14 +33,18 @@ const stats = {
 
 const getStateBgColor = (state) => {
   switch (state) {
-    case 'new':
+    case 'NEW':
       return `bg-yellow-500`;
-    case 'fixed':
-      return `bg-green-500`;
-    case 'closed':
+    case 'FIXED':
+      return `bg-blue-500`;
+    case 'RESOLVED':
+      return `bg-green-500`
+    case 'CLOSED':
       return `bg-violet-500`;
-    case 'disposed':
-      return `bg-gray-500`;
+    case 'DISPOSED':
+      return `bg-red-500`;
+    case 'ASSIGNED':
+      return `bg-gray-500`
     default:
       return `bg-gray-500`;
   }
@@ -48,13 +52,17 @@ const getStateBgColor = (state) => {
 
 const getStateTextColor = (state) => {
   switch (state) {
-    case 'new':
+    case 'NEW':
       return `text-yellow-500`;
-    case 'fixed':
-      return `text-green-500`;
-    case 'closed':
+    case 'FIXED':
+      return `text-blue-500`;
+    case 'RESOLVED':
+      return `text-green-500`
+    case 'CLOSED':
       return `text-violet-500`;
-    case 'disposed':
+    case 'DISPOSED':
+      return `text-red-500`;
+    case 'ASSIGNED':
       return `text-gray-500`;
     default:
       return `text-gray-500`;
@@ -63,13 +71,17 @@ const getStateTextColor = (state) => {
 
 const getStateBorderColor = (state) => {
   switch (state) {
-    case 'new':
+    case 'NEW':
       return `border-yellow-500`;
-    case 'fixed':
-      return `border-green-500`;
-    case 'closed':
+    case 'FIXED':
+      return `border-blue-500`;
+    case 'RESOLVED':
+      return `border-green-500`
+    case 'CLOSED':
       return `border-violet-500`;
-    case 'disposed':
+    case 'DISPOSED':
+      return `border-red-500`;
+    case 'ASSIGNED':
       return `border-gray-500`;
     default:
       return `border-gray-500`;
@@ -137,7 +149,7 @@ const IssueList = ({ project, onSelectIssue }) => {
       title: newIssueTitle,
       description: newIssueDescription,
       reporter_id: 'CurrentUser',
-      state: 'new',
+      state: 'NEW',
       reported_date: new Date().toISOString().split('T')[0],
       edited_date: null,
       assignee_id: null,
@@ -167,10 +179,10 @@ const IssueList = ({ project, onSelectIssue }) => {
         </div>
         { searchCategory === "state" ? (
           <div className="flex space-x-2 ml-4 items-center">
-            {['new', 'fixed', 'disposed', 'closed'].map(state => (
+            {['NEW', 'ASSIGNED', 'FIXED', 'RESOLVED', 'DISPOSED', 'CLOSED'].map(state => (
               <button
                 key={state}
-                className={`h-8 font-large px-2 pb-0.5 border-2 transform transition-transform duration-100 hover:scale-110 rounded-full leading-tight ${selectedState === state ? "text-white" : getStateTextColor(state) } ${getStateBorderColor(state)} ${selectedState === state ? `${getStateBgColor(state)}` : ""}`}
+                className={`h-8 font-large text-sm px-2 pb-0.5 border-2 transform transition-transform duration-100 hover:scale-110 rounded-full leading-tight ${selectedState === state ? "text-white" : getStateTextColor(state) } ${getStateBorderColor(state)} ${selectedState === state ? `${getStateBgColor(state)}` : ""}`}
                 onClick={() => handleStateClick(state)}
               >
                 {state}

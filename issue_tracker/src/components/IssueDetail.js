@@ -17,10 +17,10 @@ const IssueDetail = ({ issue, onClose }) => {
 
   const members = [
     {user_id: "minseok128", role: "PL"},
-    {user_id: "minsiki2", role: "dev"},
-    {user_id: "yeojin", role: "dev"},
-    {user_id: "junseob", role: "dev"},
-    {user_id: "hun", role: "tester"},
+    {user_id: "minsiki2", role: "DEV"},
+    {user_id: "yeojin", role: "DEV"},
+    {user_id: "junseob", role: "DEV"},
+    {user_id: "hun", role: "TESTER"},
   ]
 
   const recommends = ["minsiki2", "yeojin", "junseob"]
