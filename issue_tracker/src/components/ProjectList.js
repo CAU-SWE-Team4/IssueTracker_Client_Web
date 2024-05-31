@@ -43,7 +43,6 @@ const ProjectList = ({ onSelectProject, selectedProject, id, pw }) => {
       members: members,
     };
 
-    console.log('POST data:', newProject);
     //POST 로직
     const urlParams = `?id=${id}&pw=${pw}`;
     const response = await fetch('/project' + urlParams, {
@@ -51,16 +50,12 @@ const ProjectList = ({ onSelectProject, selectedProject, id, pw }) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ newProject }),
+      body: JSON.stringify(newProject),
     });
 
     if (response.ok) {
-      setIsModalOpen(false);
-    } else if (response.status === 400) {
-      alert('Bad Request');
+      closeModal();
     }
-
-    closeModal();
   };
 
   return (
