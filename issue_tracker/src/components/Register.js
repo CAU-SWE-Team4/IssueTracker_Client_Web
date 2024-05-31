@@ -7,19 +7,24 @@ const Register = ({ onRegister, onCancel }) => {
   const [email, setEmail] = useState('');
 
   const handleRegister = async () => {
-    // const response = await fetch('/api/register', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({ user_id: userId, password, name, mail: email }),
-    // });
+    const response = await fetch('/user/signUp', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user_id: userId,
+        password: password,
+        name: name,
+        mail: email,
+      }),
+    });
 
-    // if (response.ok) {
-    //   onRegister();
-    // } else if (response.status === 400) {
-    //   alert('Bad Request');
-    // }
+    if (response.ok) {
+      onRegister();
+    } else if (response.status === 400) {
+      alert('Bad Request');
+    }
   };
 
   return (
