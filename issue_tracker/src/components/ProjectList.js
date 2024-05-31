@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { FaRegSquarePlus } from 'react-icons/fa6';
 import { PiFinnTheHuman } from 'react-icons/pi';
+import { RiDeleteBinLine, RiEditLine } from "react-icons/ri";
+
 
 // const projects = [
 //   { id: 1, name: 'Project A' },
@@ -89,14 +91,35 @@ const ProjectList = ({ onSelectProject, selectedProject, id, pw }) => {
         {projects.map((project) => (
           <li
             key={project.project_id}
-            className={`p-3 cursor-pointer hover:text-lg hover:font-bold flex justify-center ${
+            className={`py-3 cursor-pointer hover:text-lg hover:font-bold flex justify-start ${
               selectedProject?.project_id === project.project_id
                 ? 'font-bold text-xl'
                 : 'text-gray-400'
             }`}
             onClick={() => onSelectProject(project)}
           >
-            {project.title}
+            <div className="flex flex-row justify-between items-center w-full">
+              <p>{project.title}</p>
+              <div className={`flex flex-row ${
+                selectedProject?.project_id === project.project_id
+                ? 'text-gray-800 hover:text-gray-600 font-medium '
+                : 'text-gray-400'
+                }`}
+              >
+                <button
+                  className="rounded-lg flex items-center"
+                  onClick={openModal}
+                >
+                  <RiEditLine className="mr-2" size={20} />
+                </button>
+                <button
+                  className="rounded-lg flex items-center"
+                  onClick={openModal}
+                >
+                  <RiDeleteBinLine size={20} />
+                </button>
+              </div>
+            </div>
           </li>
         ))}
       </ul>
