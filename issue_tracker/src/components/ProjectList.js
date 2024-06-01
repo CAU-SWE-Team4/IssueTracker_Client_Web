@@ -187,32 +187,34 @@ const ProjectList = ({ onSelectProject, selectedProject, id, pw }) => {
           >
             <div className="flex flex-row justify-between items-center w-full">
               <p>{project.title}</p>
-              <div
-                className={`flex flex-row ${
-                  selectedProject?.project_id === project.project_id
-                    ? 'text-gray-800 font-medium'
-                    : 'text-gray-400'
-                }`}
-              >
-                <button
-                  className="hover:text-gray-600 rounded-lg flex items-center"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    openEditModal(project);
-                  }}
+              {id === "admin" && (
+                <div
+                  className={`flex flex-row ${
+                    selectedProject?.project_id === project.project_id
+                      ? 'text-gray-800 font-medium'
+                      : 'text-gray-400'
+                  }`}
                 >
-                  <RiEditLine className="mr-2" size={20} />
-                </button>
-                <button
-                  className="hover:text-gray-600 rounded-lg flex items-center"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    deleteProject(project.project_id);
-                  }}
-                >
-                  <RiDeleteBinLine size={20} />
-                </button>
-              </div>
+                  <button
+                    className="hover:text-gray-600 rounded-lg flex items-center"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openEditModal(project);
+                    }}
+                  >
+                    <RiEditLine className="mr-2" size={20} />
+                  </button>
+                  <button
+                    className="hover:text-gray-600 rounded-lg flex items-center"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      deleteProject(project.project_id);
+                    }}
+                  >
+                    <RiDeleteBinLine size={20} />
+                  </button>
+                </div>
+              )}
             </div>
           </li>
         ))}
