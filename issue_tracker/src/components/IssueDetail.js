@@ -64,24 +64,18 @@ const IssueDetail = ({ issue, setIssue, project, onClose, id, pw }) => {
       const response = await fetch(
         `/project/${project.project_id}/issue/${issue.id}/comment` + urlParams
       );
-      
-      if (response.ok) {
-        const text = await response.text();
 
-        if (text) {
-          const data = JSON.parse(text);
-          if (data && Array.isArray(data)) {
-            setComments(data);
-          }
-        } else {
-          console.warn('No data received');
-          setComments([]);
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        if (data && Array.isArray(data)) {
+          setComments(data);
         }
       } else {
         console.error('Error getting comments: ', response.statusText);
       }
     } catch (error) {
-      console.error('Error getting comments: ', error);
+      console.error('Error getting comments2: ', error);
     }
   };
 
@@ -254,7 +248,10 @@ const IssueDetail = ({ issue, setIssue, project, onClose, id, pw }) => {
             <Comment
               issue={issue}
               comments={comments}
-              setComments={setComments}
+              getComments={getComments}
+              project={project}
+              id={id}
+              pw={pw}
             />
             <div ref={commentsEndRef} />
           </div>

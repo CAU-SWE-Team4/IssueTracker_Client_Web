@@ -1,20 +1,32 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { RiMoreLine } from "react-icons/ri";
 
-const Comment = ({ issue, comments, setComments }) => {
+const Comment = ({ issue, comments, getComments, id, pw, project }) => {
 	
   const [newComment, setNewComment] = useState('');
   const [editMode, setEditMode] = useState(null);
   const [editedComment, setEditedComment] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
-	const handleAddComment = () => {
-    if (newComment.trim()) {
-      setComments([
-        ...comments,
-        { id: comments.length + 1, author: 'You', text: newComment, date: new Date().toISOString().split('T')[0] },
-      ]);
-      setNewComment('');
+	const handleAddComment = async () => {
+		const addedComment = {
+			content: newComment
+		};
+    const urlParams = `?id=${id}&pw=${pw}`;
+    const response = await fetch(
+      `/project/${project.project_id}/issue/${issue.id}/comment` + urlParams,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(addedComment),
+      }
+    );
+
+    if (response.ok) {
+			getComments();
+			setNewComment('');
     }
   };
 
@@ -30,6 +42,18 @@ const Comment = ({ issue, comments, setComments }) => {
         return 'Close issue';
     }
   };
+
+	const formatDate = (dateString) => {
+		const date = new Date(dateString);
+		const options = {
+			year: 'numeric',
+			month: '2-digit',
+			day: '2-digit',
+			hour: '2-digit',
+			minute: '2-digit',
+		};
+		return date.toLocaleDateString('ko-KO', options).replace(',', '');
+	};
 
 	const handleDropdownToggle = (commentId) => {
     setDropdownOpen(dropdownOpen === commentId ? null : commentId);
@@ -59,8 +83,8 @@ const Comment = ({ issue, comments, setComments }) => {
 	return (
 		<div>
 			 {comments.map((comment) => (
-				<div key={comment.id} className="border p-2 mb-1 rounded relative">
-					{editMode === comment.id ? (
+				<div key={comment.comment_id} className="border p-2 mb-1 rounded relative">
+					{editMode === comment.comment_id ? (
 					<div>
 						<textarea
 						className="w-full border rounded p-2"
@@ -70,7 +94,7 @@ const Comment = ({ issue, comments, setComments }) => {
 						<div className="flex justify-end mt-2">
 						<button
 							className="text-white bg-blue-700 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-							onClick={() => handleEditSubmit(comment.id)}
+							onClick={() => handleEditSubmit(comment.comment_id)}
 						>
 							Save
 						</button>
@@ -80,17 +104,17 @@ const Comment = ({ issue, comments, setComments }) => {
 					<div>
 						<div className="mb-1 ml-1 flex justify-between items-center">
 						<div>
-							<span className="font-bold">{comment.author}</span>
-							<span className="ml-1 text-gray-500">commented at {comment.date}</span>
+							<span className="font-bold">{comment.author_id}</span>
+							<span className="ml-1 text-sm text-gray-500">commented at {formatDate(comment.created_date)}</span>
 						</div>
 						<div className="relative">
 							<button
 							className="text-gray-500 hover:text-gray-700"
-							onClick={() => handleDropdownToggle(comment.id)}
+							onClick={() => handleDropdownToggle(comment.comment_id)}
 							>
 								<RiMoreLine/>
 							</button>
-							{dropdownOpen === comment.id && (
+							{dropdownOpen === comment.comment_id && (
 							<div className="absolute right-0 w-32 bg-white border border-gray-300 rounded shadow-lg z-50">
 								<button
 								className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -100,7 +124,7 @@ const Comment = ({ issue, comments, setComments }) => {
 								</button>
 								<button
 								className="block w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-gray-100"
-								onClick={() => handleDelete(comment.id)}
+								onClick={() => handleDelete(comment.comment_id)}
 								>
 								Delete
 								</button>
@@ -108,7 +132,7 @@ const Comment = ({ issue, comments, setComments }) => {
 							)}
 						</div>
 						</div>
-						<p className="ml-2">{comment.text}</p>
+						<p className="ml-2">{comment.content}</p>
 					</div>
 					)}
 				</div>
@@ -125,20 +149,20 @@ const Comment = ({ issue, comments, setComments }) => {
 					{ getStatus(issue.state) === "Close issue" ?
 					<button
 						className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-red-500 text-white border-gray-600 hover:bg-red-400 hover:border-gray-600 focus:ring-gray-700"
-						onClick={handleAddComment} //수정 필요
+						onClick={() => {}} //수정 필요
 					>
 						Dispose issue
 					</button> : <></>}
 					{ getStatus(issue.state) === "Close issue" ?
 					<button
 						className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-green-500 text-white border-gray-600 hover:bg-green-400 hover:border-gray-600 focus:ring-gray-700"
-						onClick={handleAddComment} //수정 필요
+						onClick={() => {}} //수정 필요
 					>
 						Issue Fixed
 					</button> : <></>}
 					<button
 						className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-gray-600 text-white border-gray-600 hover:bg-gray-500 hover:border-gray-600 focus:ring-gray-700"
-						onClick={handleAddComment} //수정 필요
+						onClick={() => {}} //수정 필요
 					>
 						{ getStatus(issue.state) }
 					</button>
