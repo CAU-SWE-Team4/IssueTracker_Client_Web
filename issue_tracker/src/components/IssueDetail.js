@@ -371,16 +371,40 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
                 <p className="ml-4">Assignees</p>
               </div>
               {issue.assignee_id ? (
-                <div className="flex items-center justify-start w-full px-4 pb-2">
-                  <PiFinnTheHuman size={24} />
-                  <p className="ml-2 font-bold text-sm text-gray-700">
-                    {issue.assignee_id}
-                  </p>
+                <div className="flex flex-col items-center">
+                  <div className="flex items-center justify-start w-full px-4 pb-2">
+                    <PiFinnTheHuman size={24} />
+                    <p className="ml-2 font-bold text-sm text-gray-700">
+                      {issue.assignee_id}
+                    </p>
+                  </div>
+                  {userRole === 'PL' && (
+                    <div>
+                      <p className="ml-4 mb-2 font-semibold text-xs text-gray-400">
+                        Change Assignee
+                      </p>
+                      {recommends.map((recommend) => (
+                        <div className="flex flex-row items-center justify-start w-full px-4 pb-2">
+                          <PiFinnTheHuman size={24} />
+                          <button
+                            className="ml-2 font-bold text-sm text-gray-500 hover:text-black cursor-pointer"
+                            onClick={() => {
+                              handleAssigneeAndPriority(recommend, issue.priority);
+                            }
+                            }
+                          >
+                            {recommend}
+                          </button>
+                          {recommend === issue.assignee_id && (<p className="ml-1 font-bold text-xs text-yellow-500">now</p>)}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ) : (
                 <div>
                   <p className="ml-6 mb-4 text-sm">No one :(</p>
-                  {userRole === 'PL' ? (
+                  {userRole === 'PL' && (
                     <div>
                       <p className="ml-4 mb-2 font-semibold text-xs text-gray-400">
                         Suggestions
@@ -400,8 +424,6 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
                         </div>
                       ))}
                     </div>
-                  ) : (
-                    <></>
                   )}
                 </div>
               )}
