@@ -59,7 +59,7 @@ const getStateBorderColor = (state) => {
   }
 };
 
-const IssueList = ({ project, onSelectIssue, id, pw }) => {
+const IssueList = ({ project, members, setMembers, onSelectIssue, id, pw }) => {
   const [searchCategory, setSearchCategory] = useState('');
   const [selectedState, setSelectedState] = useState('NEW');
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -68,7 +68,6 @@ const IssueList = ({ project, onSelectIssue, id, pw }) => {
   const [issues, setIssues] = useState([]);
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   const [searchContent, setSearchContent] = useState('');
-  const [members, setMembers] = useState([]);
   const [stats, setStats] = useState({});
 
   useEffect(() => {

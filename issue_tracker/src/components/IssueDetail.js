@@ -5,40 +5,77 @@ import { PiFinnTheHuman } from 'react-icons/pi';
 import Comment from './Comment';
 import { useInsertionEffect } from 'react';
 
-const IssueDetail = ({ issue, setIssue, onClose, id, pw }) => {
-  const [comments, setComments] = useState([
-    {
-      id: 1,
-      author: 'John',
-      text: 'This is the first comment.',
-      date: '2023-05-03',
-    },
-    {
-      id: 2,
-      author: 'Jane',
-      text: 'This is the second comment.',
-      date: '2023-05-04',
-    },
-  ]);
+const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
+  const [comments, setComments] = useState([]);
   const [editMode, setEditMode] = useState(null);
   const [editedTitle, setEditedTitle] = useState('');
   const [editedDescription, setEditedDescription] = useState('');
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [recommends, setRecommends] = useState([]);
   const commentsEndRef = useRef(null);
 
-  const members = [
-    { user_id: 'minseok128', role: 'PL' },
-    { user_id: 'minsiki2', role: 'DEV' },
-    { user_id: 'yeojin', role: 'DEV' },
-    { user_id: 'junseob', role: 'DEV' },
-    { user_id: 'hun', role: 'TESTER' },
-  ];
-
-  const recommends = ['minsiki2', 'yeojin', 'junseob'];
+  useEffect(() => {
+    getComments();
+    getRecommends();
+  }, []);
 
   useEffect(() => {
     commentsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [comments]);
+
+  const getIssue = async (issue) => {
+    const urlParams = `?id=${id}&pw=${pw}`;
+    const response = await fetch(
+      `/project/${issue.project_id}/issue/${issue.id}` + urlParams
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+      if (data) {
+        setIssue(data);
+      }
+    }
+  };
+
+  const getComments = async () => {
+    try {
+      const urlParams = `?id=${id}&pw=${pw}`;
+      const response = await fetch(
+        `/project/${issue.project_id}/issue/${issue.id}/comment` + urlParams
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data && Array.isArray(data)) {
+          setComments(data);
+        }
+      } else {
+        console.error('Error getting comments: ', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error getting comments2: ', error);
+    }
+  };
+
+  const getRecommends = async () => {
+    try {
+      const urlParams = `?id=${id}&pw=${pw}`;
+      const response = await fetch(
+        `/project/${issue.project_id}/issue/${issue.id}/recommend` + urlParams
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data && Array.isArray(data.dev_ids)) {
+          setRecommends(data.dev_ids);
+        }
+      } else {
+        console.error('Error getting recommends: ', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error getting recommends2: ', error);
+    }
+  };
 
   const getStateBgColor = (state) => {
     switch (state) {
@@ -59,18 +96,21 @@ const IssueDetail = ({ issue, setIssue, onClose, id, pw }) => {
     }
   };
 
-  const getIssue = async (issue) => {
-    const urlParams = `?id=${id}&pw=${pw}`;
-    const response = await fetch(
-      `/project/${issue.project_id}/issue/${issue.id}` + urlParams
-    );
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const options = {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+    };
+    return date.toLocaleDateString('ko-KO', options).replace(',', '');
+  };
 
-    if (response.ok) {
-      const data = await response.json();
-      if (data) {
-        setIssue(data);
-      }
-    }
+  const getUserRole = (userId) => {
+    const user = members.find((u) => u.user_id === userId);
+    return user ? user.role : null;
   };
 
   const handleDropdownToggle = () => {
@@ -114,7 +154,7 @@ const IssueDetail = ({ issue, setIssue, onClose, id, pw }) => {
         body: JSON.stringify(updateIssue),
       }
     );
-
+    getIssue(issue);
     setEditMode(null);
   };
 
@@ -142,6 +182,26 @@ const IssueDetail = ({ issue, setIssue, onClose, id, pw }) => {
     }
 
     setDropdownOpen(null);
+  };
+
+  const handleAssigneeAndPriority = async (devId, updatedPriority) => {
+    const updateAssigneeAndPriority = {
+      user_id: devId,
+      priority: updatedPriority,
+    };
+
+    const urlParams = `?id=${id}&pw=${pw}`;
+    const response = await fetch(
+      `/project/${issue.project_id}/issue/${issue.id}/assign` + urlParams,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updateAssigneeAndPriority),
+      }
+    );
+    getIssue(issue);
   };
 
   return (
@@ -182,7 +242,10 @@ const IssueDetail = ({ issue, setIssue, onClose, id, pw }) => {
                   <p className="font-bold text-gray-700 ml-2 mr-1">
                     {issue.reporter_id}
                   </p>
-                  <p> opened this issue at {issue.reported_date}</p>
+                  <p className="text-sm text-gray-600">
+                    {' '}
+                    opened this issue at {formatDate(issue.created_date)}
+                  </p>
                 </div>
               </div>
             </div>
@@ -245,7 +308,8 @@ const IssueDetail = ({ issue, setIssue, onClose, id, pw }) => {
               issue={issue}
               getIssue={getIssue}
               comments={comments}
-              setComments={setComments}
+              getComments={getComments}
+              formatDate={formatDate}
               id={id}
               pw={pw}
             />
@@ -266,17 +330,31 @@ const IssueDetail = ({ issue, setIssue, onClose, id, pw }) => {
               ) : (
                 <div>
                   <p className="ml-6 mb-4 text-sm">No one :(</p>
-                  <p className="ml-4 mb-2 font-semibold text-xs text-gray-400">
-                    Suggestions
-                  </p>
-                  {recommends.map((recommend) => (
-                    <div className="flex items-center justify-start w-full px-4 pb-2">
-                      <PiFinnTheHuman size={24} />
-                      <button className="ml-2 font-bold text-sm text-gray-500 hover:text-black cursor-pointer">
-                        {recommend}
-                      </button>
+                  {getUserRole(id) === 'PL' ? (
+                    <div>
+                      <p className="ml-4 mb-2 font-semibold text-xs text-gray-400">
+                        Suggestions
+                      </p>
+                      {recommends.map((recommend) => (
+                        <div className="flex items-center justify-start w-full px-4 pb-2">
+                          <PiFinnTheHuman size={24} />
+                          <button
+                            className="ml-2 font-bold text-sm text-gray-500 hover:text-black cursor-pointer"
+                            onClick={() =>
+                              handleAssigneeAndPriority(
+                                recommend,
+                                issue.priority
+                              )
+                            }
+                          >
+                            {recommend}
+                          </button>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  ) : (
+                    <></>
+                  )}
                 </div>
               )}
             </div>
