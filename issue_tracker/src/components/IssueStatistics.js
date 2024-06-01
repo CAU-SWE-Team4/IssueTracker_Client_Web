@@ -1,16 +1,16 @@
 import React from 'react';
 
 const IssueStatistics = ({ stats }) => {
-
-  const completionRate = stats.total_issues > 0 
-    ? ((stats.closed_issues / stats.total_issues) * 100).toFixed(2) 
-    : 0;
+  const completionRate =
+    stats.total_issues > 0
+      ? ((stats.closed_issues / stats.total_issues) * 100).toFixed(2)
+      : 0;
 
   return (
     <div className="mb-4">
-      <div 
+      <div
         className="grid grid-cols-3 gap-4"
-        style={{ gridTemplateColumns: '2fr 2fr 3fr'}}
+        style={{ gridTemplateColumns: '2fr 2fr 3fr' }}
       >
         <div className="flex flex-col p-3 border-2 rounded-lg items-center">
           <h3 className="text-lg font-bold mb-1">Today's Issues</h3>
@@ -27,7 +27,9 @@ const IssueStatistics = ({ stats }) => {
           </div>
           <div className="flex flex-row items-end">
             <p className="text-2xl font-bold">{completionRate}%</p>
-            <div className="ml-1 text-sm">({stats.closed_issues}/{stats.total_issues})</div>
+            <div className="ml-1 text-sm">
+              ({stats.closed_issues}/{stats.total_issues})
+            </div>
           </div>
         </div>
       </div>
