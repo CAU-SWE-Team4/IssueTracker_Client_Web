@@ -140,12 +140,14 @@ const Comment = ({
                   </span>
                 </div>
                 <div className="relative">
-                  <button
-                    className="text-gray-500 hover:text-gray-700"
-                    onClick={() => handleDropdownToggle(comment.comment_id)}
-                  >
-                    <RiMoreLine />
-                  </button>
+									{id === comment.author_id && (
+										<button
+											className="text-gray-500 hover:text-gray-700"
+											onClick={() => handleDropdownToggle(comment.comment_id)}
+										>
+											<RiMoreLine />
+										</button>
+									)}
                   {dropdownOpen === comment.comment_id && (
                     <div className="absolute right-0 w-32 bg-white border border-gray-300 rounded shadow-lg z-50">
                       <button
