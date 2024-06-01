@@ -1,5 +1,6 @@
 import { React, useState, useEffect } from 'react';
 import IssueStatistics from './IssueStatistics';
+import { PiFinnTheHuman } from 'react-icons/pi';
 
 // const issues = [
 //   {
@@ -315,7 +316,9 @@ const IssueList = ({ project, onSelectIssue, id, pw }) => {
   const [newIssueTitle, setNewIssueTitle] = useState('');
   const [newIssueDescription, setNewIssueDescription] = useState('');
   const [issues, setIssues] = useState([]);
+  const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   const [searchContent, setSearchContent] = useState('');
+  const [members, setMembers] = useState([{ id: 'minsik', role: 'NEWJEANS' }]);
 
   useEffect(() => {
     getIssues();
@@ -333,9 +336,8 @@ const IssueList = ({ project, onSelectIssue, id, pw }) => {
 
     if (response.ok) {
       const data = await response.json();
-      console.log(data);
-      if (data && Array.isArray(data)) {
-        setIssues(data);
+      if (data.issues && Array.isArray(data.issues)) {
+        setIssues(data.issues);
       }
     }
   };
@@ -371,6 +373,15 @@ const IssueList = ({ project, onSelectIssue, id, pw }) => {
     setNewIssueDescription('');
   };
 
+  const openUserModal = async () => {
+    // await getUser(project.project_id);
+    setIsUserModalOpen(true);
+  };
+
+  const closeUserModal = () => {
+    setIsUserModalOpen(false);
+  };
+
   const handleNewIssueSubmit = async () => {
     const newIssue = {
       title: newIssueTitle,
@@ -396,7 +407,15 @@ const IssueList = ({ project, onSelectIssue, id, pw }) => {
 
   return (
     <div className="p-4">
-      <h2 className="text-xl font-bold mb-4">{project.name} Issues</h2>
+      <h2 className="text-xl font-bold mb-4 flex justify-between items-center">
+        {project.title} Issues
+        <button
+          className="text-white bg-blue-600 hover:bg-blue-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5"
+          onClick={openUserModal}
+        >
+          Show Users
+        </button>
+      </h2>
       <IssueStatistics stats={stats} />
       <div className="flex mb-4">
         <div
@@ -520,6 +539,30 @@ const IssueList = ({ project, onSelectIssue, id, pw }) => {
                 onClick={handleNewIssueSubmit}
               >
                 Open issue
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {isUserModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-2/3">
+            <h2 className="text-xl font-bold mb-4">Project Members</h2>
+            <ul>
+              {members.map((member) => (
+                <li key={member.id} className="flex flex-row ml-2 mb-2">
+                  <PiFinnTheHuman size={24} />
+                  <span className="ml-2 font-semibold">{member.id}</span> -{' '}
+                  <span>{member.role}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="flex justify-end">
+              <button
+                className="text-red-500 bg-white border border-gray-300 hover:bg-gray-100 font-medium rounded-lg text-sm px-5 py-2.5"
+                onClick={closeUserModal}
+              >
+                Close
               </button>
             </div>
           </div>
