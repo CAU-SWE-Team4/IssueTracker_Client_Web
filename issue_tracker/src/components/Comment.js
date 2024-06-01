@@ -37,19 +37,6 @@ const Comment = ({
     }
   };
 
-  const getStatus = (state) => {
-    switch (state) {
-      case 'NEW':
-      case 'FIXED':
-        return 'Close issue';
-      case 'CLOSED':
-      case 'DISPOSED':
-        return 'Reopen issue';
-      default:
-        return 'Close issue';
-    }
-  };
-
   const handleDropdownToggle = (commentId) => {
     setDropdownOpen(dropdownOpen === commentId ? null : commentId);
   };
@@ -198,19 +185,25 @@ const Comment = ({
             Dispose issue
           </button>
           <button
-            className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-green-500 text-white border-gray-600 hover:bg-green-400 hover:border-gray-600 focus:ring-gray-700"
+            className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-blue-500 text-white border-gray-600 hover:bg-blue-400 hover:border-gray-600 focus:ring-gray-700"
             onClick={() => handleStateChange(issue, 'FIXED')} //수정 필요
           >
             Issue Fixed
           </button>
           <button
-            className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-gray-600 text-white border-gray-600 hover:bg-gray-500 hover:border-gray-600 focus:ring-gray-700"
+            className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-green-500 text-white border-gray-600 hover:bg-green-400 hover:border-gray-600 focus:ring-gray-700"
+            onClick={() => handleStateChange(issue, 'RESOLVED')} //수정 필요
+          >
+            Issue Resolved
+          </button>
+          <button
+            className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-violet-600 text-white border-gray-600 hover:bg-violet-500 hover:border-gray-600 focus:ring-gray-700"
             onClick={() => handleStateChange(issue, 'CLOSED')} //수정 필요
           >
             Close Issue
           </button>
           <button
-            className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-gray-600 text-white border-gray-600 hover:bg-gray-500 hover:border-gray-600 focus:ring-gray-700"
+            className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-pink-500 text-white border-gray-600 hover:bg-pink-400 hover:border-gray-600 focus:ring-gray-700"
             onClick={() => handleStateChange(issue, 'REOPEN')} //수정 필요
           >
             Reopen Issue
