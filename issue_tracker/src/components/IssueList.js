@@ -364,6 +364,20 @@ const IssueList = ({ project, onSelectIssue, id, pw }) => {
     }
   };
 
+  const getIssue = async (issue) => {
+    const urlParams = `?id=${id}&pw=${pw}`;
+    const response = await fetch(
+      `/project/${project.project_id}/issue/${issue.id}` + urlParams
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+      if (data) {
+        onSelectIssue(data);
+      }
+    }
+  };
+
   const handleSearch = () => {
     setSearchCategory(searchCategory);
     getIssues();
@@ -383,6 +397,7 @@ const IssueList = ({ project, onSelectIssue, id, pw }) => {
 
   const handleCategoryChange = (e) => {
     setSearchCategory(e.target.value);
+    setSearchContent('');
     setSelectedState(null);
   };
 
@@ -516,7 +531,7 @@ const IssueList = ({ project, onSelectIssue, id, pw }) => {
             key={issue.id}
             className="p-2 cursor-pointer border-b hover:bg-gray-200 grid grid-cols-4 gap-2"
             style={{ gridTemplateColumns: '2fr 1fr 1fr 1fr' }}
-            onClick={() => onSelectIssue(issue)}
+            onClick={() => getIssue(issue)}
           >
             <div className="flex items-center">
               <span>{issue.title}</span>

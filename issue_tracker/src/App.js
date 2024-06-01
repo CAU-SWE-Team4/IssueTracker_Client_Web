@@ -20,6 +20,8 @@ function App() {
         <IssueDetail
           issue={selectedIssue}
           onClose={() => setSelectedIssue(null)}
+          id={id}
+          pw={pw}
         />
       );
     } else if (selectedProject) {
