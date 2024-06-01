@@ -259,7 +259,7 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
                     {issue.state}
                   </span>
                   {getUserRole(id) === "PL" && issue.assignee_id ? (
-                    <div>
+                    <div className="pl-2">
                       <select value={editedPriority} onChange={handlePriorityChange}>
                         <option value="BLOCKER">BLOCKER</option>
                         <option value="CRITICAL">CRITICAL</option>
