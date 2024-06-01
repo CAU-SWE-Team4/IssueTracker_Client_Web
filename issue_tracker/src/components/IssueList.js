@@ -59,6 +59,21 @@ const getStateBorderColor = (state) => {
   }
 };
 
+const getPriorityTextColor = (priority) => {
+  switch (priority) {
+    case 'BLOCKER':
+      return `text-red-800`;
+    case 'CRITICAL':
+      return `text-red-500`;
+    case 'MINOR':
+      return `text-violet-500`;
+    case 'TRIVIAL':
+      return `text-gray-600`;
+    default:
+      return `text-blue-500`;
+  }
+};
+
 const IssueList = ({ project, members, setMembers, onSelectIssue, id, pw }) => {
   const [searchCategory, setSearchCategory] = useState('');
   const [selectedState, setSelectedState] = useState('NEW');
@@ -198,7 +213,6 @@ const IssueList = ({ project, members, setMembers, onSelectIssue, id, pw }) => {
     const newIssue = {
       title: newIssueTitle,
       description: newIssueDescription,
-      priority: "MAJOR",
     };
 
     const urlParams = `?id=${id}&pw=${pw}`;
@@ -319,7 +333,7 @@ const IssueList = ({ project, members, setMembers, onSelectIssue, id, pw }) => {
                 {issue.state}
               </span>
             </div>
-            <span>{issue.priority}</span>
+            <span className={`${getPriorityTextColor(issue.priority)}`}>{issue.priority}</span>
             <span>{issue.assignee_id}</span>
             <span>{issue.reporter_id}</span>
             <span>{issue.created_date.slice(0, 10)}</span>
