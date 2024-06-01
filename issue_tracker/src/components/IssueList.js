@@ -311,22 +311,44 @@ const getStateBorderColor = (state) => {
 
 const IssueList = ({ project, onSelectIssue, id, pw }) => {
   const [searchCategory, setSearchCategory] = useState('');
-  const [selectedState, setSelectedState] = useState(null);
+  const [selectedState, setSelectedState] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newIssueTitle, setNewIssueTitle] = useState('');
   const [newIssueDescription, setNewIssueDescription] = useState('');
   const [issues, setIssues] = useState([]);
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   const [searchContent, setSearchContent] = useState('');
-  const [members, setMembers] = useState([{ id: 'minsik', role: 'NEWJEANS' }]);
+  const [members, setMembers] = useState([]);
 
   useEffect(() => {
     getIssues();
+    getMembers();
   }, [project]);
 
   useEffect(() => {
     handleSearch(selectedState);
   }, [selectedState]);
+
+  const getMembers = async () => {
+    try {
+      const urlParams = `?id=${id}&pw=${pw}`;
+      const response = await fetch(
+        `/project/${project.project_id}/userRole` + urlParams
+      );
+      if (response.ok) {
+        const data = await response.json();
+
+        if (data && Array.isArray(data)) {
+          setMembers(data);
+          console.log(data);
+        }
+      } else {
+        console.error('Error fetching users: ', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error fetching users: ', error);
+    }
+  };
 
   const getIssues = async () => {
     const urlParams = `?id=${id}&pw=${pw}&filterBy=${searchCategory}&filterValue=${searchContent}`;
@@ -401,6 +423,7 @@ const IssueList = ({ project, onSelectIssue, id, pw }) => {
     );
 
     if (response.ok) {
+      getIssues();
       closeModal();
     }
   };
@@ -550,10 +573,11 @@ const IssueList = ({ project, onSelectIssue, id, pw }) => {
             <h2 className="text-xl font-bold mb-4">Project Members</h2>
             <ul>
               {members.map((member) => (
-                <li key={member.id} className="flex flex-row ml-2 mb-2">
+                <li key={member.user_id} className="flex flex-row ml-2 mb-2">
                   <PiFinnTheHuman size={24} />
-                  <span className="ml-2 font-semibold">{member.id}</span> -{' '}
-                  <span>{member.role}</span>
+                  <span className="ml-2 font-semibold">
+                    {member.user_id}
+                  </span> - <span>{member.role}</span>
                 </li>
               ))}
             </ul>
