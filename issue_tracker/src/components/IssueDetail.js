@@ -359,6 +359,7 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
               comments={comments}
               getComments={getComments}
               formatDate={formatDate}
+              userRole={userRole}
               id={id}
               pw={pw}
             />
