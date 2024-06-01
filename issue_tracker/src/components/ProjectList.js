@@ -218,13 +218,14 @@ const ProjectList = ({ onSelectProject, selectedProject, id, pw }) => {
         ))}
       </ul>
       <div className="flex justify-center">
-        <button
+        { id === "admin" && (<button
           className="text-blue-500 hover:text-blue-700 font-medium rounded-lg px-5 py-2.5 mt-4 flex items-center"
           onClick={openModal}
         >
           <FaRegSquarePlus className="mr-2" size={20} />
           New project
         </button>
+        )}
       </div>
 
       {isModalOpen && (
