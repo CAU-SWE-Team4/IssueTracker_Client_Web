@@ -166,7 +166,6 @@ const IssueList = ({ project, members, setMembers, onSelectIssue, id, pw }) => {
   const handleStateClick = (state) => {
     setSelectedState(state);
     setSearchContent(state);
-    getIssues();
   };
 
   const handleCategoryChange = (e) => {
