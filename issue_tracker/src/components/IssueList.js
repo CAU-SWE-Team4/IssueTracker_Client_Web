@@ -340,7 +340,6 @@ const IssueList = ({ project, onSelectIssue, id, pw }) => {
 
         if (data && Array.isArray(data)) {
           setMembers(data);
-          console.log(data);
         }
       } else {
         console.error('Error fetching users: ', response.statusText);
@@ -358,8 +357,9 @@ const IssueList = ({ project, onSelectIssue, id, pw }) => {
 
     if (response.ok) {
       const data = await response.json();
-      if (data.issues && Array.isArray(data.issues)) {
-        setIssues(data.issues);
+      if (data && Array.isArray(data)) {
+        console.log(data);
+        setIssues(data);
       }
     }
   };
