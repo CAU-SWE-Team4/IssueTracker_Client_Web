@@ -186,7 +186,23 @@ const IssueList = ({ project, members, setMembers, onSelectIssue, id, pw }) => {
   };
 
   const openUserModal = async () => {
-    // await getUser(project.project_id);
+    try {
+      const urlParams = `?id=${id}&pw=${pw}`;
+      const response = await fetch(
+        `/project/${project.project_id}/userRole` + urlParams
+      );
+      if (response.ok) {
+        const data = await response.json();
+
+        if (data && Array.isArray(data)) {
+          setMembers(data);
+        }
+      } else {
+        console.error('Error fetching users: ', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error fetching users: ', error);
+    }
     setIsUserModalOpen(true);
   };
 

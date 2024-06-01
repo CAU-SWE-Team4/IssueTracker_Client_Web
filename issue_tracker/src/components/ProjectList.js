@@ -13,6 +13,8 @@ const ProjectList = ({ onSelectProject, selectedProject, id, pw }) => {
   const [allUsers, setAllUsers] = useState([]);
   const [projects, setProjects] = useState([]);
 
+  const getMembers = async (project) => {};
+
   useEffect(() => {
     const getProjects = async () => {
       try {
@@ -39,7 +41,7 @@ const ProjectList = ({ onSelectProject, selectedProject, id, pw }) => {
       const response = await fetch('/user' + urlParams);
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
+        console.log('users', data);
         if (data && Array.isArray(data)) {
           setAllUsers(data);
         }
@@ -64,29 +66,38 @@ const ProjectList = ({ onSelectProject, selectedProject, id, pw }) => {
     setIsEditing(true);
     setEditingProject(project);
     setNewProjectTitle(project.title);
-    const roles = (project.members || []).reduce((acc, member) => {
-      acc[member.user_id] = member.role;
-      return acc;
-    }, {});
-    console.log(roles);
-    setMemberRoles(roles);
+    // const roles = (project.members || []).reduce((acc, member) => {
+    //   acc[member.user_id] = member.role;
+    //   return acc;
+    // }, {});
+    // console.log(roles);
+    try {
+      const urlParams = `?id=${id}&pw=${pw}`;
+      const response = await fetch(
+        `/project/${project.project_id}/userRole` + urlParams
+      );
+      if (response.ok) {
+        const data = await response.json();
 
-    // await getUser(project.project_id);
+        if (data && Array.isArray(data)) {
+          setMemberRoles(
+            data.reduce((map, user) => {
+              map[user.user_id] = user.role;
+              return map;
+            }, {})
+          );
+        }
+      } else {
+        console.error('Error fetching users: ', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error fetching users: ', error);
+    }
+
+    // setMemberRoles(roles);
+
     openModal();
   };
-
-  // const getUser = async (pId) => {
-  //   const urlParams = `?id=${id}&pw=${pw}`;
-  //   const response = await fetch(`/project/${pId}` + urlParams);
-  //   if (response.ok) {
-  //     const data = await response.json();
-  //     if (data.members && Array.isArray(data.members)) {
-  //       setAllUsers(data.members);
-  //     }
-  //   } else {
-  //     console.error('Error fetching projects: ', response.statusText);
-  //   }
-  // };
 
   const handleRoleChange = (userId, role) => {
     setMemberRoles((prevRoles) => ({

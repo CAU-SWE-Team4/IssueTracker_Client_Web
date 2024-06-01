@@ -116,6 +116,8 @@ const Comment = ({
       }
     );
 
+    console.log(response);
+
     if (response.ok) {
       getIssue(issue);
     }
