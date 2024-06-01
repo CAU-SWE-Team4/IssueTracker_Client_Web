@@ -5,7 +5,7 @@ import { PiFinnTheHuman } from 'react-icons/pi';
 import Comment from './Comment';
 import { useInsertionEffect } from 'react';
 
-const IssueDetail = ({ issue, onClose, id, pw }) => {
+const IssueDetail = ({ issue, setIssue, onClose, id, pw }) => {
   const [comments, setComments] = useState([
     {
       id: 1,
@@ -104,8 +104,29 @@ const IssueDetail = ({ issue, onClose, id, pw }) => {
     setEditMode(null);
   };
 
-  const handleDelete = (issueId) => {
+  const handleDelete = async (issue) => {
     // 삭제 로직
+    const urlParams = `?id=${id}&pw=${pw}`;
+    const response = await fetch(
+      `/project/${issue.project_id}/issue/${issue.id}` + urlParams,
+      {
+        method: 'DELETE',
+      }
+    );
+
+    if (response.ok) {
+      // setIssue((prevIssues) => prevIssues.filter((is) => is.id !== issue.id));
+      onClose();
+    } else if (response.status === 401) {
+      console.error('Unauthorized: Invalid ID or password.');
+    } else if (response.status === 403) {
+      console.error(
+        'Forbidden: You do not have permission to delete this project.'
+      );
+    } else {
+      console.error('Error deleting project: ', response.statusText);
+    }
+
     setDropdownOpen(null);
   };
 
@@ -196,7 +217,7 @@ const IssueDetail = ({ issue, onClose, id, pw }) => {
                         </button>
                         <button
                           className="block w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-gray-100"
-                          onClick={() => handleDelete(issue.issue_id)}
+                          onClick={() => handleDelete(issue)}
                         >
                           Delete
                         </button>

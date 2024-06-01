@@ -19,6 +19,7 @@ function App() {
       return (
         <IssueDetail
           issue={selectedIssue}
+          setIssue={setSelectedIssue}
           onClose={() => setSelectedIssue(null)}
           id={id}
           pw={pw}
