@@ -11,6 +11,7 @@ function App() {
   const [selectedIssue, setSelectedIssue] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false); //임시 로그인 처리
   const [isRegistering, setIsRegistering] = useState(false);
+  const [members, setMembers] = useState([]);
   const [id, setId] = useState(null);
   const [pw, setPw] = useState(null);
 
@@ -21,7 +22,7 @@ function App() {
           issue={selectedIssue}
           setIssue={setSelectedIssue}
           onClose={() => setSelectedIssue(null)}
-          project={selectedProject}
+          members={members}
           id={id}
           pw={pw}
         />
@@ -31,6 +32,8 @@ function App() {
         <IssueList
           project={selectedProject}
           onSelectIssue={setSelectedIssue}
+          members={members}
+          setMembers={setMembers}
           id={id}
           pw={pw}
         />

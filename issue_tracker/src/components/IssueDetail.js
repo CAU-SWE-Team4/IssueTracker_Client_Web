@@ -5,7 +5,7 @@ import { PiFinnTheHuman } from 'react-icons/pi';
 import Comment from './Comment';
 import { useInsertionEffect } from 'react';
 
-const IssueDetail = ({ issue, setIssue, project, onClose, id, pw }) => {
+const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
   const [comments, setComments] = useState([]);
   const [editMode, setEditMode] = useState(null);
   const [editedTitle, setEditedTitle] = useState('');
@@ -26,7 +26,7 @@ const IssueDetail = ({ issue, setIssue, project, onClose, id, pw }) => {
   const getIssue = async (issue) => {
     const urlParams = `?id=${id}&pw=${pw}`;
     const response = await fetch(
-      `/project/${project.project_id}/issue/${issue.id}` + urlParams
+      `/project/${issue.project_id}/issue/${issue.id}` + urlParams
     );
 
     if (response.ok) {
@@ -41,7 +41,7 @@ const IssueDetail = ({ issue, setIssue, project, onClose, id, pw }) => {
     try {
       const urlParams = `?id=${id}&pw=${pw}`;
       const response = await fetch(
-        `/project/${project.project_id}/issue/${issue.id}/comment` + urlParams
+        `/project/${issue.project_id}/issue/${issue.id}/comment` + urlParams
       );
 
       if (response.ok) {
@@ -61,7 +61,7 @@ const IssueDetail = ({ issue, setIssue, project, onClose, id, pw }) => {
     try {
       const urlParams = `?id=${id}&pw=${pw}`;
       const response = await fetch(
-        `/project/${project.project_id}/issue/${issue.id}/recommend` + urlParams
+        `/project/${issue.project_id}/issue/${issue.id}/recommend` + urlParams
       );
 
       if (response.ok) {
@@ -107,6 +107,11 @@ const IssueDetail = ({ issue, setIssue, project, onClose, id, pw }) => {
 		};
 		return date.toLocaleDateString('ko-KO', options).replace(',', '');
 	};
+
+  const getUserRole = (userId) => {
+    const user = members.find(u => u.user_id === userId);
+    return user ? user.role : null;
+  };
 
   const handleDropdownToggle = () => {
     setDropdownOpen(!dropdownOpen);
@@ -156,6 +161,26 @@ const IssueDetail = ({ issue, setIssue, project, onClose, id, pw }) => {
   const handleDelete = (issueId) => {
     // 삭제 로직
     setDropdownOpen(null);
+  };
+
+  const handleAssigneeAndPriority = async (devId, updatedPriority) => {
+    const updateAssigneeAndPriority = {
+			user_id: devId,
+      priority: updatedPriority
+    };
+
+    const urlParams = `?id=${id}&pw=${pw}`;
+    const response = await fetch(
+      `/project/${issue.project_id}/issue/${issue.id}/assign` + urlParams,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updateAssigneeAndPriority),
+      }
+    );
+    getIssue(issue);
   };
 
   return (
@@ -245,7 +270,7 @@ const IssueDetail = ({ issue, setIssue, project, onClose, id, pw }) => {
                         </button>
                         <button
                           className="block w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-gray-100"
-                          onClick={() => handleDelete(issue.issue_id)}
+                          onClick={() => handleDelete(issue.id)}
                         >
                           Delete
                         </button>
@@ -280,17 +305,27 @@ const IssueDetail = ({ issue, setIssue, project, onClose, id, pw }) => {
               ) : (
                 <div>
                   <p className="ml-6 mb-4 text-sm">No one :(</p>
-                  <p className="ml-4 mb-2 font-semibold text-xs text-gray-400">
-                    Suggestions
-                  </p>
-                  {recommends.map((recommend) => (
-                    <div className="flex items-center justify-start w-full px-4 pb-2">
-                      <PiFinnTheHuman size={24} />
-                      <button className="ml-2 font-bold text-sm text-gray-500 hover:text-black cursor-pointer">
-                        {recommend}
-                      </button>
+                  {getUserRole(id) === "PL" ? (
+                    <div>
+                      <p className="ml-4 mb-2 font-semibold text-xs text-gray-400">
+                        Suggestions
+                      </p>
+                      {recommends.map((recommend) => (
+                        <div className="flex items-center justify-start w-full px-4 pb-2">
+                          <PiFinnTheHuman size={24} />
+                          <button 
+                            className="ml-2 font-bold text-sm text-gray-500 hover:text-black cursor-pointer"
+                            onClick={() => handleAssigneeAndPriority(recommend, issue.priority)}
+                          >
+                            {recommend}
+                          </button>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  ) : (
+                    <></>
+                  )
+                  }
                 </div>
               )}
             </div>
