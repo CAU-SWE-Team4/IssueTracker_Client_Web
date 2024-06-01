@@ -292,9 +292,10 @@ const IssueList = ({ project, members, setMembers, onSelectIssue, id, pw }) => {
       </div>
       <div
         className="grid grid-cols-4 gap-4 font-semibold border-b pb-2 mb-2"
-        style={{ gridTemplateColumns: '2fr 1fr 1fr 1fr' }}
+        style={{ gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr' }}
       >
         <div>Title</div>
+        <div>Priority</div>
         <div>Assignee</div>
         <div>Reporter</div>
         <div>Date</div>
@@ -304,7 +305,7 @@ const IssueList = ({ project, members, setMembers, onSelectIssue, id, pw }) => {
           <li
             key={issue.id}
             className="p-2 cursor-pointer border-b hover:bg-gray-200 grid grid-cols-4 gap-2"
-            style={{ gridTemplateColumns: '2fr 1fr 1fr 1fr' }}
+            style={{ gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr' }}
             onClick={() => getIssue(issue)}
           >
             <div className="flex items-center">
@@ -317,9 +318,10 @@ const IssueList = ({ project, members, setMembers, onSelectIssue, id, pw }) => {
                 {issue.state}
               </span>
             </div>
+            <span>{issue.priority}</span>
             <span>{issue.assignee_id}</span>
             <span>{issue.reporter_id}</span>
-            <span>{issue.reported_date}</span>
+            <span>{issue.created_date.slice(0, 10)}</span>
           </li>
         ))}
       </ul>
