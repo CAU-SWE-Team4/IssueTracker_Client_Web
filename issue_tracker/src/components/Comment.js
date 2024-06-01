@@ -7,6 +7,7 @@ const Comment = ({
   comments,
   getComments,
   formatDate,
+	userRole,
   id,
   pw,
 }) => {
@@ -34,19 +35,6 @@ const Comment = ({
     if (response.ok) {
       getComments();
       setEditedComment('');
-    }
-  };
-
-  const getStatus = (state) => {
-    switch (state) {
-      case 'NEW':
-      case 'FIXED':
-        return 'Close issue';
-      case 'CLOSED':
-      case 'DISPOSED':
-        return 'Reopen issue';
-      default:
-        return 'Close issue';
     }
   };
 
@@ -104,7 +92,6 @@ const Comment = ({
       state: status,
     };
     const urlParams = `?id=${id}&pw=${pw}`;
-
     const response = await fetch(
       `/project/${issue.project_id}/issue/${issue.id}/state` + urlParams,
       {
@@ -155,12 +142,14 @@ const Comment = ({
                   </span>
                 </div>
                 <div className="relative">
-                  <button
-                    className="text-gray-500 hover:text-gray-700"
-                    onClick={() => handleDropdownToggle(comment.comment_id)}
-                  >
-                    <RiMoreLine />
-                  </button>
+									{id === comment.author_id && (
+										<button
+											className="text-gray-500 hover:text-gray-700"
+											onClick={() => handleDropdownToggle(comment.comment_id)}
+										>
+											<RiMoreLine />
+										</button>
+									)}
                   {dropdownOpen === comment.comment_id && (
                     <div className="absolute right-0 w-32 bg-white border border-gray-300 rounded shadow-lg z-50">
                       <button
@@ -193,30 +182,46 @@ const Comment = ({
           onChange={(e) => setNewComment(e.target.value)}
         />
         <div className="flex flex-row justify-end w-100%">
-          <button
-            className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-red-500 text-white border-gray-600 hover:bg-red-400 hover:border-gray-600 focus:ring-gray-700"
-            onClick={() => handleStateChange(issue, 'DISPOSED')} //수정 필요
-          >
-            Dispose issue
-          </button>
-          <button
-            className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-green-500 text-white border-gray-600 hover:bg-green-400 hover:border-gray-600 focus:ring-gray-700"
-            onClick={() => handleStateChange(issue, 'FIXED')} //수정 필요
-          >
-            Issue Fixed
-          </button>
-          <button
-            className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-gray-600 text-white border-gray-600 hover:bg-gray-500 hover:border-gray-600 focus:ring-gray-700"
-            onClick={() => handleStateChange(issue, 'CLOSED')} //수정 필요
-          >
-            Close Issue
-          </button>
-          <button
-            className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-gray-600 text-white border-gray-600 hover:bg-gray-500 hover:border-gray-600 focus:ring-gray-700"
-            onClick={() => handleStateChange(issue, 'REOPEN')} //수정 필요
-          >
-            Reopen Issue
-          </button>
+          {userRole === "PL" && issue.state != "CLOSED" && (
+						<button
+							className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-red-500 text-white border-gray-600 hover:bg-red-400 hover:border-gray-600 focus:ring-gray-700"
+							onClick={() => handleStateChange(issue, 'DISPOSED')} //수정 필요
+						>
+							Dispose issue
+						</button>
+					)}
+					{userRole === "DEV" && id === issue.assignee_id && (
+						<button
+							className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-blue-500 text-white border-gray-600 hover:bg-blue-400 hover:border-gray-600 focus:ring-gray-700"
+							onClick={() => handleStateChange(issue, 'FIXED')} //수정 필요
+						>
+							Issue Fixed
+						</button>
+					)}
+					{userRole === "TESTER" && id === issue.reporter_id && issue.state === "FIXED" && (
+						<button
+							className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-green-500 text-white border-gray-600 hover:bg-green-400 hover:border-gray-600 focus:ring-gray-700"
+							onClick={() => handleStateChange(issue, 'RESOLVED')} //수정 필요
+						>
+							Issue Resolved
+						</button>
+					)}
+					{userRole === "PL" && issue.state === "RESOLVED" && (
+						<button
+							className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-violet-600 text-white border-gray-600 hover:bg-violet-500 hover:border-gray-600 focus:ring-gray-700"
+							onClick={() => handleStateChange(issue, 'CLOSED')} //수정 필요
+						>
+							Close Issue
+						</button>
+					)}
+					{userRole === "PL" && (issue.state === "CLOSED" || issue.state === "DISPOSED") && (
+						<button
+							className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-pink-500 text-white border-gray-600 hover:bg-pink-400 hover:border-gray-600 focus:ring-gray-700"
+							onClick={() => handleStateChange(issue, 'REOPEN')} //수정 필요
+						>
+							Reopen Issue
+						</button>
+					)}
           <button
             className="text-white bg-blue-600 hover:bg-blue-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
             onClick={handleAddComment}
