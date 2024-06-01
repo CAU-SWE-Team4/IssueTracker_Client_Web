@@ -178,7 +178,7 @@ const Comment = ({
           onChange={(e) => setNewComment(e.target.value)}
         />
         <div className="flex flex-row justify-end w-100%">
-          {userRole === "PL" && (
+          {userRole === "PL" && issue.state != "CLOSED" && (
 						<button
 							className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-red-500 text-white border-gray-600 hover:bg-red-400 hover:border-gray-600 focus:ring-gray-700"
 							onClick={() => handleStateChange(issue, 'DISPOSED')} //수정 필요
@@ -195,20 +195,20 @@ const Comment = ({
 						</button>
 					)}
 					{userRole === "TESTER" && id === issue.reporter_id && issue.state === "FIXED" && (
-          <button
-            className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-green-500 text-white border-gray-600 hover:bg-green-400 hover:border-gray-600 focus:ring-gray-700"
-            onClick={() => handleStateChange(issue, 'RESOLVED')} //수정 필요
-          >
-            Issue Resolved
-          </button>
+						<button
+							className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-green-500 text-white border-gray-600 hover:bg-green-400 hover:border-gray-600 focus:ring-gray-700"
+							onClick={() => handleStateChange(issue, 'RESOLVED')} //수정 필요
+						>
+							Issue Resolved
+						</button>
 					)}
 					{userRole === "PL" && issue.state === "RESOLVED" && (
-          <button
-            className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-violet-600 text-white border-gray-600 hover:bg-violet-500 hover:border-gray-600 focus:ring-gray-700"
-            onClick={() => handleStateChange(issue, 'CLOSED')} //수정 필요
-          >
-            Close Issue
-          </button>
+						<button
+							className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-violet-600 text-white border-gray-600 hover:bg-violet-500 hover:border-gray-600 focus:ring-gray-700"
+							onClick={() => handleStateChange(issue, 'CLOSED')} //수정 필요
+						>
+							Close Issue
+						</button>
 					)}
 					{userRole === "PL" && (issue.state === "CLOSED" || issue.state === "DISPOSED") && (
 						<button
