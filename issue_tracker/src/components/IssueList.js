@@ -2,256 +2,6 @@ import { React, useState, useEffect } from 'react';
 import IssueStatistics from './IssueStatistics';
 import { PiFinnTheHuman } from 'react-icons/pi';
 
-// const issues = [
-//   {
-//     issue_id: 1,
-//     title: 'Login Bug',
-//     description: 'The login button does not respond after multiple clicks.',
-//     reporter_id: 'Alice',
-//     state: 'NEW',
-//     reported_date: '2023-05-01',
-//     edited_date: null,
-//     assignee_id: 'minsiki2',
-//     fixer_id: null,
-//     priority: 'HIGH',
-//   },
-//   {
-//     issue_id: 2,
-//     title: 'Profile Page Error',
-//     description: 'Profile page throws a 404 error for some users.',
-//     reporter_id: 'Bob',
-//     state: 'FIXED',
-//     reported_date: '2023-05-02',
-//     edited_date: null,
-//     assignee_id: null,
-//     fixer_id: null,
-//     priority: 'HIGH',
-//   },
-//   {
-//     issue_id: 3,
-//     title: 'Signup Form Issue',
-//     description: 'Signup form validation is not working as expected.',
-//     reporter_id: 'Charlie',
-//     state: 'CLOSED',
-//     reported_date: '2023-05-03',
-//     edited_date: null,
-//     assignee_id: null,
-//     fixer_id: null,
-//     priority: 'HIGH',
-//   },
-//   {
-//     issue_id: 4,
-//     title: 'UI Misalignment',
-//     description: 'UI elements are not aligned properly on the dashboard.',
-//     reporter_id: 'David',
-//     state: 'ASSIGNED',
-//     reported_date: '2023-05-04',
-//     edited_date: null,
-//     assignee_id: null,
-//     fixer_id: null,
-//     priority: 'HIGH',
-//   },
-//   {
-//     issue_id: 5,
-//     title: 'Performance Lag',
-//     description: 'The application experiences lag during peak hours.',
-//     reporter_id: 'Eve',
-//     state: 'RESOLVED',
-//     reported_date: '2023-05-05',
-//     edited_date: null,
-//     assignee_id: null,
-//     fixer_id: null,
-//     priority: 'HIGH',
-//   },
-//   {
-//     issue_id: 6,
-//     title: 'Login Bug',
-//     description: 'The login button does not respond after multiple clicks.',
-//     reporter_id: 'Alice',
-//     state: 'NEW',
-//     reported_date: '2023-05-01',
-//     edited_date: null,
-//     assignee_id: 'minsiki2',
-//     fixer_id: null,
-//     priority: 'HIGH',
-//   },
-//   {
-//     issue_id: 7,
-//     title: 'Profile Page Error',
-//     description: 'Profile page throws a 404 error for some users.',
-//     reporter_id: 'Bob',
-//     state: 'FIXED',
-//     reported_date: '2023-05-02',
-//     edited_date: null,
-//     assignee_id: null,
-//     fixer_id: null,
-//     priority: 'HIGH',
-//   },
-//   {
-//     issue_id: 8,
-//     title: 'Signup Form Issue',
-//     description: 'Signup form validation is not working as expected.',
-//     reporter_id: 'Charlie',
-//     state: 'CLOSED',
-//     reported_date: '2023-05-03',
-//     edited_date: null,
-//     assignee_id: null,
-//     fixer_id: null,
-//     priority: 'HIGH',
-//   },
-//   {
-//     issue_id: 9,
-//     title: 'UI Misalignment',
-//     description: 'UI elements are not aligned properly on the dashboard.',
-//     reporter_id: 'David',
-//     state: 'RESOLVED',
-//     reported_date: '2023-05-04',
-//     edited_date: null,
-//     assignee_id: null,
-//     fixer_id: null,
-//     priority: 'HIGH',
-//   },
-//   {
-//     issue_id: 10,
-//     title: 'Performance Lag',
-//     description: 'The application experiences lag during peak hours.',
-//     reporter_id: 'Eve',
-//     state: 'NEW',
-//     reported_date: '2023-05-05',
-//     edited_date: null,
-//     assignee_id: null,
-//     fixer_id: null,
-//     priority: 'HIGH',
-//   },
-//   {
-//     issue_id: 11,
-//     title: 'Login Bug',
-//     description: 'The login button does not respond after multiple clicks.',
-//     reporter_id: 'Alice',
-//     state: 'NEW',
-//     reported_date: '2023-05-01',
-//     edited_date: null,
-//     assignee_id: 'minsiki2',
-//     fixer_id: null,
-//     priority: 'HIGH',
-//   },
-//   {
-//     issue_id: 12,
-//     title: 'Profile Page Error',
-//     description: 'Profile page throws a 404 error for some users.',
-//     reporter_id: 'Bob',
-//     state: 'FIXED',
-//     reported_date: '2023-05-02',
-//     edited_date: null,
-//     assignee_id: null,
-//     fixer_id: null,
-//     priority: 'HIGH',
-//   },
-//   {
-//     issue_id: 13,
-//     title: 'Signup Form Issue',
-//     description: 'Signup form validation is not working as expected.',
-//     reporter_id: 'Charlie',
-//     state: 'CLOSED',
-//     reported_date: '2023-05-03',
-//     edited_date: null,
-//     assignee_id: null,
-//     fixer_id: null,
-//     priority: 'HIGH',
-//   },
-//   {
-//     issue_id: 14,
-//     title: 'UI Misalignment',
-//     description: 'UI elements are not aligned properly on the dashboard.',
-//     reporter_id: 'David',
-//     state: 'RESOLVED',
-//     reported_date: '2023-05-04',
-//     edited_date: null,
-//     assignee_id: null,
-//     fixer_id: null,
-//     priority: 'HIGH',
-//   },
-//   {
-//     issue_id: 15,
-//     title: 'Performance Lag',
-//     description: 'The application experiences lag during peak hours.',
-//     reporter_id: 'Eve',
-//     state: 'NEW',
-//     reported_date: '2023-05-05',
-//     edited_date: null,
-//     assignee_id: null,
-//     fixer_id: null,
-//     priority: 'HIGH',
-//   },
-//   {
-//     issue_id: 16,
-//     title: 'Login Bug',
-//     description: 'The login button does not respond after multiple clicks.',
-//     reporter_id: 'Alice',
-//     state: 'NEW',
-//     reported_date: '2023-05-01',
-//     edited_date: null,
-//     assignee_id: 'minsiki2',
-//     fixer_id: null,
-//     priority: 'HIGH',
-//   },
-//   {
-//     issue_id: 17,
-//     title: 'Profile Page Error',
-//     description: 'Profile page throws a 404 error for some users.',
-//     reporter_id: 'Bob',
-//     state: 'FIXED',
-//     reported_date: '2023-05-02',
-//     edited_date: null,
-//     assignee_id: null,
-//     fixer_id: null,
-//     priority: 'HIGH',
-//   },
-//   {
-//     issue_id: 18,
-//     title: 'Signup Form Issue',
-//     description: 'Signup form validation is not working as expected.',
-//     reporter_id: 'Charlie',
-//     state: 'CLOSED',
-//     reported_date: '2023-05-03',
-//     edited_date: null,
-//     assignee_id: null,
-//     fixer_id: null,
-//     priority: 'HIGH',
-//   },
-//   {
-//     issue_id: 19,
-//     title: 'UI Misalignment',
-//     description: 'UI elements are not aligned properly on the dashboard.',
-//     reporter_id: 'David',
-//     state: 'DISPOSED',
-//     reported_date: '2023-05-04',
-//     edited_date: null,
-//     assignee_id: null,
-//     fixer_id: null,
-//     priority: 'HIGH',
-//   },
-//   {
-//     issue_id: 20,
-//     title: 'Performance Lag',
-//     description: 'The application experiences lag during peak hours.',
-//     reporter_id: 'Eve',
-//     state: 'NEW',
-//     reported_date: '2023-05-05',
-//     edited_date: null,
-//     assignee_id: null,
-//     fixer_id: null,
-//     priority: 'HIGH',
-//   },
-// ];
-
-const stats = {
-  day_issues: 5,
-  month_issues: 32,
-  total_issues: 73,
-  closed_issues: 42,
-};
-
 const getStateBgColor = (state) => {
   switch (state) {
     case 'NEW':
@@ -318,8 +68,10 @@ const IssueList = ({ project, members, setMembers, onSelectIssue, id, pw }) => {
   const [issues, setIssues] = useState([]);
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   const [searchContent, setSearchContent] = useState('');
+  const [stats, setStats] = useState({});
 
   useEffect(() => {
+    getStats();
     getIssues();
     getMembers();
   }, [project]);
@@ -328,6 +80,29 @@ const IssueList = ({ project, members, setMembers, onSelectIssue, id, pw }) => {
     // handleSearch(selectedState);
     getIssues();
   }, [selectedState]);
+
+  useEffect(() => {
+    console.log(stats);
+  }, [stats]);
+
+  const getStats = async () => {
+    try {
+      const urlParams = `?id=${id}&pw=${pw}`;
+      const response = await fetch(
+        `/project/${project.project_id}/issue/statistic` + urlParams
+      );
+      if (response.ok) {
+        const data = await response.json();
+        if (data) {
+          setStats(data);
+        }
+      } else {
+        console.error('Error fetching users: ', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error fetching users: ', error);
+    }
+  };
 
   const getMembers = async () => {
     try {

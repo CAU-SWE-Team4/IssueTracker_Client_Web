@@ -96,20 +96,20 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
     }
   };
 
-	const formatDate = (dateString) => {
-		const date = new Date(dateString);
-		const options = {
-			year: 'numeric',
-			month: '2-digit',
-			day: '2-digit',
-			hour: '2-digit',
-			minute: '2-digit',
-		};
-		return date.toLocaleDateString('ko-KO', options).replace(',', '');
-	};
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const options = {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+    };
+    return date.toLocaleDateString('ko-KO', options).replace(',', '');
+  };
 
   const getUserRole = (userId) => {
-    const user = members.find(u => u.user_id === userId);
+    const user = members.find((u) => u.user_id === userId);
     return user ? user.role : null;
   };
 
@@ -158,15 +158,36 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
     setEditMode(null);
   };
 
-  const handleDelete = (issueId) => {
+  const handleDelete = async (issue) => {
     // 삭제 로직
+    const urlParams = `?id=${id}&pw=${pw}`;
+    const response = await fetch(
+      `/project/${issue.project_id}/issue/${issue.id}` + urlParams,
+      {
+        method: 'DELETE',
+      }
+    );
+
+    if (response.ok) {
+      // setIssue((prevIssues) => prevIssues.filter((is) => is.id !== issue.id));
+      onClose();
+    } else if (response.status === 401) {
+      console.error('Unauthorized: Invalid ID or password.');
+    } else if (response.status === 403) {
+      console.error(
+        'Forbidden: You do not have permission to delete this project.'
+      );
+    } else {
+      console.error('Error deleting project: ', response.statusText);
+    }
+
     setDropdownOpen(null);
   };
 
   const handleAssigneeAndPriority = async (devId, updatedPriority) => {
     const updateAssigneeAndPriority = {
-			user_id: devId,
-      priority: updatedPriority
+      user_id: devId,
+      priority: updatedPriority,
     };
 
     const urlParams = `?id=${id}&pw=${pw}`;
@@ -221,7 +242,10 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
                   <p className="font-bold text-gray-700 ml-2 mr-1">
                     {issue.reporter_id}
                   </p>
-                  <p className="text-sm text-gray-600"> opened this issue at {formatDate(issue.created_date)}</p>
+                  <p className="text-sm text-gray-600">
+                    {' '}
+                    opened this issue at {formatDate(issue.created_date)}
+                  </p>
                 </div>
               </div>
             </div>
@@ -270,7 +294,7 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
                         </button>
                         <button
                           className="block w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-gray-100"
-                          onClick={() => handleDelete(issue.id)}
+                          onClick={() => handleDelete(issue)}
                         >
                           Delete
                         </button>
@@ -282,6 +306,7 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
             </div>
             <Comment
               issue={issue}
+              getIssue={getIssue}
               comments={comments}
               getComments={getComments}
               formatDate={formatDate}
@@ -305,7 +330,7 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
               ) : (
                 <div>
                   <p className="ml-6 mb-4 text-sm">No one :(</p>
-                  {getUserRole(id) === "PL" ? (
+                  {getUserRole(id) === 'PL' ? (
                     <div>
                       <p className="ml-4 mb-2 font-semibold text-xs text-gray-400">
                         Suggestions
@@ -313,9 +338,14 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
                       {recommends.map((recommend) => (
                         <div className="flex items-center justify-start w-full px-4 pb-2">
                           <PiFinnTheHuman size={24} />
-                          <button 
+                          <button
                             className="ml-2 font-bold text-sm text-gray-500 hover:text-black cursor-pointer"
-                            onClick={() => handleAssigneeAndPriority(recommend, issue.priority)}
+                            onClick={() =>
+                              handleAssigneeAndPriority(
+                                recommend,
+                                issue.priority
+                              )
+                            }
                           >
                             {recommend}
                           </button>
@@ -324,8 +354,7 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
                     </div>
                   ) : (
                     <></>
-                  )
-                  }
+                  )}
                 </div>
               )}
             </div>
