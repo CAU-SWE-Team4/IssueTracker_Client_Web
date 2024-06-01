@@ -1,6 +1,7 @@
 import { React, useState, useEffect } from 'react';
 import IssueStatistics from './IssueStatistics';
 import { PiFinnTheHuman } from 'react-icons/pi';
+import { FaUsers } from "react-icons/fa6";
 
 const getStateBgColor = (state) => {
   switch (state) {
@@ -254,7 +255,10 @@ const IssueList = ({ project, members, setMembers, onSelectIssue, id, pw }) => {
           className="text-white bg-blue-600 hover:bg-blue-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5"
           onClick={openUserModal}
         >
-          Show Users
+          <div className="flex flex-row items-center">
+            <FaUsers/>
+            <h2 className="ml-2">Members</h2>
+          </div>
         </button>
       </h2>
       <IssueStatistics stats={stats} />
@@ -391,7 +395,7 @@ const IssueList = ({ project, members, setMembers, onSelectIssue, id, pw }) => {
       )}
       {isUserModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-2/3">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
             <h2 className="text-xl font-bold mb-4">Project Members</h2>
             <ul>
               {members.map((member) => (
