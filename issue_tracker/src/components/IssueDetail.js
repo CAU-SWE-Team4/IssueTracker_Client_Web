@@ -13,11 +13,13 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [recommends, setRecommends] = useState([]);
   const [editedPriority, setEditedPriority] = useState(issue.priority);
+  const [userRole, setUserRole] = useState(null);
   const commentsEndRef = useRef(null);
 
   useEffect(() => {
     getComments();
     getRecommends();
+    setUserRole(getUserRole(id));
   }, []);
 
   useEffect(() => {
@@ -260,7 +262,7 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
                   >
                     {issue.state}
                   </span>
-                  {getUserRole(id) === "PL" && issue.assignee_id ? (
+                  {userRole === "PL" && issue.assignee_id ? (
                     <div className="pl-2">
                       <select value={editedPriority} onChange={handlePriorityChange}>
                         <option value="BLOCKER">BLOCKER</option>
@@ -321,12 +323,16 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
                     <p>{issue.description}</p>
                   </div>
                   <div className="absolute top-1 right-2">
-                    <button
-                      onClick={handleDropdownToggle}
-                      className="text-gray-500 hover:text-gray-700"
-                    >
-                      <RiMoreLine />
-                    </button>
+                    {userRole === "TESTER" && id === issue.reporter_id ? (
+                      <button
+                        onClick={handleDropdownToggle}
+                        className="text-gray-500 hover:text-gray-700"
+                      >
+                        <RiMoreLine />
+                      </button>
+                    ) : (
+                      <></>
+                    )}
                     {dropdownOpen && (
                       <div className="absolute right-0 w-48 bg-white border rounded shadow-lg">
                         <button
@@ -373,7 +379,7 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
               ) : (
                 <div>
                   <p className="ml-6 mb-4 text-sm">No one :(</p>
-                  {getUserRole(id) === 'PL' ? (
+                  {userRole === 'PL' ? (
                     <div>
                       <p className="ml-4 mb-2 font-semibold text-xs text-gray-400">
                         Suggestions
@@ -383,11 +389,9 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
                           <PiFinnTheHuman size={24} />
                           <button
                             className="ml-2 font-bold text-sm text-gray-500 hover:text-black cursor-pointer"
-                            onClick={() =>
-                              handleAssigneeAndPriority(
-                                recommend,
-                                issue.priority
-                              )
+                            onClick={() => {
+                              handleAssigneeAndPriority(recommend, issue.priority);
+                            }
                             }
                           >
                             {recommend}
