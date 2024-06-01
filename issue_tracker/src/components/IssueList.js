@@ -89,12 +89,14 @@ const IssueList = ({ project, members, setMembers, onSelectIssue, id, pw }) => {
   const [issues, setIssues] = useState([]);
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   const [searchContent, setSearchContent] = useState('');
+  const [userRole, setUserRole] = useState(null);
   const [stats, setStats] = useState({});
 
   useEffect(() => {
     getStats();
     getIssues();
     getMembers();
+    setUserRole(getUserRole(id));
   }, [project]);
 
   useEffect(() => {
@@ -105,6 +107,11 @@ const IssueList = ({ project, members, setMembers, onSelectIssue, id, pw }) => {
   useEffect(() => {
     console.log(stats);
   }, [stats]);
+
+  const getUserRole = (userId) => {
+    const user = members.find((u) => u.user_id === userId);
+    return user ? user.role : null;
+  };
 
   const getStats = async () => {
     try {
@@ -302,12 +309,14 @@ const IssueList = ({ project, members, setMembers, onSelectIssue, id, pw }) => {
             >
               Search
             </button>
-            <button
-              className="text-white bg-green-600 hover:bg-green-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 ml-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-              onClick={openModal}
-            >
-              New issue
-            </button>
+            {userRole === "TESTER" && (
+              <button
+                className="text-white bg-green-600 hover:bg-green-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 ml-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                onClick={openModal}
+              >
+                New issue
+              </button>
+            )}
           </div>
         )}
       </div>
