@@ -12,16 +12,23 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
   const [editedDescription, setEditedDescription] = useState('');
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [recommends, setRecommends] = useState([]);
+  const [editedPriority, setEditedPriority] = useState(issue.priority);
+  const [userRole, setUserRole] = useState(null);
   const commentsEndRef = useRef(null);
 
   useEffect(() => {
     getComments();
     getRecommends();
+    setUserRole(getUserRole(id));
   }, []);
 
   useEffect(() => {
     commentsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [comments]);
+
+  useEffect(() => {
+    handleAssigneeAndPriority(issue.assignee_id, editedPriority);
+  }, [editedPriority]);
 
   const getIssue = async (issue) => {
     const urlParams = `?id=${id}&pw=${pw}`;
@@ -87,12 +94,29 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
         return `bg-green-500`;
       case 'CLOSED':
         return `bg-violet-500`;
+      case 'REOPEN':
+        return `bg-pink-400`;
       case 'DISPOSED':
         return `bg-red-500`;
       case 'ASSIGNED':
         return `bg-gray-500`;
       default:
         return `bg-gray-500`;
+    }
+  };
+
+  const getPriorityTextColor = (priority) => {
+    switch (priority) {
+      case 'BLOCKER':
+        return `text-red-800`;
+      case 'CRITICAL':
+        return `text-red-500`;
+      case 'MINOR':
+        return `text-violet-500`;
+      case 'TRIVIAL':
+        return `text-gray-600`;
+      default:
+        return `text-blue-500`;
     }
   };
 
@@ -133,11 +157,6 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
   };
 
   const handleEditSubmit = async (issueId) => {
-    // 업데이트 로직
-    console.log(
-      `Updated comment ${issueId}: ${editedTitle} - ${editedDescription}`
-    );
-
     const updateIssue = {
       title: editedTitle,
       description: editedDescription,
@@ -189,7 +208,7 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
       user_id: devId,
       priority: updatedPriority,
     };
-
+    console.log(JSON.stringify(updateAssigneeAndPriority)); 
     const urlParams = `?id=${id}&pw=${pw}`;
     const response = await fetch(
       `/project/${issue.project_id}/issue/${issue.id}/assign` + urlParams,
@@ -202,6 +221,10 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
       }
     );
     getIssue(issue);
+  };
+
+  const handlePriorityChange = (e) => {
+    setEditedPriority(e.target.value);
   };
 
   return (
@@ -239,6 +262,28 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
                   >
                     {issue.state}
                   </span>
+                  {userRole === "PL" && issue.assignee_id ? (
+                    <div className="pl-2">
+                      <select value={editedPriority} onChange={handlePriorityChange}>
+                        <option value="BLOCKER">BLOCKER</option>
+                        <option value="CRITICAL">CRITICAL</option>
+                        <option value="MAJOR">MAJOR</option>
+                        <option value="MINOR">MINOR</option>
+                        <option value="TRIVIAL">TRIVIAL</option>
+                      </select>
+                    </div>
+                  ) : (
+                    <div>
+                      <span
+                        className={`px-2.5 py-1 ml-2 mb-0.5 border rounded-full text-sm ${getPriorityTextColor(
+                          issue.priority
+                        )}`}
+                      >
+                        {issue.priority ? issue.priority : "MAJOR"}
+                      </span>
+                    </div>
+                    )
+                  }
                   <p className="font-bold text-gray-700 ml-2 mr-1">
                     {issue.reporter_id}
                   </p>
@@ -278,12 +323,16 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
                     <p>{issue.description}</p>
                   </div>
                   <div className="absolute top-1 right-2">
-                    <button
-                      onClick={handleDropdownToggle}
-                      className="text-gray-500 hover:text-gray-700"
-                    >
-                      <RiMoreLine />
-                    </button>
+                    {userRole === "TESTER" && id === issue.reporter_id ? (
+                      <button
+                        onClick={handleDropdownToggle}
+                        className="text-gray-500 hover:text-gray-700"
+                      >
+                        <RiMoreLine />
+                      </button>
+                    ) : (
+                      <></>
+                    )}
                     {dropdownOpen && (
                       <div className="absolute right-0 w-48 bg-white border rounded shadow-lg">
                         <button
@@ -310,6 +359,7 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
               comments={comments}
               getComments={getComments}
               formatDate={formatDate}
+              userRole={userRole}
               id={id}
               pw={pw}
             />
@@ -321,16 +371,40 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
                 <p className="ml-4">Assignees</p>
               </div>
               {issue.assignee_id ? (
-                <div className="flex items-center justify-start w-full px-4 pb-2">
-                  <PiFinnTheHuman size={24} />
-                  <p className="ml-2 font-bold text-sm text-gray-700">
-                    {issue.assignee_id}
-                  </p>
+                <div className="flex flex-col items-center">
+                  <div className="flex items-center justify-start w-full px-4 pb-2">
+                    <PiFinnTheHuman size={24} />
+                    <p className="ml-2 font-bold text-sm text-gray-700">
+                      {issue.assignee_id}
+                    </p>
+                  </div>
+                  {userRole === 'PL' && (
+                    <div>
+                      <p className="ml-4 mb-2 font-semibold text-xs text-gray-400">
+                        Change Assignee
+                      </p>
+                      {recommends.map((recommend) => (
+                        <div className="flex flex-row items-center justify-start w-full px-4 pb-2">
+                          <PiFinnTheHuman size={24} />
+                          <button
+                            className="ml-2 font-bold text-sm text-gray-500 hover:text-black cursor-pointer"
+                            onClick={() => {
+                              handleAssigneeAndPriority(recommend, issue.priority);
+                            }
+                            }
+                          >
+                            {recommend}
+                          </button>
+                          {recommend === issue.assignee_id && (<p className="ml-1 font-bold text-xs text-yellow-500">now</p>)}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ) : (
                 <div>
                   <p className="ml-6 mb-4 text-sm">No one :(</p>
-                  {getUserRole(id) === 'PL' ? (
+                  {userRole === 'PL' && (
                     <div>
                       <p className="ml-4 mb-2 font-semibold text-xs text-gray-400">
                         Suggestions
@@ -340,11 +414,9 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
                           <PiFinnTheHuman size={24} />
                           <button
                             className="ml-2 font-bold text-sm text-gray-500 hover:text-black cursor-pointer"
-                            onClick={() =>
-                              handleAssigneeAndPriority(
-                                recommend,
-                                issue.priority
-                              )
+                            onClick={() => {
+                              handleAssigneeAndPriority(recommend, issue.priority);
+                            }
                             }
                           >
                             {recommend}
@@ -352,8 +424,6 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
                         </div>
                       ))}
                     </div>
-                  ) : (
-                    <></>
                   )}
                 </div>
               )}

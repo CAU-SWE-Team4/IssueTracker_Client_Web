@@ -1,6 +1,7 @@
 import { React, useState, useEffect } from 'react';
 import IssueStatistics from './IssueStatistics';
 import { PiFinnTheHuman } from 'react-icons/pi';
+import { FaUsers } from "react-icons/fa6";
 
 const getStateBgColor = (state) => {
   switch (state) {
@@ -12,6 +13,8 @@ const getStateBgColor = (state) => {
       return `bg-green-500`;
     case 'CLOSED':
       return `bg-violet-500`;
+    case 'REOPEN':
+      return `bg-pink-400`;
     case 'DISPOSED':
       return `bg-red-500`;
     case 'ASSIGNED':
@@ -31,6 +34,8 @@ const getStateTextColor = (state) => {
       return `text-green-500`;
     case 'CLOSED':
       return `text-violet-500`;
+    case 'REOPEN':
+      return `text-pink-400`;
     case 'DISPOSED':
       return `text-red-500`;
     case 'ASSIGNED':
@@ -50,12 +55,29 @@ const getStateBorderColor = (state) => {
       return `border-green-500`;
     case 'CLOSED':
       return `border-violet-500`;
+    case 'REOPEN':
+      return `border-pink-400`;
     case 'DISPOSED':
       return `border-red-500`;
     case 'ASSIGNED':
       return `border-gray-500`;
     default:
       return `border-gray-500`;
+  }
+};
+
+const getPriorityTextColor = (priority) => {
+  switch (priority) {
+    case 'BLOCKER':
+      return `text-red-800`;
+    case 'CRITICAL':
+      return `text-red-500`;
+    case 'MINOR':
+      return `text-violet-500`;
+    case 'TRIVIAL':
+      return `text-gray-600`;
+    default:
+      return `text-blue-500`;
   }
 };
 
@@ -68,12 +90,14 @@ const IssueList = ({ project, members, setMembers, onSelectIssue, id, pw }) => {
   const [issues, setIssues] = useState([]);
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   const [searchContent, setSearchContent] = useState('');
+  const [userRole, setUserRole] = useState(null);
   const [stats, setStats] = useState({});
 
   useEffect(() => {
     getStats();
     getIssues();
     getMembers();
+    setUserRole(getUserRole(id));
   }, [project]);
 
   useEffect(() => {
@@ -84,6 +108,11 @@ const IssueList = ({ project, members, setMembers, onSelectIssue, id, pw }) => {
   useEffect(() => {
     console.log(stats);
   }, [stats]);
+
+  const getUserRole = (userId) => {
+    const user = members.find((u) => u.user_id === userId);
+    return user ? user.role : null;
+  };
 
   const getStats = async () => {
     try {
@@ -226,7 +255,10 @@ const IssueList = ({ project, members, setMembers, onSelectIssue, id, pw }) => {
           className="text-white bg-blue-600 hover:bg-blue-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5"
           onClick={openUserModal}
         >
-          Show Users
+          <div className="flex flex-row items-center">
+            <FaUsers/>
+            <h2 className="ml-2">Members</h2>
+          </div>
         </button>
       </h2>
       <IssueStatistics stats={stats} />
@@ -247,7 +279,7 @@ const IssueList = ({ project, members, setMembers, onSelectIssue, id, pw }) => {
         </div>
         {searchCategory === 'state' ? (
           <div className="flex space-x-2 ml-4 items-center">
-            {['NEW', 'ASSIGNED', 'FIXED', 'RESOLVED', 'DISPOSED', 'CLOSED'].map(
+            {['NEW', 'REOPEN', 'ASSIGNED', 'FIXED', 'RESOLVED', 'DISPOSED', 'CLOSED'].map(
               (state) => (
                 <button
                   key={state}
@@ -281,20 +313,23 @@ const IssueList = ({ project, members, setMembers, onSelectIssue, id, pw }) => {
             >
               Search
             </button>
-            <button
-              className="text-white bg-green-600 hover:bg-green-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 ml-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-              onClick={openModal}
-            >
-              New issue
-            </button>
+            {userRole === "TESTER" && (
+              <button
+                className="text-white bg-green-600 hover:bg-green-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 ml-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                onClick={openModal}
+              >
+                New issue
+              </button>
+            )}
           </div>
         )}
       </div>
       <div
         className="grid grid-cols-4 gap-4 font-semibold border-b pb-2 mb-2"
-        style={{ gridTemplateColumns: '2fr 1fr 1fr 1fr' }}
+        style={{ gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr' }}
       >
         <div>Title</div>
+        <div>Priority</div>
         <div>Assignee</div>
         <div>Reporter</div>
         <div>Date</div>
@@ -304,7 +339,7 @@ const IssueList = ({ project, members, setMembers, onSelectIssue, id, pw }) => {
           <li
             key={issue.id}
             className="p-2 cursor-pointer border-b hover:bg-gray-200 grid grid-cols-4 gap-2"
-            style={{ gridTemplateColumns: '2fr 1fr 1fr 1fr' }}
+            style={{ gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr' }}
             onClick={() => getIssue(issue)}
           >
             <div className="flex items-center">
@@ -317,9 +352,10 @@ const IssueList = ({ project, members, setMembers, onSelectIssue, id, pw }) => {
                 {issue.state}
               </span>
             </div>
+            <span className={`${getPriorityTextColor(issue.priority)}`}>{issue.priority}</span>
             <span>{issue.assignee_id}</span>
             <span>{issue.reporter_id}</span>
-            <span>{issue.reported_date}</span>
+            <span>{issue.created_date.slice(0, 10)}</span>
           </li>
         ))}
       </ul>
@@ -359,7 +395,7 @@ const IssueList = ({ project, members, setMembers, onSelectIssue, id, pw }) => {
       )}
       {isUserModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-2/3">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
             <h2 className="text-xl font-bold mb-4">Project Members</h2>
             <ul>
               {members.map((member) => (
