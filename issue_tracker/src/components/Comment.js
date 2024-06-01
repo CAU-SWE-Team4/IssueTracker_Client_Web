@@ -105,7 +105,7 @@ const Comment = ({ issue, comments, getComments, id, pw, project }) => {
 						<div className="mb-1 ml-1 flex justify-between items-center">
 						<div>
 							<span className="font-bold">{comment.author_id}</span>
-							<span className="ml-1 text-sm text-gray-500">commented at {formatDate(comment.created_date)}</span>
+							<span className="ml-1 text-xs text-gray-500">commented at {formatDate(comment.created_date)}</span>
 						</div>
 						<div className="relative">
 							<button
