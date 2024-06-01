@@ -89,8 +89,13 @@ const Comment = ({ issue, comments, getComments, id, pw }) => {
     setEditMode(null);
   };
 
-  const handleDelete = (commentId) => {
-    // 삭제 로직
+  const handleDelete = async (commentId) => {
+		const urlParams = `?id=${id}&pw=${pw}`;
+    const response = await fetch(`/project/${issue.project_id}/issue/${issue.id}/comment/${commentId}` + urlParams, {method: 'DELETE',});
+
+    if (response.ok) {
+			getComments();
+    }
     setDropdownOpen(null);
   };
 
