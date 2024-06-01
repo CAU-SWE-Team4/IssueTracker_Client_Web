@@ -6,20 +6,7 @@ import Comment from './Comment';
 import { useInsertionEffect } from 'react';
 
 const IssueDetail = ({ issue, setIssue, project, onClose, id, pw }) => {
-  const [comments, setComments] = useState([
-    {
-      id: 1,
-      author: 'John',
-      text: 'This is the first comment.',
-      date: '2023-05-03',
-    },
-    {
-      id: 2,
-      author: 'Jane',
-      text: 'This is the second comment.',
-      date: '2023-05-04',
-    },
-  ]);
+  const [comments, setComments] = useState([]);
   const [editMode, setEditMode] = useState(null);
   const [editedTitle, setEditedTitle] = useState('');
   const [editedDescription, setEditedDescription] = useState('');
@@ -249,7 +236,6 @@ const IssueDetail = ({ issue, setIssue, project, onClose, id, pw }) => {
               issue={issue}
               comments={comments}
               getComments={getComments}
-              project={project}
               id={id}
               pw={pw}
             />

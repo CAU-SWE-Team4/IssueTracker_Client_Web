@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { RiMoreLine } from "react-icons/ri";
 
-const Comment = ({ issue, comments, getComments, id, pw, project }) => {
+const Comment = ({ issue, comments, getComments, id, pw }) => {
 	
   const [newComment, setNewComment] = useState('');
   const [editMode, setEditMode] = useState(null);
@@ -14,7 +14,7 @@ const Comment = ({ issue, comments, getComments, id, pw, project }) => {
 		};
     const urlParams = `?id=${id}&pw=${pw}`;
     const response = await fetch(
-      `/project/${project.project_id}/issue/${issue.id}/comment` + urlParams,
+      `/project/${issue.project_id}/issue/${issue.id}/comment` + urlParams,
       {
         method: 'POST',
         headers: {
@@ -26,7 +26,7 @@ const Comment = ({ issue, comments, getComments, id, pw, project }) => {
 
     if (response.ok) {
 			getComments();
-			setNewComment('');
+			setEditedComment('');
     }
   };
 
@@ -60,8 +60,8 @@ const Comment = ({ issue, comments, getComments, id, pw, project }) => {
   };
 
   const handleEdit = (comment) => {
-		setEditMode(comment.id);
-    setEditedComment(comment.text);
+		setEditMode(comment.comment_id);
+    setEditedComment(comment.content);
     setDropdownOpen(null);
   };
 
@@ -69,9 +69,23 @@ const Comment = ({ issue, comments, getComments, id, pw, project }) => {
     setEditedComment(e.target.value);
   };
 
-  const handleEditSubmit = (commentId) => {
-    // 업데이트 로직
-    console.log(`Updated comment ${commentId}: ${editedComment}`);
+  const handleEditSubmit = async (commentId) => {
+    const updateComment = {
+			content: editedComment
+    };
+
+    const urlParams = `?id=${id}&pw=${pw}`;
+    const response = await fetch(
+      `/project/${issue.project_id}/issue/${issue.id}/comment/${commentId}` + urlParams,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updateComment),
+      }
+    );
+    getComments();
     setEditMode(null);
   };
 
