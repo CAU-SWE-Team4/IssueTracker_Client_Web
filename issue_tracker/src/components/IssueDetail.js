@@ -11,6 +11,7 @@ const IssueDetail = ({ issue, setIssue, project, onClose, id, pw }) => {
   const [editedTitle, setEditedTitle] = useState('');
   const [editedDescription, setEditedDescription] = useState('');
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [recommends, setRecommends] = useState([]);
   const commentsEndRef = useRef(null);
 
   const members = [
@@ -21,10 +22,9 @@ const IssueDetail = ({ issue, setIssue, project, onClose, id, pw }) => {
     { user_id: 'hun', role: 'TESTER' },
   ];
 
-  const recommends = ['minsiki2', 'yeojin', 'junseob'];
-
   useEffect(() => {
     getComments();
+    getRecommends();
   }, []);
 
   useEffect(() => {
@@ -54,7 +54,6 @@ const IssueDetail = ({ issue, setIssue, project, onClose, id, pw }) => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
         if (data && Array.isArray(data)) {
           setComments(data);
         }
@@ -63,6 +62,26 @@ const IssueDetail = ({ issue, setIssue, project, onClose, id, pw }) => {
       }
     } catch (error) {
       console.error('Error getting comments2: ', error);
+    }
+  };
+
+  const getRecommends = async () => {
+    try {
+      const urlParams = `?id=${id}&pw=${pw}`;
+      const response = await fetch(
+        `/project/${project.project_id}/issue/${issue.id}/recommend` + urlParams
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data && Array.isArray(data.dev_ids)) {
+          setRecommends(data.dev_ids);
+        }
+      } else {
+        console.error('Error getting recommends: ', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error getting recommends2: ', error);
     }
   };
 
