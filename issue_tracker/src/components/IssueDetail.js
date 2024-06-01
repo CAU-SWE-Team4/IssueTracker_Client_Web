@@ -244,7 +244,10 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
                   </p>
                   <p className="text-sm text-gray-600">
                     {' '}
-                    opened this issue at {formatDate(issue.created_date)}
+                    opened this issue at {formatDate(issue.created_date)}{' '}
+                    {formatDate(issue.modified_date) &&
+                      `·
+                    edited at ${formatDate(issue.modified_date)}`}
                   </p>
                 </div>
               </div>
