@@ -108,7 +108,6 @@ const ProjectList = ({ onSelectProject, selectedProject, id, pw }) => {
     const urlParams = `?id=${id}&pw=${pw}`;
 
     if (isEditing && editingProject) {
-      console.log('requestDTO: ', JSON.stringify(projectData));
       // PUT 로직 (프로젝트 수정)
       const response = await fetch(
         `/project/${editingProject.project_id}` + urlParams,
