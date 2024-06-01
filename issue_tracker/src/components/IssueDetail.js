@@ -12,6 +12,7 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
   const [editedDescription, setEditedDescription] = useState('');
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [recommends, setRecommends] = useState([]);
+  const [editedPriority, setEditedPriority] = useState('');
   const commentsEndRef = useRef(null);
 
   useEffect(() => {
@@ -22,6 +23,10 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
   useEffect(() => {
     commentsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [comments]);
+
+  useEffect(() => {
+    handleAssigneeAndPriority(issue.assignee_id, editedPriority);
+  }, [editedPriority]);
 
   const getIssue = async (issue) => {
     const urlParams = `?id=${id}&pw=${pw}`;
@@ -98,12 +103,16 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
 
   const getPriorityTextColor = (priority) => {
     switch (priority) {
+      case 'BLOCKER':
+        return `text-red-800`;
       case 'CRITICAL':
         return `text-red-500`;
       case 'MINOR':
-        return `text-blue-500`;
-      default:
         return `text-violet-500`;
+      case 'TRIVIAL':
+        return `text-gray-600`;
+      default:
+        return `text-blue-500`;
     }
   };
 
@@ -144,11 +153,6 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
   };
 
   const handleEditSubmit = async (issueId) => {
-    // 업데이트 로직
-    console.log(
-      `Updated comment ${issueId}: ${editedTitle} - ${editedDescription}`
-    );
-
     const updateIssue = {
       title: editedTitle,
       description: editedDescription,
@@ -200,7 +204,7 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
       user_id: devId,
       priority: updatedPriority,
     };
-
+    console.log(JSON.stringify(updateAssigneeAndPriority)); 
     const urlParams = `?id=${id}&pw=${pw}`;
     const response = await fetch(
       `/project/${issue.project_id}/issue/${issue.id}/assign` + urlParams,
@@ -213,6 +217,10 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
       }
     );
     getIssue(issue);
+  };
+
+  const handlePriorityChange = (e) => {
+    setEditedPriority(e.target.value);
   };
 
   return (
@@ -250,13 +258,28 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
                   >
                     {issue.state}
                   </span>
-                  <span
-                    className={`px-2.5 py-1 ml-2 mb-0.5 border rounded-full text-sm ${getPriorityTextColor(
-                      issue.priority
-                    )}`}
-                  >
-                    {issue.priority ? issue.priority : "MAJOR"}
-                  </span>
+                  {getUserRole(id) === "PL" && issue.assignee_id ? (
+                    <div>
+                      <select value={editedPriority} onChange={handlePriorityChange}>
+                        <option value="BLOCKER">BLOCKER</option>
+                        <option value="CRITICAL">CRITICAL</option>
+                        <option value="MAJOR">MAJOR</option>
+                        <option value="MINOR">MINOR</option>
+                        <option value="TRIVIAL">TRIVIAL</option>
+                      </select>
+                    </div>
+                  ) : (
+                    <div>
+                      <span
+                        className={`px-2.5 py-1 ml-2 mb-0.5 border rounded-full text-sm ${getPriorityTextColor(
+                          issue.priority
+                        )}`}
+                      >
+                        {issue.priority ? issue.priority : "MAJOR"}
+                      </span>
+                    </div>
+                    )
+                  }
                   <p className="font-bold text-gray-700 ml-2 mr-1">
                     {issue.reporter_id}
                   </p>
