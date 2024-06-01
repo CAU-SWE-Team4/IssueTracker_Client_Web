@@ -12,6 +12,8 @@ const getStateBgColor = (state) => {
       return `bg-green-500`;
     case 'CLOSED':
       return `bg-violet-500`;
+    case 'REOPEN':
+      return `bg-pink-400`;
     case 'DISPOSED':
       return `bg-red-500`;
     case 'ASSIGNED':
@@ -31,6 +33,8 @@ const getStateTextColor = (state) => {
       return `text-green-500`;
     case 'CLOSED':
       return `text-violet-500`;
+    case 'REOPEN':
+      return `text-pink-400`;
     case 'DISPOSED':
       return `text-red-500`;
     case 'ASSIGNED':
@@ -50,6 +54,8 @@ const getStateBorderColor = (state) => {
       return `border-green-500`;
     case 'CLOSED':
       return `border-violet-500`;
+    case 'REOPEN':
+      return `border-pink-400`;
     case 'DISPOSED':
       return `border-red-500`;
     case 'ASSIGNED':
@@ -262,7 +268,7 @@ const IssueList = ({ project, members, setMembers, onSelectIssue, id, pw }) => {
         </div>
         {searchCategory === 'state' ? (
           <div className="flex space-x-2 ml-4 items-center">
-            {['NEW', 'ASSIGNED', 'FIXED', 'RESOLVED', 'DISPOSED', 'CLOSED'].map(
+            {['NEW', 'REOPEN', 'ASSIGNED', 'FIXED', 'RESOLVED', 'DISPOSED', 'CLOSED'].map(
               (state) => (
                 <button
                   key={state}

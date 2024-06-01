@@ -92,6 +92,8 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
         return `bg-green-500`;
       case 'CLOSED':
         return `bg-violet-500`;
+      case 'REOPEN':
+        return `bg-pink-400`;
       case 'DISPOSED':
         return `bg-red-500`;
       case 'ASSIGNED':
