@@ -12,7 +12,7 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
   const [editedDescription, setEditedDescription] = useState('');
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [recommends, setRecommends] = useState([]);
-  const [editedPriority, setEditedPriority] = useState('');
+  const [editedPriority, setEditedPriority] = useState(issue.priority);
   const commentsEndRef = useRef(null);
 
   useEffect(() => {
