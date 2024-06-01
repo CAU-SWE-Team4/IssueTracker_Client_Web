@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { RiMoreLine } from "react-icons/ri";
 
-const Comment = ({ issue, comments, getComments, id, pw }) => {
+const Comment = ({ issue, comments, getComments, formatDate, id, pw }) => {
 	
   const [newComment, setNewComment] = useState('');
   const [editMode, setEditMode] = useState(null);
@@ -42,18 +42,6 @@ const Comment = ({ issue, comments, getComments, id, pw }) => {
         return 'Close issue';
     }
   };
-
-	const formatDate = (dateString) => {
-		const date = new Date(dateString);
-		const options = {
-			year: 'numeric',
-			month: '2-digit',
-			day: '2-digit',
-			hour: '2-digit',
-			minute: '2-digit',
-		};
-		return date.toLocaleDateString('ko-KO', options).replace(',', '');
-	};
 
 	const handleDropdownToggle = (commentId) => {
     setDropdownOpen(dropdownOpen === commentId ? null : commentId);

@@ -14,14 +14,6 @@ const IssueDetail = ({ issue, setIssue, project, onClose, id, pw }) => {
   const [recommends, setRecommends] = useState([]);
   const commentsEndRef = useRef(null);
 
-  const members = [
-    { user_id: 'minseok128', role: 'PL' },
-    { user_id: 'minsiki2', role: 'DEV' },
-    { user_id: 'yeojin', role: 'DEV' },
-    { user_id: 'junseob', role: 'DEV' },
-    { user_id: 'hun', role: 'TESTER' },
-  ];
-
   useEffect(() => {
     getComments();
     getRecommends();
@@ -103,6 +95,18 @@ const IssueDetail = ({ issue, setIssue, project, onClose, id, pw }) => {
         return `bg-gray-500`;
     }
   };
+
+	const formatDate = (dateString) => {
+		const date = new Date(dateString);
+		const options = {
+			year: 'numeric',
+			month: '2-digit',
+			day: '2-digit',
+			hour: '2-digit',
+			minute: '2-digit',
+		};
+		return date.toLocaleDateString('ko-KO', options).replace(',', '');
+	};
 
   const handleDropdownToggle = () => {
     setDropdownOpen(!dropdownOpen);
@@ -192,7 +196,7 @@ const IssueDetail = ({ issue, setIssue, project, onClose, id, pw }) => {
                   <p className="font-bold text-gray-700 ml-2 mr-1">
                     {issue.reporter_id}
                   </p>
-                  <p> opened this issue at {issue.reported_date}</p>
+                  <p className="text-sm text-gray-600"> opened this issue at {formatDate(issue.created_date)}</p>
                 </div>
               </div>
             </div>
@@ -255,6 +259,7 @@ const IssueDetail = ({ issue, setIssue, project, onClose, id, pw }) => {
               issue={issue}
               comments={comments}
               getComments={getComments}
+              formatDate={formatDate}
               id={id}
               pw={pw}
             />
