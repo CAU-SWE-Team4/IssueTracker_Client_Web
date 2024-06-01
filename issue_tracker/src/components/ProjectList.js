@@ -34,7 +34,21 @@ const ProjectList = ({ onSelectProject, selectedProject, id, pw }) => {
   }, [id, pw]);
 
   const openModal = async () => {
-    // await getUser();
+    try {
+      const urlParams = `?id=${id}&pw=${pw}`;
+      const response = await fetch('/user' + urlParams);
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        if (data && Array.isArray(data)) {
+          setAllUsers(data);
+        }
+      } else {
+        console.error('Error fetching users: ', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error fetching users: ', error);
+    }
     setIsModalOpen(true);
   };
 
@@ -94,27 +108,31 @@ const ProjectList = ({ onSelectProject, selectedProject, id, pw }) => {
     const urlParams = `?id=${id}&pw=${pw}`;
 
     if (isEditing && editingProject) {
+      console.log('requestDTO: ', JSON.stringify(projectData));
       // PUT 로직 (프로젝트 수정)
-      const response = await fetch(`/project/${editingProject.project_id}` + urlParams, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(projectData),
-      });
+      const response = await fetch(
+        `/project/${editingProject.project_id}` + urlParams,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(projectData),
+        }
+      );
 
       if (response.ok) {
-        const updatedProject = await response.json();
-        setProjects((prevProjects) =>
-          prevProjects.map((proj) =>
-            proj.project_id === updatedProject.project_id ? updatedProject : proj
-          )
-        );
-        console.log(updatedProject);
-        closeModal();
+        const updateResponse = await fetch('/project' + urlParams);
+        const contentType = updateResponse.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          const updatedProject = await updateResponse.json(); // await 추가
+          setProjects(updatedProject.projects);
+          closeModal();
+        }
       }
     } else {
       // POST 로직 (새 프로젝트 생성)
+
       const response = await fetch('/project' + urlParams, {
         method: 'POST',
         headers: {
@@ -124,9 +142,13 @@ const ProjectList = ({ onSelectProject, selectedProject, id, pw }) => {
       });
 
       if (response.ok) {
-        const newProject = await response.json();
-        setProjects((prevProjects) => [...prevProjects, newProject]);
-        closeModal();
+        const newResponse = await fetch('/project' + urlParams);
+        const contentType = newResponse.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          const newProject = await newResponse.json(); // await 추가
+          setProjects(newProject.projects);
+          closeModal();
+        }
       }
     }
   };
@@ -144,7 +166,9 @@ const ProjectList = ({ onSelectProject, selectedProject, id, pw }) => {
     } else if (response.status === 401) {
       console.error('Unauthorized: Invalid ID or password.');
     } else if (response.status === 403) {
-      console.error('Forbidden: You do not have permission to delete this project.');
+      console.error(
+        'Forbidden: You do not have permission to delete this project.'
+      );
     } else {
       console.error('Error deleting project: ', response.statusText);
     }
@@ -156,7 +180,9 @@ const ProjectList = ({ onSelectProject, selectedProject, id, pw }) => {
           <li
             key={project.project_id}
             className={`py-3 cursor-pointer hover:text-lg hover:font-bold flex justify-start ${
-              selectedProject?.project_id === project.project_id ? 'font-bold text-xl' : 'text-gray-400'
+              selectedProject?.project_id === project.project_id
+                ? 'font-bold text-xl'
+                : 'text-gray-400'
             }`}
             onClick={() => onSelectProject(project)}
           >
@@ -205,24 +231,32 @@ const ProjectList = ({ onSelectProject, selectedProject, id, pw }) => {
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center absolute z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-2/3 max-h-[80vh] overflow-y-auto">
-            <h2 className="text-xl font-bold mb-4">{isEditing ? 'Edit Project' : 'New Project'}</h2>
+            <h2 className="text-xl font-bold mb-4">
+              {isEditing ? 'Edit Project' : 'New Project'}
+            </h2>
             <input
               type="text"
               placeholder="Project Title"
               className="w-full p-2 mb-4 border border-gray-300 rounded-lg"
               value={newProjectTitle}
-              onChange={(e) => setNewProjectTitle(e.target.value)}
+              onChange={(e) => {
+                if (e) setNewProjectTitle(e.target.value);
+                else setNewProjectTitle(newProjectTitle);
+              }}
             />
             <h3 className="text-lg font-semibold mb-2">Assign Roles</h3>
             {allUsers.map((user) => (
-              <div key={user.id} className="flex items-center mb-2">
+              <div key={user.user_id} className="flex items-center mb-2">
                 <PiFinnTheHuman size={24} />
                 <span className="ml-2 w-1/3">{user.name}</span>
                 <select
                   className="w-2/3 p-2 border border-gray-300 rounded-lg"
-                  value={memberRoles[user.id] || 'NONE'}
-                  onChange={(e) => handleRoleChange(user.id, e.target.value)}
+                  value={memberRoles[user.user_id] || 'NONE'}
+                  onChange={(e) =>
+                    handleRoleChange(user.user_id, e.target.value)
+                  }
                 >
+                  <option value="ADMIN">ADMIN</option>
                   <option value="PL">PL</option>
                   <option value="DEV">DEV</option>
                   <option value="TESTER">TESTER</option>
