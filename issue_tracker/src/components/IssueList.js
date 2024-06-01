@@ -1,7 +1,7 @@
 import { React, useState, useEffect } from 'react';
 import IssueStatistics from './IssueStatistics';
 import { PiFinnTheHuman } from 'react-icons/pi';
-import { FaUsers } from "react-icons/fa6";
+import { FaUsers } from 'react-icons/fa6';
 
 const getStateBgColor = (state) => {
   switch (state) {
@@ -82,7 +82,7 @@ const getPriorityTextColor = (priority) => {
 };
 
 const IssueList = ({ project, members, setMembers, onSelectIssue, id, pw }) => {
-  const [searchCategory, setSearchCategory] = useState('');
+  const [searchCategory, setSearchCategory] = useState('title');
   const [selectedState, setSelectedState] = useState('NEW');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newIssueTitle, setNewIssueTitle] = useState('');
@@ -94,10 +94,14 @@ const IssueList = ({ project, members, setMembers, onSelectIssue, id, pw }) => {
   const [stats, setStats] = useState({});
 
   useEffect(() => {
-    getStats();
+    setUserRole(getUserRole(id));
+  }, [project, members, id]);
+
+  useEffect(() => {
+    // setUserRole(getUserRole(id));
     getIssues();
     getMembers();
-    setUserRole(getUserRole(id));
+    getStats();
   }, [project]);
 
   useEffect(() => {
@@ -195,7 +199,6 @@ const IssueList = ({ project, members, setMembers, onSelectIssue, id, pw }) => {
   const handleStateClick = (state) => {
     setSelectedState(state);
     setSearchContent(state);
-    getIssues();
   };
 
   const handleCategoryChange = (e) => {
@@ -215,7 +218,23 @@ const IssueList = ({ project, members, setMembers, onSelectIssue, id, pw }) => {
   };
 
   const openUserModal = async () => {
-    // await getUser(project.project_id);
+    try {
+      const urlParams = `?id=${id}&pw=${pw}`;
+      const response = await fetch(
+        `/project/${project.project_id}/userRole` + urlParams
+      );
+      if (response.ok) {
+        const data = await response.json();
+
+        if (data && Array.isArray(data)) {
+          setMembers(data);
+        }
+      } else {
+        console.error('Error fetching users: ', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error fetching users: ', error);
+    }
     setIsUserModalOpen(true);
   };
 
@@ -256,7 +275,7 @@ const IssueList = ({ project, members, setMembers, onSelectIssue, id, pw }) => {
           onClick={openUserModal}
         >
           <div className="flex flex-row items-center">
-            <FaUsers/>
+            <FaUsers />
             <h2 className="ml-2">Members</h2>
           </div>
         </button>
@@ -279,23 +298,29 @@ const IssueList = ({ project, members, setMembers, onSelectIssue, id, pw }) => {
         </div>
         {searchCategory === 'state' ? (
           <div className="flex space-x-2 ml-4 items-center">
-            {['NEW', 'REOPEN', 'ASSIGNED', 'FIXED', 'RESOLVED', 'DISPOSED', 'CLOSED'].map(
-              (state) => (
-                <button
-                  key={state}
-                  className={`h-8 font-large text-sm px-2 pb-0.5 border-2 transform transition-transform duration-100 hover:scale-110 rounded-full leading-tight ${
-                    selectedState === state
-                      ? 'text-white'
-                      : getStateTextColor(state)
-                  } ${getStateBorderColor(state)} ${
-                    selectedState === state ? `${getStateBgColor(state)}` : ''
-                  }`}
-                  onClick={() => handleStateClick(state)}
-                >
-                  {state}
-                </button>
-              )
-            )}
+            {[
+              'NEW',
+              'REOPEN',
+              'ASSIGNED',
+              'FIXED',
+              'RESOLVED',
+              'DISPOSED',
+              'CLOSED',
+            ].map((state) => (
+              <button
+                key={state}
+                className={`h-8 font-large text-sm px-2 pb-0.5 border-2 transform transition-transform duration-100 hover:scale-110 rounded-full leading-tight ${
+                  selectedState === state
+                    ? 'text-white'
+                    : getStateTextColor(state)
+                } ${getStateBorderColor(state)} ${
+                  selectedState === state ? `${getStateBgColor(state)}` : ''
+                }`}
+                onClick={() => handleStateClick(state)}
+              >
+                {state}
+              </button>
+            ))}
           </div>
         ) : (
           <div className="flex w-full">
@@ -313,7 +338,7 @@ const IssueList = ({ project, members, setMembers, onSelectIssue, id, pw }) => {
             >
               Search
             </button>
-            {userRole === "TESTER" && (
+            {userRole === 'TESTER' && (
               <button
                 className="text-white bg-green-600 hover:bg-green-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 ml-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                 onClick={openModal}
@@ -352,7 +377,9 @@ const IssueList = ({ project, members, setMembers, onSelectIssue, id, pw }) => {
                 {issue.state}
               </span>
             </div>
-            <span className={`${getPriorityTextColor(issue.priority)}`}>{issue.priority}</span>
+            <span className={`${getPriorityTextColor(issue.priority)}`}>
+              {issue.priority}
+            </span>
             <span>{issue.assignee_id}</span>
             <span>{issue.reporter_id}</span>
             <span>{issue.created_date.slice(0, 10)}</span>
