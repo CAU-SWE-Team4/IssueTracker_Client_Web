@@ -37,6 +37,10 @@ const IssueDetail = ({ issue, setIssue, project, onClose, id, pw }) => {
   const recommends = ['minsiki2', 'yeojin', 'junseob'];
 
   useEffect(() => {
+    getComments();
+  }, []);
+
+  useEffect(() => {
     commentsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [comments]);
 
@@ -51,6 +55,33 @@ const IssueDetail = ({ issue, setIssue, project, onClose, id, pw }) => {
       if (data) {
         setIssue(data);
       }
+    }
+  };
+
+  const getComments = async () => {
+    try {
+      const urlParams = `?id=${id}&pw=${pw}`;
+      const response = await fetch(
+        `/project/${project.project_id}/issue/${issue.id}/comment` + urlParams
+      );
+      
+      if (response.ok) {
+        const text = await response.text();
+
+        if (text) {
+          const data = JSON.parse(text);
+          if (data && Array.isArray(data)) {
+            setComments(data);
+          }
+        } else {
+          console.warn('No data received');
+          setComments([]);
+        }
+      } else {
+        console.error('Error getting comments: ', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error getting comments: ', error);
     }
   };
 
