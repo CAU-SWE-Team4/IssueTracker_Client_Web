@@ -5,7 +5,7 @@ import { PiFinnTheHuman } from 'react-icons/pi';
 import Comment from './Comment';
 import { useInsertionEffect } from 'react';
 
-const IssueDetail = ({ issue, onClose, id, pw }) => {
+const IssueDetail = ({ issue, setIssue, project, onClose, id, pw }) => {
   const [comments, setComments] = useState([
     {
       id: 1,
@@ -39,6 +39,20 @@ const IssueDetail = ({ issue, onClose, id, pw }) => {
   useEffect(() => {
     commentsEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [comments]);
+
+  const getIssue = async (issue) => {
+    const urlParams = `?id=${id}&pw=${pw}`;
+    const response = await fetch(
+      `/project/${project.project_id}/issue/${issue.id}` + urlParams
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+      if (data) {
+        setIssue(data);
+      }
+    }
+  };
 
   const getStateBgColor = (state) => {
     switch (state) {
@@ -100,7 +114,7 @@ const IssueDetail = ({ issue, onClose, id, pw }) => {
         body: JSON.stringify(updateIssue),
       }
     );
-
+    getIssue(issue);
     setEditMode(null);
   };
 
