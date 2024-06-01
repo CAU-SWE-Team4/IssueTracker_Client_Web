@@ -96,6 +96,17 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
     }
   };
 
+  const getPriorityTextColor = (priority) => {
+    switch (priority) {
+      case 'CRITICAL':
+        return `text-red-500`;
+      case 'MINOR':
+        return `text-blue-500`;
+      default:
+        return `text-violet-500`;
+    }
+  };
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const options = {
@@ -238,6 +249,13 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
                     )}`}
                   >
                     {issue.state}
+                  </span>
+                  <span
+                    className={`px-2.5 py-1 ml-2 mb-0.5 border rounded-full text-sm ${getPriorityTextColor(
+                      issue.priority
+                    )}`}
+                  >
+                    {issue.priority ? issue.priority : "MAJOR"}
                   </span>
                   <p className="font-bold text-gray-700 ml-2 mr-1">
                     {issue.reporter_id}

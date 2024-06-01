@@ -198,6 +198,7 @@ const IssueList = ({ project, members, setMembers, onSelectIssue, id, pw }) => {
     const newIssue = {
       title: newIssueTitle,
       description: newIssueDescription,
+      priority: "MAJOR",
     };
 
     const urlParams = `?id=${id}&pw=${pw}`;
