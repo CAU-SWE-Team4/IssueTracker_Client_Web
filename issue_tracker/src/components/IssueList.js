@@ -311,7 +311,7 @@ const getStateBorderColor = (state) => {
 
 const IssueList = ({ project, onSelectIssue, id, pw }) => {
   const [searchCategory, setSearchCategory] = useState('');
-  const [selectedState, setSelectedState] = useState('');
+  const [selectedState, setSelectedState] = useState('NEW');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newIssueTitle, setNewIssueTitle] = useState('');
   const [newIssueDescription, setNewIssueDescription] = useState('');
@@ -326,7 +326,8 @@ const IssueList = ({ project, onSelectIssue, id, pw }) => {
   }, [project]);
 
   useEffect(() => {
-    handleSearch(selectedState);
+    // handleSearch(selectedState);
+    getIssues();
   }, [selectedState]);
 
   const getMembers = async () => {
@@ -358,7 +359,6 @@ const IssueList = ({ project, onSelectIssue, id, pw }) => {
     if (response.ok) {
       const data = await response.json();
       if (data && Array.isArray(data)) {
-        console.log(data);
         setIssues(data);
       }
     }
@@ -376,6 +376,7 @@ const IssueList = ({ project, onSelectIssue, id, pw }) => {
   };
 
   const handleStateClick = (state) => {
+    setSelectedState(state);
     setSearchContent(state);
     getIssues();
   };
