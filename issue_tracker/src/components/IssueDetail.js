@@ -59,6 +59,20 @@ const IssueDetail = ({ issue, setIssue, onClose, id, pw }) => {
     }
   };
 
+  const getIssue = async (issue) => {
+    const urlParams = `?id=${id}&pw=${pw}`;
+    const response = await fetch(
+      `/project/${issue.project_id}/issue/${issue.id}` + urlParams
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+      if (data) {
+        setIssue(data);
+      }
+    }
+  };
+
   const handleDropdownToggle = () => {
     setDropdownOpen(!dropdownOpen);
   };
@@ -229,8 +243,11 @@ const IssueDetail = ({ issue, setIssue, onClose, id, pw }) => {
             </div>
             <Comment
               issue={issue}
+              getIssue={getIssue}
               comments={comments}
               setComments={setComments}
+              id={id}
+              pw={pw}
             />
             <div ref={commentsEndRef} />
           </div>
