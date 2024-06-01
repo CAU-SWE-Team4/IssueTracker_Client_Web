@@ -208,7 +208,7 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
       user_id: devId,
       priority: updatedPriority,
     };
-    console.log(JSON.stringify(updateAssigneeAndPriority)); 
+    console.log(JSON.stringify(updateAssigneeAndPriority));
     const urlParams = `?id=${id}&pw=${pw}`;
     const response = await fetch(
       `/project/${issue.project_id}/issue/${issue.id}/assign` + urlParams,
@@ -262,9 +262,12 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
                   >
                     {issue.state}
                   </span>
-                  {userRole === "PL" && issue.assignee_id ? (
+                  {userRole === 'PL' && issue.assignee_id ? (
                     <div className="pl-2">
-                      <select value={editedPriority} onChange={handlePriorityChange}>
+                      <select
+                        value={editedPriority}
+                        onChange={handlePriorityChange}
+                      >
                         <option value="BLOCKER">BLOCKER</option>
                         <option value="CRITICAL">CRITICAL</option>
                         <option value="MAJOR">MAJOR</option>
@@ -279,11 +282,10 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
                           issue.priority
                         )}`}
                       >
-                        {issue.priority ? issue.priority : "MAJOR"}
+                        {issue.priority ? issue.priority : 'MAJOR'}
                       </span>
                     </div>
-                    )
-                  }
+                  )}
                   <p className="font-bold text-gray-700 ml-2 mr-1">
                     {issue.reporter_id}
                   </p>
@@ -326,7 +328,7 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
                     <p>{issue.description}</p>
                   </div>
                   <div className="absolute top-1 right-2">
-                    {userRole === "TESTER" && id === issue.reporter_id ? (
+                    {userRole === 'TESTER' || userRole === 'PL' ? (
                       <button
                         onClick={handleDropdownToggle}
                         className="text-gray-500 hover:text-gray-700"
@@ -338,18 +340,22 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
                     )}
                     {dropdownOpen && (
                       <div className="absolute right-0 w-48 bg-white border rounded shadow-lg">
-                        <button
-                          className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                          onClick={() => handleEdit(issue)}
-                        >
-                          Edit
-                        </button>
-                        <button
-                          className="block w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-gray-100"
-                          onClick={() => handleDelete(issue)}
-                        >
-                          Delete
-                        </button>
+                        {id === issue.reporter_id && (
+                          <button
+                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                            onClick={() => handleEdit(issue)}
+                          >
+                            Edit
+                          </button>
+                        )}
+                        {userRole === 'PL' && (
+                          <button
+                            className="block w-full text-left px-4 py-2 text-sm text-red-700 hover:bg-gray-100"
+                            onClick={() => handleDelete(issue)}
+                          >
+                            Delete
+                          </button>
+                        )}
                       </div>
                     )}
                   </div>
@@ -392,13 +398,19 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
                           <button
                             className="ml-2 font-bold text-sm text-gray-500 hover:text-black cursor-pointer"
                             onClick={() => {
-                              handleAssigneeAndPriority(recommend, issue.priority);
-                            }
-                            }
+                              handleAssigneeAndPriority(
+                                recommend,
+                                issue.priority
+                              );
+                            }}
                           >
                             {recommend}
                           </button>
-                          {recommend === issue.assignee_id && (<p className="ml-1 font-bold text-xs text-yellow-500">now</p>)}
+                          {recommend === issue.assignee_id && (
+                            <p className="ml-1 font-bold text-xs text-yellow-500">
+                              now
+                            </p>
+                          )}
                         </div>
                       ))}
                     </div>
@@ -418,9 +430,11 @@ const IssueDetail = ({ issue, setIssue, members, onClose, id, pw }) => {
                           <button
                             className="ml-2 font-bold text-sm text-gray-500 hover:text-black cursor-pointer"
                             onClick={() => {
-                              handleAssigneeAndPriority(recommend, issue.priority);
-                            }
-                            }
+                              handleAssigneeAndPriority(
+                                recommend,
+                                issue.priority
+                              );
+                            }}
                           >
                             {recommend}
                           </button>
