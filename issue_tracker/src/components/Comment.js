@@ -183,7 +183,7 @@ const Comment = ({
           onChange={(e) => setNewComment(e.target.value)}
         />
         <div className="flex flex-row justify-end w-100%">
-          {userRole === 'PL' && issue.state != 'CLOSED' && (
+          {userRole === 'PL' && issue.state != 'CLOSED'&& issue.state != 'DISPOSED' && (
             <button
               className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-red-500 text-white border-gray-600 hover:bg-red-400 hover:border-gray-600 focus:ring-gray-700"
               onClick={() => handleStateChange(issue, 'DISPOSED')} //수정 필요
