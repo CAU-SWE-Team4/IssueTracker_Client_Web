@@ -35,6 +35,7 @@ const Comment = ({
     if (response.ok) {
       getComments();
       setEditedComment('');
+			setNewComment('');
     }
   };
 
@@ -125,7 +126,7 @@ const Comment = ({
               />
               <div className="flex justify-end mt-2">
                 <button
-                  className="text-white bg-blue-700 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                  className="text-white bg-blue-700 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5"
                   onClick={() => handleEditSubmit(comment.comment_id)}
                 >
                   Save
@@ -182,7 +183,7 @@ const Comment = ({
           onChange={(e) => setNewComment(e.target.value)}
         />
         <div className="flex flex-row justify-end w-100%">
-          {userRole === 'PL' && issue.state != 'CLOSED' && (
+          {userRole === 'PL' && issue.state != 'CLOSED'&& issue.state != 'DISPOSED' && (
             <button
               className="focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 bg-red-500 text-white border-gray-600 hover:bg-red-400 hover:border-gray-600 focus:ring-gray-700"
               onClick={() => handleStateChange(issue, 'DISPOSED')} //수정 필요
@@ -228,7 +229,7 @@ const Comment = ({
               </button>
             )}
           <button
-            className="text-white bg-blue-600 hover:bg-blue-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            className="text-white bg-blue-600 hover:bg-blue-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2"
             onClick={handleAddComment}
           >
             Comment
