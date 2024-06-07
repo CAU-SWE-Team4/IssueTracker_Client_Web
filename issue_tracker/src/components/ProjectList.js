@@ -107,10 +107,15 @@ const ProjectList = ({ onSelectProject, selectedProject, id, pw }) => {
   };
 
   const handleSubmit = async () => {
-    const members = Object.entries(memberRoles)
+    const updatedMemberRoles = {
+      ...memberRoles,
+      admin: 'ADMIN',
+    };
+  
+    const members = Object.entries(updatedMemberRoles)
       .filter(([userId, role]) => role !== 'NONE')
       .map(([userId, role]) => ({ user_id: userId, role: role }));
-
+  
     const projectData = {
       title: newProjectTitle,
       members: members,
@@ -262,19 +267,18 @@ const ProjectList = ({ onSelectProject, selectedProject, id, pw }) => {
               <div key={user.user_id} className="flex items-center mb-2">
                 <PiFinnTheHuman size={24} />
                 <span className="ml-2 w-1/3">{user.name}</span>
-                <select
+                {user.name != "admin" && (<select
                   className="w-2/3 p-2 border border-gray-300 rounded-lg"
                   value={memberRoles[user.user_id] || 'NONE'}
                   onChange={(e) =>
                     handleRoleChange(user.user_id, e.target.value)
                   }
                 >
-                  <option value="ADMIN">ADMIN</option>
                   <option value="PL">PL</option>
                   <option value="DEV">DEV</option>
                   <option value="TESTER">TESTER</option>
                   <option value="NONE">NONE</option>
-                </select>
+                </select>)}
               </div>
             ))}
             <div className="flex justify-end mt-4">
